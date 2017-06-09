@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/textView"
+    android:layout_width="match_parent"
+    android:layout_height="42dp"
+    android:layout_marginBottom="10dp"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:fontFamily="sans-serif-medium"
+    android:gravity="center_vertical|end"
+    android:orientation="vertical"
+    android:paddingRight="14dp"
+    android:text="More"
+    android:textColor="@color/colorAccent"
+    android:textSize="18dp">
+
+</TextView>

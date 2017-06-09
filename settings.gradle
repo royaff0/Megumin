@@ -1,0 +1,1 @@
+include ':mobile', ':common', ':ijkplayer-armv7a', ':ijkplayer-java'

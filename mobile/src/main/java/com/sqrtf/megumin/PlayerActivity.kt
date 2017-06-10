@@ -15,6 +15,7 @@ import android.widget.TextView
 import com.sqrtf.common.activity.BaseActivity
 import com.sqrtf.common.api.ApiHelper
 import io.reactivex.Observable
+import tv.danmaku.ijk.media.player.AndroidMediaPlayer
 import tv.danmaku.ijk.media.player.IMediaPlayer
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import java.text.SimpleDateFormat

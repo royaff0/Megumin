@@ -38,7 +38,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         navigationView.setNavigationItemSelectedListener(this)
 
         supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_container, HomeFragment())
+                .replace(R.id.fragment_container, HomeFragment())
                 .commit()
 
         ApiClient.getInstance().getUserInfo()

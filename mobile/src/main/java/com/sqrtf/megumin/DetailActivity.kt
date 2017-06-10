@@ -71,7 +71,7 @@ class DetailActivity : BaseActivity() {
     }
 
     private fun setData(detail: Bangumi) {
-        val iv = findViewById(R.id.image) as ImageView
+        var iv = findViewById(R.id.image) as ImageView?
         val ivCover = findViewById(R.id.image_cover) as ImageView
         val ctitle = findViewById(R.id.title) as TextView
         val subtitle = findViewById(R.id.subtitle) as TextView
@@ -82,7 +82,7 @@ class DetailActivity : BaseActivity() {
         val spinner = findViewById(R.id.spinner) as Spinner
         val recyclerView = findViewById(R.id.recycler_view) as RecyclerView
 
-        Glide.with(this).load(detail.image).into(iv)
+        iv?.let { Glide.with(this).load(detail.image).into(iv) }
         Glide.with(this).load(detail.image).into(ivCover)
 
         ctitle.text = detail.name_cn

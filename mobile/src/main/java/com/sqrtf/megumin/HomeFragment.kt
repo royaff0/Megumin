@@ -70,7 +70,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private class HomeDataAdapter(val parent: Fragment) {
-        val spanCount = 3
+        val spanCount = parent.resources.getInteger(R.integer.home_screen_span_count)
         val list = arrayListOf<HomeData>()
         val adapter = HomeAdapter()
         val lm = HomeLayoutManager(parent.context)
@@ -178,7 +178,7 @@ class HomeFragment : BaseFragment() {
             }
         }
 
-        inner private class HomeLayoutManager(context: Context) : GridLayoutManager(context, 3) {
+        inner private class HomeLayoutManager(context: Context) : GridLayoutManager(context, spanCount) {
             init {
                 spanSizeLookup = object : SpanSizeLookup() {
                     override fun getSpanSize(p0: Int): Int {

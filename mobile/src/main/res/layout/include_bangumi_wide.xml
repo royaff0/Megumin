@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="150dp"
     android:layout_marginBottom="10dp"
-    android:background="@color/backgroundFore"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="@color/contentBackground"
     app:cardCornerRadius="0dp"
     app:cardElevation="2dp">
@@ -15,7 +17,6 @@
         android:layout_height="match_parent"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:foreground="?android:attr/selectableItemBackground"
         android:orientation="vertical">
 
         <ImageView

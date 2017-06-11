@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,7 +22,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <FrameLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/fullscreen_content_controls"
             style="?metaButtonBarStyle"
             android:layout_width="match_parent"
@@ -36,21 +37,38 @@
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:indeterminate="false"/>
+                android:indeterminate="false"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/playButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:button="@drawable/selector_play_pause"
+                android:focusable="true"
+                app:buttonTint="@android:color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/progress" />
 
             <TextView
                 android:id="@+id/last_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:alpha="0.9"
                 android:gravity="end"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:text="-24:00"
-                android:textSize="12dp" />
-        </FrameLayout>
+                android:textColor="@android:color/white"
+                android:textSize="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/progress" />
+        </android.support.constraint.ConstraintLayout>
 
     </FrameLayout>
 

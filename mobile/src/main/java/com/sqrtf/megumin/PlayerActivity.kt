@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.View
+import android.widget.CheckBox
 import android.widget.SeekBar
 import android.widget.TextView
 import com.sqrtf.common.activity.BaseActivity
@@ -66,9 +67,10 @@ class PlayerActivity : BaseActivity() {
 
     var errorTextView: TextView? = null
 
+    var videoReady = false
     var fixedUrl = ""
-    val player = IjkMediaPlayer()
-//    val player = AndroidMediaPlayer()
+    //    val player = IjkMediaPlayer()
+    val player = AndroidMediaPlayer()
 
 
     companion object {
@@ -104,8 +106,21 @@ class PlayerActivity : BaseActivity() {
         mContentView = findViewById(R.id.fullscreen_content) as SurfaceView
         progress = findViewById(R.id.progress) as SeekBar?
         lastTime = findViewById(R.id.last_time) as TextView?
+        val playButton = findViewById(R.id.playButton) as CheckBox
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        playButton.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (!videoReady) {
+                return@setOnCheckedChangeListener
+            }
+
+            if (isChecked) {
+                pausePlay(player)
+            } else {
+                startPlay(player)
+            }
+        }
 
         player.setOnErrorListener { mp, what, extra ->
             outputMessage("OnError what=$what,extra=$extra")
@@ -147,8 +162,7 @@ class PlayerActivity : BaseActivity() {
         })
 
         player.setOnBufferingUpdateListener { _, percent ->
-            //            progress?.secondaryProgress = ((percent.toFloat() / (progress?.max ?: 100).toFloat()) * 100f).toInt()
-            progress?.secondaryProgress = percent
+            progress?.secondaryProgress = ((progress?.max ?: 0) * (percent / 100f)).toInt()
         }
 
         player.setOnSeekCompleteListener {
@@ -157,6 +171,7 @@ class PlayerActivity : BaseActivity() {
 
         player.setOnPreparedListener {
             startPlay(player)
+            videoReady = true
             if (breakPoint > 0) {
                 player.seekTo(breakPoint.toLong())
                 breakPoint = -1
@@ -208,6 +223,7 @@ class PlayerActivity : BaseActivity() {
     }
 
     fun resetVideo() {
+        videoReady = false
         breakPoint = progress?.progress ?: -1
         player.reset()
         player.setDisplay(sh)
@@ -233,6 +249,7 @@ class PlayerActivity : BaseActivity() {
     }
 
     fun stopPlay(mp: IMediaPlayer) {
+        videoReady = false
         stopCheck()
         mp.stop()
     }

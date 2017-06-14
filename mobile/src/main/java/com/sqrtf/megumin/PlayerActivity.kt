@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
-import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.View
 import android.widget.CheckBox
@@ -15,12 +14,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 import com.sqrtf.common.activity.BaseActivity
 import com.sqrtf.common.api.ApiHelper
-import io.reactivex.Observable
-import tv.danmaku.ijk.media.player.AndroidMediaPlayer
-import tv.danmaku.ijk.media.player.IMediaPlayer
-import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import java.text.SimpleDateFormat
-import java.util.concurrent.TimeUnit
 
 class PlayerActivity : BaseActivity() {
     private val mHideHandler = Handler()
@@ -48,18 +42,6 @@ class PlayerActivity : BaseActivity() {
     private var progress: SeekBar? = null
     private var lastTime: TextView? = null
 
-    @SuppressLint("SetTextI18n")
-    private val checkProgress = Runnable {
-        if (player.duration <= 0) return@Runnable
-        progress!!.max = player.duration.toInt()
-        progress!!.progress = player.currentPosition.toInt()
-
-        if (!draging) {
-            lastTime!!.text = "-" + format.format(player.duration - player.currentPosition)
-        }
-        startCheck()
-    }
-
     private var draging = false
     var breakPoint = -1
     private var mVisible: Boolean = false
@@ -69,9 +51,6 @@ class PlayerActivity : BaseActivity() {
 
     var videoReady = false
     var fixedUrl = ""
-    //    val player = IjkMediaPlayer()
-    val player = AndroidMediaPlayer()
-
 
     companion object {
         fun intent(context: Context, url: String): Intent {
@@ -110,76 +89,10 @@ class PlayerActivity : BaseActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        playButton.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (!videoReady) {
-                return@setOnCheckedChangeListener
-            }
-
-            if (isChecked) {
-                pausePlay(player)
-            } else {
-                startPlay(player)
-            }
-        }
-
-        player.setOnErrorListener { mp, what, extra ->
-            outputMessage("OnError what=$what,extra=$extra")
-
-            Observable.timer(3, TimeUnit.SECONDS)
-                    .withLifecycle()
-                    .onlyRunOneInstance(taskId = 1)
-                    .subscribe({
-                        resetVideo()
-                    }, {
-                        outputMessage("Trying restart but: " + it.toString())
-                    })
-
-            false
-        }
-
         mContentView!!.setOnClickListener { toggle() }
-        mContentView!!.holder.addCallback(shCallback)
 
         mVisible = true
 
-        progress!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            @SuppressLint("SetTextI18n")
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                lastTime!!.text = "-" + format.format(seekBar!!.max - seekBar.progress)
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                draging = true
-                disableAutoHide()
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                draging = false
-                delayedHide(AUTO_HIDE_DELAY_MILLIS_AFTER_DRAG)
-                stopCheck()
-                player.seekTo(seekBar!!.progress.toLong())
-            }
-        })
-
-        player.setOnBufferingUpdateListener { _, percent ->
-            progress?.secondaryProgress = ((progress?.max ?: 0) * (percent / 100f)).toInt()
-        }
-
-        player.setOnSeekCompleteListener {
-            startCheck()
-        }
-
-        player.setOnPreparedListener {
-            startPlay(player)
-            videoReady = true
-            if (breakPoint > 0) {
-                player.seekTo(breakPoint.toLong())
-                breakPoint = -1
-            }
-        }
-
-        outputMessage("Player is " + player::class.java.simpleName)
-        initVideo()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -189,7 +102,6 @@ class PlayerActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        player.release()
     }
 
     fun outputMessage(msg: String) {
@@ -198,60 +110,6 @@ class PlayerActivity : BaseActivity() {
 
     fun clearMessage() {
         errorTextView!!.text = null
-    }
-
-    fun startCheck() {
-        mHideHandler.postDelayed(checkProgress, 1000)
-    }
-
-    fun stopCheck() {
-        mHideHandler.removeCallbacks(checkProgress)
-    }
-
-    var sh: SurfaceHolder? = null
-    val shCallback = object : SurfaceHolder.Callback {
-        override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {}
-        override fun surfaceDestroyed(holder: SurfaceHolder?) {
-            player.setDisplay(null)
-            stopPlay(player)
-        }
-
-        override fun surfaceCreated(holder: SurfaceHolder?) {
-            sh = holder
-            player.setDisplay(holder)
-        }
-    }
-
-    fun resetVideo() {
-        videoReady = false
-        breakPoint = progress?.progress ?: -1
-        player.reset()
-        player.setDisplay(sh)
-        initVideo()
-    }
-
-    fun initVideo() {
-        player.dataSource = fixedUrl
-        player.prepareAsync()
-        outputMessage("Preparing")
-    }
-
-    fun startPlay(mp: IMediaPlayer) {
-        stopCheck()
-        startCheck()
-        mp.start()
-        clearMessage()
-    }
-
-    fun pausePlay(mp: IMediaPlayer) {
-        stopCheck()
-        mp.pause()
-    }
-
-    fun stopPlay(mp: IMediaPlayer) {
-        videoReady = false
-        stopCheck()
-        mp.stop()
     }
 
     private fun toggle() {

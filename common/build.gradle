@@ -51,8 +51,7 @@ dependencies {
     compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
 
-    compile project(':ijkplayer-java')
-    compile project(':ijkplayer-armv7a')
+    compile 'com.google.android.exoplayer:exoplayer:r2.4.1'
 }
 
 repositories {

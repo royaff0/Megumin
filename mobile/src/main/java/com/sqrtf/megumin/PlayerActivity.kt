@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -50,6 +51,7 @@ class PlayerActivity : BaseActivity() {
     val player: SimpleExoPlayer by lazy { ExoPlayerFactory.newSimpleInstance(this, trackSelector) }
 
     var lastPlayWhenReady = false
+    var controllerVisibility = View.VISIBLE
 
     companion object {
         fun intent(context: Context, url: String): Intent {
@@ -74,6 +76,7 @@ class PlayerActivity : BaseActivity() {
         Log.i(this.localClassName, "playing:" + fixedUrl)
 
         playerView.setControllerVisibilityListener {
+            controllerVisibility = it
             if (it == View.VISIBLE) {
                 show()
             } else {
@@ -89,6 +92,24 @@ class PlayerActivity : BaseActivity() {
 
         player.playWhenReady = true
         lastPlayWhenReady = true
+    }
+
+    override fun onBackPressed() {
+        if (controllerVisibility == View.VISIBLE) {
+            playerView.hideController()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if ((keyCode == KeyEvent.KEYCODE_DPAD_CENTER
+                || keyCode == KeyEvent.KEYCODE_ENTER
+                || keyCode == KeyEvent.KEYCODE_SPACE)
+                && controllerVisibility != View.VISIBLE) {
+            playerView.showController()
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {

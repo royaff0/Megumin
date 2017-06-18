@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sqrtf.megumin">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.sqrtf.megumin"
+    tools:ignore="ImpliedTouchscreenHardware">
+
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -8,17 +14,16 @@
     <application
         android:name="com.sqrtf.common.MeguminApplocation"
         android:allowBackup="true"
+        android:banner="@mipmap/ic_launcher"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".StartPaddingActivity"
             android:theme="@style/PaddingViewTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -30,7 +35,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".FirstConfigActivity"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".PlayerActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -40,12 +45,11 @@
         <activity
             android:name=".PlayPaddingActivity"
             android:theme="@style/PaddingViewTheme" />
-        <activity
-            android:name=".FavoriteActivity" />
+        <activity android:name=".FavoriteActivity" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppThemeActionBar"/>
+            android:theme="@style/AppThemeActionBar" />
     </application>
 
 </manifest>

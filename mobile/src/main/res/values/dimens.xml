@@ -9,4 +9,5 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="spacing">3dp</dimen>
     <dimen name="spacing_list">12dp</dimen>
+    <dimen name="spacing_list_bottom">48dp</dimen>
 </resources>

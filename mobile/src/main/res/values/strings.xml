@@ -9,6 +9,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="title_favorite">Favorite</string>
+    <string name="title_bangumi">Bangumi</string>
 
     <string-array name="array_favorite">
         <item>未收藏</item>

@@ -40,7 +40,7 @@ interface ApiService {
             @Query("count") count: Int,
             @Query("sort_field") sortField: String,
             @Query("sort_order") sortOrder: String,
-            @Query("name") name: String
+            @Query("name") name: String?
     ): Observable<ListResponse<Bangumi>>
 
     @GET("/api/home/bangumi/{id}")

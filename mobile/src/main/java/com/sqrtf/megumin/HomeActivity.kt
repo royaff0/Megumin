@@ -7,16 +7,13 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import com.sqrtf.common.MeguminApplocation
 import com.sqrtf.common.activity.BaseActivity
 import com.sqrtf.common.api.ApiClient
-import io.reactivex.Observable
 import io.reactivex.functions.Consumer
-import java.util.concurrent.TimeUnit
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -76,7 +73,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 startActivity(FavoriteActivity.intent(this))
             }
             R.id.nav_bangmuni -> {
-
+                startActivity(AllBangumiActivity.intent(this))
             }
             R.id.nav_setting -> {
                 startActivity(Intent(this, SettingsActivity::class.java))

@@ -44,10 +44,14 @@ open class BaseActivity : RxLifecycleActivity() {
                 .compose(bindUntilEvent(untilEvent))
     }
 
-    protected fun <T> Observable<T>.onlyRunOneInstance(taskId: Int): Observable<T> {
+    protected fun <T> Observable<T>.onlyRunOneInstance(taskId: Int, displace: Boolean = true): Observable<T> {
         if (runningMap.containsKey(taskId)) {
-            runningMap[taskId]?.dispose()
-            runningMap.remove(taskId)
+            if (!displace) {
+                return Observable.create<T> { wrapper -> wrapper.onComplete() }
+            } else {
+                runningMap[taskId]?.dispose()
+                runningMap.remove(taskId)
+            }
         }
 
         return Observable.create<T> { wrapper ->
@@ -61,7 +65,9 @@ open class BaseActivity : RxLifecycleActivity() {
                 wrapper.onComplete()
             })
 
-            runningMap.put(taskId, obs)
+            if (!obs.isDisposed) {
+                runningMap.put(taskId, obs)
+            }
         }
     }
 

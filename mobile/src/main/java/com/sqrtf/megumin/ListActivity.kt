@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -31,14 +32,31 @@ abstract class ListActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val recyclerView = findViewById(R.id.recycler_view) as RecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        val mLayoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = mLayoutManager
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(PaddingItemDecoration())
 
+        val mScrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                val visibleItemCount = mLayoutManager.childCount
+                val totalItemCount = mLayoutManager.itemCount
+                val pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition()
+                if (pastVisibleItems + visibleItemCount >= totalItemCount) {
+                    loadData()
+                }
+            }
+        }
+        recyclerView.addOnScrollListener(mScrollListener)
+
+        loadData()
+    }
+
+    fun loadData() {
         onLoadData()
                 .withLifecycle()
                 .subscribe(Consumer {
-                    setBangumi(it)
+                    addToList(it)
                 }, toastErrors())
     }
 
@@ -54,8 +72,8 @@ abstract class ListActivity : BaseActivity() {
         }
     }
 
-    private fun setBangumi(list: List<Bangumi>) {
-        bangumiList.clear()
+    private fun addToList(list: List<Bangumi>) {
+//        bangumiList.clear()
         bangumiList.addAll(list)
         adapter.notifyDataSetChanged()
     }
@@ -70,11 +88,11 @@ abstract class ListActivity : BaseActivity() {
     private class PaddingItemDecoration : RecyclerView.ItemDecoration() {
         override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
             val position = parent!!.getChildAdapterPosition(view)
-            val childCount = parent.childCount
+            val childCount = state!!.itemCount
             if (position == 0) {
                 outRect?.top = outRect?.top?.plus(view!!.resources.getDimensionPixelSize(R.dimen.spacing_list))
-            } else if (position == childCount) {
-                outRect?.bottom = outRect?.bottom?.plus(view!!.resources.getDimensionPixelSize(R.dimen.spacing_list))
+            } else if (position + 1 == childCount) {
+                outRect?.bottom = outRect?.bottom?.plus(view!!.resources.getDimensionPixelSize(R.dimen.spacing_list_bottom))
             }
         }
     }

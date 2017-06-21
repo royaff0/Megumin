@@ -123,7 +123,11 @@ class HomeFragment : BaseFragment() {
             val text = view.findViewById(R.id.textView) as TextView
         }
 
-        private class TailHolder(view: View) : RecyclerView.ViewHolder(view)
+        private class TailHolder(view: View) : RecyclerView.ViewHolder(view) {
+            init {
+                view.setOnClickListener { view.context.startActivity(AllBangumiActivity.intent(view.context)) }
+            }
+        }
 
         inner private class HomeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder?, position: Int) {

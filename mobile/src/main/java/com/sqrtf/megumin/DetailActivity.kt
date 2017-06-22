@@ -3,7 +3,6 @@ package com.sqrtf.megumin
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
@@ -16,6 +15,7 @@ import android.widget.*
 import com.bumptech.glide.Glide
 import com.sqrtf.common.activity.BaseActivity
 import com.sqrtf.common.api.ApiClient
+import com.sqrtf.common.api.ApiHelper
 import com.sqrtf.common.api.FavoriteChangeRequest
 import com.sqrtf.common.cache.JsonUtil
 import com.sqrtf.common.model.Bangumi
@@ -134,20 +134,27 @@ class DetailActivity : BaseActivity() {
             recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             recyclerView.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 inner class VH(v: View) : RecyclerView.ViewHolder(v) {
-                    val button = v.findViewById(R.id.button) as Button
+                    val view = v
+                    val tv = v.findViewById(R.id.tv) as TextView
+                    val image = v.findViewById(R.id.image) as ImageView
                 }
 
-                override fun onBindViewHolder(p0: RecyclerView.ViewHolder?, p1: Int) {
-                    if (p0 is VH) {
+                override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, p1: Int) {
+                    if (holder is VH) {
                         val d = detail.episodes[p1]
                         if (d.status != 0) {
-                            p0.button.text = (p1 + 1).toString() + ". " + d.name_cn
-                            p0.button.setOnClickListener {
-                                startActivity(PlayPaddingActivity.intent(p0.button.context, d.id))
+                            holder.tv.text = (p1 + 1).toString() + ". " + d.name_cn
+                            Glide.with(this@DetailActivity)
+                                    .load(ApiHelper.fixHttpUrl(d.thumbnail))
+                                    .into(holder.image)
+                            holder.view.setOnClickListener {
+                                startActivity(PlayPaddingActivity.intent(this@DetailActivity, d.id))
                             }
                         } else {
-                            p0.button.text = "未更新"
-                            p0.button.setOnClickListener(null)
+                            holder.image.setImageDrawable(null)
+//                            holder.tv.text = "未更新"
+                            holder.tv.text = (p1 + 1).toString() + ". " + d.name_cn
+                            holder.view.setOnClickListener(null)
                         }
                     }
                 }

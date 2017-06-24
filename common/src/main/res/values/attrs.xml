@@ -3,4 +3,11 @@
     <declare-styleable name="FixedAspectRatioFrameLayout">
         <attr name="aspectRatio" format="float"/>
     </declare-styleable>
+
+    <declare-styleable name="ProgressCoverView">
+        <attr name="progress" format="float"/>
+        <attr name="color" format="color"/>
+        <attr name="colorSecondary" format="color"/>
+    </declare-styleable>
+
 </resources>

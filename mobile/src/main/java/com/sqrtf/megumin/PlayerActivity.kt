@@ -1,5 +1,6 @@
 package com.sqrtf.megumin
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -54,14 +55,21 @@ class PlayerActivity : BaseActivity() {
     var controllerVisibility = View.VISIBLE
 
     companion object {
-        fun intent(context: Context, url: String): Intent {
+        fun intent(context: Context, url: String, id: String, id2: String): Intent {
             val intent = Intent(context, PlayerActivity::class.java)
             intent.putExtra(INTENT_KEY_URL, url)
+            intent.putExtra(RESULT_KEY_ID, id)
+            intent.putExtra(RESULT_KEY_ID_2, id2)
             return intent
         }
 
         private val INTENT_KEY_URL = "INTENT_KEY_URL"
         private val UI_ANIMATION_DELAY = 100
+
+        val RESULT_KEY_ID = "PlayerActivity:RESULT_KEY_ID"
+        val RESULT_KEY_ID_2 = "PlayerActivity:RESULT_KEY_ID_2"
+        val RESULT_KEY_POSITION = "PlayerActivity:RESULT_KEY_POSITION"
+        val RESULT_KEY_DURATION = "PlayerActivity:RESULT_KEY_DURATION"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,11 +103,12 @@ class PlayerActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        if (controllerVisibility == View.VISIBLE) {
-            playerView.hideController()
-        } else {
-            super.onBackPressed()
-        }
+//        if (controllerVisibility == View.VISIBLE) {
+//            playerView.hideController()
+//        } else {
+//            super.onBackPressed()
+//        }
+        finish()
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
@@ -131,6 +140,16 @@ class PlayerActivity : BaseActivity() {
         super.onDestroy()
         player.playWhenReady = false
         player.release()
+    }
+
+    override fun finish() {
+        val resultCode = if (player.currentPosition > 0) Activity.RESULT_OK else Activity.RESULT_CANCELED
+        val i = intent
+        i.putExtra(RESULT_KEY_POSITION, player.currentPosition)
+        i.putExtra(RESULT_KEY_DURATION, player.duration)
+
+        setResult(resultCode, i)
+        super.finish()
     }
 
     private fun hide() {

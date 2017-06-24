@@ -1,9 +1,9 @@
 package com.sqrtf.megumin
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
@@ -17,15 +17,22 @@ import com.sqrtf.common.activity.BaseActivity
 import com.sqrtf.common.api.ApiClient
 import com.sqrtf.common.api.ApiHelper
 import com.sqrtf.common.api.FavoriteChangeRequest
+import com.sqrtf.common.api.HistoryChangeRequest
 import com.sqrtf.common.cache.JsonUtil
 import com.sqrtf.common.model.Bangumi
 import com.sqrtf.common.model.BangumiDetail
+import com.sqrtf.common.model.Episode
+import com.sqrtf.common.view.ScrollStartLayoutManager
+import com.sqrtf.common.view.ProgressCoverView
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 
 
 class DetailActivity : BaseActivity() {
 
     companion object {
-        public fun intent(context: Context, bgm: Bangumi): Intent {
+        fun intent(context: Context, bgm: Bangumi): Intent {
             val intent = Intent(context, DetailActivity::class.java)
             val json = JsonUtil.toJson(bgm)
             intent.putExtra(INTENT_KEY_BANGMUMI, json)
@@ -33,6 +40,7 @@ class DetailActivity : BaseActivity() {
         }
 
         private val INTENT_KEY_BANGMUMI = "INTENT_KEY_BANGMUMI"
+        private val REQUEST_CODE = 0x81
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,8 +57,12 @@ class DetailActivity : BaseActivity() {
         checkNotNull(bgm)
 
         setData(bgm!!)
+        loadData(bgm.id)
+    }
 
-        ApiClient.getInstance().getBangumiDetail(bgm.id)
+    private fun loadData(bgmId: String) {
+        showToast("load data")
+        ApiClient.getInstance().getBangumiDetail(bgmId)
                 .withLifecycle()
                 .subscribe({
                     setData(it.getData())
@@ -70,8 +82,47 @@ class DetailActivity : BaseActivity() {
         }
     }
 
+    private fun playVideo(episode: Episode) {
+        assert(!TextUtils.isEmpty(episode.id))
+
+        ApiClient.getInstance().getEpisodeDetail(episode.id)
+                .withLifecycle()
+                .subscribe({
+                    startActivityForResult(PlayerActivity.intent(this,
+                            it.video_files[0].url,
+                            episode.id,
+                            episode.bangumi_id),
+                            DetailActivity.REQUEST_CODE)
+                }, {
+                    toastErrors()
+                })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == DetailActivity.REQUEST_CODE
+                && resultCode == Activity.RESULT_OK
+                && data != null) {
+            val id = data.getStringExtra(PlayerActivity.RESULT_KEY_ID)
+            val bgmId = data.getStringExtra(PlayerActivity.RESULT_KEY_ID_2)
+            val duration = data.getLongExtra(PlayerActivity.RESULT_KEY_DURATION, 0)
+            val position = data.getLongExtra(PlayerActivity.RESULT_KEY_POSITION, 0)
+            ApiClient.getInstance().uploadWatchHistory(id,
+                    HistoryChangeRequest(bgmId,
+                            position / 100,
+                            position.toFloat() / duration,
+                            duration == position))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            Consumer {
+                                loadData(bgmId)
+                            },
+                            ignoreErrors())
+        }
+    }
+
     private fun setData(detail: Bangumi) {
-        var iv = findViewById(R.id.image) as ImageView?
+        val iv = findViewById(R.id.image) as ImageView?
         val ivCover = findViewById(R.id.image_cover) as ImageView
         val ctitle = findViewById(R.id.title) as TextView
         val subtitle = findViewById(R.id.subtitle) as TextView
@@ -131,29 +182,37 @@ class DetailActivity : BaseActivity() {
         }
 
         if (detail is BangumiDetail && detail.episodes != null && detail.episodes.isNotEmpty()) {
-            recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.layoutManager = ScrollStartLayoutManager(this, ScrollStartLayoutManager.HORIZONTAL, false)
             recyclerView.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 inner class VH(v: View) : RecyclerView.ViewHolder(v) {
                     val view = v
                     val tv = v.findViewById(R.id.tv) as TextView
                     val image = v.findViewById(R.id.image) as ImageView
+                    val progress = v.findViewById(R.id.progress) as ProgressCoverView
                 }
 
                 override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, p1: Int) {
                     if (holder is VH) {
                         val d = detail.episodes[p1]
+
+                        holder.tv.text = (p1 + 1).toString() + ". " + d.name_cn
+                        if (d.watch_progress?.percentage != null
+                                && d.watch_progress?.percentage!! < 0.15f) {
+                            d.watch_progress?.percentage = 0.15f
+                        }
+                        holder.progress.setProgress(d.watch_progress?.percentage ?: 0f)
+
+                        Glide.with(this@DetailActivity)
+                                .load(ApiHelper.fixHttpUrl(d.thumbnail))
+                                .into(holder.image)
+
                         if (d.status != 0) {
-                            holder.tv.text = (p1 + 1).toString() + ". " + d.name_cn
-                            Glide.with(this@DetailActivity)
-                                    .load(ApiHelper.fixHttpUrl(d.thumbnail))
-                                    .into(holder.image)
+                            holder.tv.alpha = 1f
                             holder.view.setOnClickListener {
-                                startActivity(PlayPaddingActivity.intent(this@DetailActivity, d.id))
+                                playVideo(d)
                             }
                         } else {
-                            holder.image.setImageDrawable(null)
-//                            holder.tv.text = "未更新"
-                            holder.tv.text = (p1 + 1).toString() + ". " + d.name_cn
+                            holder.tv.alpha = 0.3f
                             holder.view.setOnClickListener(null)
                         }
                     }
@@ -168,6 +227,18 @@ class DetailActivity : BaseActivity() {
                 }
 
             }
+
+            detail.episodes
+                    .map { it?.watch_progress?.last_watch_time }
+                    .withIndex()
+                    .filter { it.value != null }
+                    .sortedBy { it.value }
+                    .lastOrNull()
+                    ?.let {
+                        recyclerView.post {
+                            recyclerView.smoothScrollToPosition(it.index)
+                        }
+                    }
         }
 
     }

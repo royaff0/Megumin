@@ -55,4 +55,7 @@ interface ApiService {
 
     @POST("/api/watch/favorite/bangumi/{bangumi_id}")
     fun uploadFavoriteStatus(@Path("bangumi_id") bangumiId: String, @Body body: FavoriteChangeRequest): Observable<MessageResponse>
+
+    @POST("/api/watch/history/{episode_id}")
+    fun uploadWatchHistory(@Path("episode_id") episodeId: String, @Body body: HistoryChangeRequest): Observable<MessageResponse>
 }

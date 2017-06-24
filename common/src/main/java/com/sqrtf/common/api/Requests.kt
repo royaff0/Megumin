@@ -13,3 +13,5 @@ val FavoriteStatus_PAUSE = 4
 val FavoriteStatus_ABANDONED = 5
 
 data class FavoriteChangeRequest(val status: Int)
+
+data class HistoryChangeRequest(val bangumi_id: String, val last_watch_position: Long, val percentage: Float, val is_finished: Boolean)

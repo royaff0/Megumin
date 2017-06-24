@@ -43,9 +43,6 @@
             android:label="@string/title_activity_player"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/FullscreenTheme" />
-        <activity
-            android:name=".PlayPaddingActivity"
-            android:theme="@style/PaddingViewTheme" />
         <activity android:name=".FavoriteActivity" />
         <activity android:name=".AllBangumiActivity" />
         <activity

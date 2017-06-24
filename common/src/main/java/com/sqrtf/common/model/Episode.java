@@ -19,4 +19,5 @@ public class Episode {
     public String duration;
     public String id;
 
+    public WatchProgress watch_progress;
 }

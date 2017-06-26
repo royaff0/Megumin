@@ -61,7 +61,6 @@ class DetailActivity : BaseActivity() {
     }
 
     private fun loadData(bgmId: String) {
-        showToast("load data")
         ApiClient.getInstance().getBangumiDetail(bgmId)
                 .withLifecycle()
                 .subscribe({
@@ -132,6 +131,7 @@ class DetailActivity : BaseActivity() {
         val more = findViewById(R.id.button_more)
         val spinner = findViewById(R.id.spinner) as Spinner
         val recyclerView = findViewById(R.id.recycler_view) as RecyclerView
+        recyclerView.isNestedScrollingEnabled = false
 
         iv?.let { Glide.with(this).load(detail.image).into(iv) }
         Glide.with(this).load(detail.image).into(ivCover)

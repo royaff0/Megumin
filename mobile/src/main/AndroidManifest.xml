@@ -39,9 +39,10 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".PlayerActivity"
-            android:configChanges="keyboardHidden|orientation"
+            android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout"
             android:label="@string/title_activity_player"
             android:screenOrientation="sensorLandscape"
+            android:supportsPictureInPicture="true"
             android:theme="@style/FullscreenTheme" />
         <activity android:name=".FavoriteActivity" />
         <activity android:name=".AllBangumiActivity" />

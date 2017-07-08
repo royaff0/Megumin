@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
@@ -28,7 +29,7 @@ import com.sqrtf.common.api.ApiHelper
 
 
 class PlayerActivity : BaseActivity() {
-    val playerView: SimpleExoPlayerView by lazy { findViewById(R.id.fullscreen_content) as SimpleExoPlayerView }
+    val playerView: SimpleExoPlayerView by lazy { findViewById(R.id.player_content) as SimpleExoPlayerView }
 
     val mHidePart2Runnable = Runnable {
         playerView.systemUiVisibility =
@@ -76,6 +77,7 @@ class PlayerActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        checkMultiWindowMode()
 
         val url = intent.getStringExtra(INTENT_KEY_URL)
         if (TextUtils.isEmpty(url)) throw IllegalArgumentException("Required url")
@@ -102,6 +104,12 @@ class PlayerActivity : BaseActivity() {
         lastPlayWhenReady = true
     }
 
+    private fun checkMultiWindowMode() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            playerView.fitsSystemWindows = isInMultiWindowMode
+        }
+    }
+
     override fun onBackPressed() {
 //        if (controllerVisibility == View.VISIBLE) {
 //            playerView.hideController()
@@ -125,15 +133,20 @@ class PlayerActivity : BaseActivity() {
         super.onPostCreate(savedInstanceState)
     }
 
-    override fun onPostResume() {
-        super.onPostResume()
+    override fun onStart() {
+        super.onStart()
         player.playWhenReady = lastPlayWhenReady
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         lastPlayWhenReady = player.playWhenReady
         player.playWhenReady = false
+    }
+
+    override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean) {
+        super.onMultiWindowModeChanged(isInMultiWindowMode)
+        playerView.fitsSystemWindows = isInMultiWindowMode
     }
 
     override fun onDestroy() {

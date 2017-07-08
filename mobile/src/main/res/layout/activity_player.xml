@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="@android:color/black"
     android:keepScreenOn="true"
     tools:context="com.sqrtf.megumin.PlayerActivity">
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-        android:id="@+id/fullscreen_content"
+        android:id="@+id/player_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:resize_mode="fit" />
+        app:resize_mode="fixed_width" />
 
 </FrameLayout>

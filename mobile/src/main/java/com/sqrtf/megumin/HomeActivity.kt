@@ -75,9 +75,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.nav_bangmuni -> {
                 startActivity(AllBangumiActivity.intent(this))
             }
-            R.id.nav_setting -> {
-                startActivity(Intent(this, SettingsActivity::class.java))
-            }
+//            R.id.nav_setting -> {
+//                startActivity(Intent(this, SettingsActivity::class.java))
+//            }
             R.id.nav_logout -> {
                 MeguminApplocation.logout(this)
                 finishAffinity()

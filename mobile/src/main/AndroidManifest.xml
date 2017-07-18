@@ -46,10 +46,10 @@
             android:theme="@style/FullscreenTheme" />
         <activity android:name=".FavoriteActivity" />
         <activity android:name=".AllBangumiActivity" />
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:theme="@style/AppThemeActionBar" />
+        <!--<activity-->
+            <!--android:name=".SettingsActivity"-->
+            <!--android:label="@string/title_activity_settings"-->
+            <!--android:theme="@style/AppThemeActionBar" />-->
     </application>
 
 </manifest>

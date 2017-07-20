@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.sqrtf.common.StringUtil
 import com.sqrtf.common.activity.BaseActivity
 import com.sqrtf.common.model.Bangumi
 import io.reactivex.Observable
@@ -105,7 +106,9 @@ abstract class ListActivity : BaseActivity() {
             val bangumi = bangumiList[p1]
             viewHolder.title.text = bangumi.name_cn
             viewHolder.subtitle.text = bangumi.name
-            viewHolder.info.text = bangumi?.air_date + ", " + bangumi?.eps + "集, " + bangumi?.air_weekday
+            viewHolder.info.text = viewHolder.info.resources.getString(R.string.update_info)
+                    ?.format(bangumi.air_date, bangumi.eps, bangumi.air_weekday.let { StringUtil.dayOfWeek(it) })
+
             Glide.with(this@ListActivity)
                     .load(bangumi.image)
                     .into(viewHolder.image)

@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.bumptech.glide.Glide
+import com.sqrtf.common.StringUtil
 import com.sqrtf.common.activity.BaseActivity
 import com.sqrtf.common.api.ApiClient
 import com.sqrtf.common.api.ApiHelper
@@ -131,6 +132,7 @@ class DetailActivity : BaseActivity() {
         val more = findViewById(R.id.button_more)
         val spinner = findViewById(R.id.spinner) as Spinner
         val recyclerView = findViewById(R.id.recycler_view) as RecyclerView
+        val summaryLayout = findViewById(R.id.summary_layout)
         recyclerView.isNestedScrollingEnabled = false
 
         iv?.let { Glide.with(this).load(detail.image).into(iv) }
@@ -138,16 +140,17 @@ class DetailActivity : BaseActivity() {
 
         ctitle.text = detail.name_cn
         subtitle.text = detail.name
-        info.text = detail.air_date + ", " + detail.eps + "集, " + detail.air_weekday
+        info.text = resources.getString(R.string.update_info)
+                ?.format(detail.air_date, detail.eps, StringUtil.dayOfWeek(detail.air_weekday))
 
         if (!TextUtils.isEmpty(detail.summary)) {
             summary.text = detail.summary
             summary2.post {
                 summary2.text = summary.text.toString().substring(summary.layout.getLineEnd(2))
             }
-            more.setOnClickListener {
+            summaryLayout.setOnClickListener {
                 summary2.setSingleLine(false)
-                it.visibility = View.GONE
+                more.visibility = View.GONE
             }
         } else {
             summary.visibility = View.GONE

@@ -1,26 +1,32 @@
 <resources>
     <string name="app_name">Megumin</string>
-    <string name="space"> </string>
-    <string name="title_activity_home">HomeActivity</string>
+    <string name="space" translatable="false"> </string>
+    <string name="title_activity_home" translatable="false">HomeActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
 
-    <string name="title_favorite">Favorite</string>
+    <string name="title_favorite">Collection</string>
     <string name="title_bangumi">Bangumi</string>
 
     <string-array name="array_favorite">
-        <item>未收藏</item>
-        <item>想看</item>
-        <item>看过</item>
-        <item>在看</item>
-        <item>搁置</item>
-        <item>抛弃</item>
+        <item>Watchlist</item>
+        <item>Wish to watch</item>
+        <item>Watched</item>
+        <item>Watching</item>
+        <item>Pause watch</item>
+        <item>Abandoned</item>
     </string-array>
 
-    <string name="title_activity_player">PlayerActivity</string>
-    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_player" translatable="false">PlayerActivity</string>
+    <string name="title_activity_settings" translatable="false">Settings</string>
+
+    <string name="update_info">%s, %d episodes, %s</string>
+    <string name="unwatched">%d new</string>
+    <string name="more">More</string>
+    <string name="others">others</string>
+    <string name="logout">Logout</string>
 
 </resources>

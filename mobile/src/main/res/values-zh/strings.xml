@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Megumin</string>
+    <string name="navigation_drawer_open">打开导航抽屉</string>
+    <string name="navigation_drawer_close">关闭导航抽屉</string>
+    <string name="action_settings">设置</string>
+    <string name="title_favorite">我的收藏</string>
+    <string name="title_bangumi">番剧</string>
+    <string name="update_info">%s, %d集, %s</string>
+    <string name="unwatched">%d 未看</string>
+    <string name="more">更多</string>
+
+
+    <string-array name="array_favorite">
+        <item>添加收藏</item>
+        <item>想看</item>
+        <item>看过</item>
+        <item>在看</item>
+        <item>放置</item>
+        <item>丢弃</item>
+    </string-array>
+    <string name="others">其他</string>
+    <string name="logout">退出登录</string>
+
+</resources>

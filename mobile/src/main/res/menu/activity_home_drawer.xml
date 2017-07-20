@@ -7,21 +7,21 @@
         <item
             android:id="@+id/nav_favorite"
             android:icon="@drawable/ic_assistant_photo_black_24dp"
-            android:title="Favorite" />
+            android:title="@string/title_favorite" />
         <item
             android:id="@+id/nav_bangmuni"
             android:icon="@drawable/ic_view_compact_black_24dp"
-            android:title="Bangumi" />
+            android:title="@string/title_bangumi" />
     </group>
 
-    <item android:title="others">
+    <item android:title="@string/others">
         <menu>
             <item
                 android:id="@+id/nav_setting"
-                android:title="Settings" />
+                android:title="@string/action_settings" />
             <item
                 android:id="@+id/nav_logout"
-                android:title="Logout" />
+                android:title="@string/logout" />
         </menu>
     </item>
 

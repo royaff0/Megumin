@@ -100,57 +100,65 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/summary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:lineSpacingExtra="5dp"
-                android:maxLines="2"
-                android:textColor="@color/textColorSecondary" />
-
-            <android.support.constraint.ConstraintLayout
+            <LinearLayout
+                android:id="@+id/summary_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="22dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp">
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/summary2"
-                    android:layout_width="0dp"
+                    android:id="@+id/summary"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginTop="0dp"
-                    android:ellipsize="none"
-                    android:fadingEdgeLength="30dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
                     android:lineSpacingExtra="5dp"
-                    android:requiresFadingEdge="horizontal"
-                    android:singleLine="true"
-                    android:textColor="@color/textColorSecondary"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/button_more"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:maxLines="2"
+                    android:textColor="@color/textColorSecondary" />
 
-                <TextView
-                    android:id="@+id/button_more"
-                    android:layout_width="wrap_content"
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="0dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:fontFamily="sans-serif-medium"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:text="More"
-                    android:textColor="@color/meguminRed"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp">
 
-            </android.support.constraint.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/summary2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginTop="0dp"
+                        android:ellipsize="none"
+                        android:fadingEdgeLength="30dp"
+                        android:lineSpacingExtra="5dp"
+                        android:requiresFadingEdge="horizontal"
+                        android:singleLine="true"
+                        android:textColor="@color/textColorSecondary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/button_more"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
+                    <TextView
+                        android:id="@+id/button_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="0dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:text="@string/more"
+                        android:textColor="@color/meguminRed"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </android.support.constraint.ConstraintLayout>
+
+            </LinearLayout>
         </LinearLayout>
 
         <TextView

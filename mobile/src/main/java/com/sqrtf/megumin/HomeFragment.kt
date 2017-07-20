@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.sqrtf.common.StringUtil
 import com.sqrtf.common.activity.BaseFragment
 import com.sqrtf.common.api.ApiClient
 import com.sqrtf.common.api.ListResponse
@@ -24,6 +25,7 @@ import com.sqrtf.common.model.Bangumi
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -136,7 +138,7 @@ class HomeFragment : BaseFragment() {
                 when (viewHolder) {
                     is MediumCardHolder -> {
                         viewHolder.title.text = bangumi?.name_cn
-                        viewHolder.subtitle.text = "未看 " + bangumi?.unwatched_count
+                        viewHolder.subtitle.text = viewHolder.subtitle.resources.getString(R.string.unwatched).format(bangumi?.unwatched_count)
                         Glide.with(parent)
                                 .load(bangumi?.image)
                                 .into(viewHolder.image)
@@ -148,7 +150,9 @@ class HomeFragment : BaseFragment() {
                     is WideCardHolder -> {
                         viewHolder.title.text = bangumi?.name_cn
                         viewHolder.subtitle.text = bangumi?.name
-                        viewHolder.info.text = bangumi?.air_date + ", " + bangumi?.eps + "集, " + bangumi?.air_weekday
+                        viewHolder.info.text = viewHolder.info.resources.getString(R.string.update_info)
+                                ?.format(bangumi?.air_date, bangumi?.eps, bangumi?.air_weekday?.let { StringUtil.dayOfWeek(it) })
+
                         Glide.with(parent)
                                 .load(bangumi?.image)
                                 .into(viewHolder.image)

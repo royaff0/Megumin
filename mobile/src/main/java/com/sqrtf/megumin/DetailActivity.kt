@@ -15,10 +15,7 @@ import android.widget.*
 import com.bumptech.glide.Glide
 import com.sqrtf.common.StringUtil
 import com.sqrtf.common.activity.BaseActivity
-import com.sqrtf.common.api.ApiClient
-import com.sqrtf.common.api.ApiHelper
-import com.sqrtf.common.api.FavoriteChangeRequest
-import com.sqrtf.common.api.HistoryChangeRequest
+import com.sqrtf.common.api.*
 import com.sqrtf.common.cache.JsonUtil
 import com.sqrtf.common.model.Bangumi
 import com.sqrtf.common.model.BangumiDetail
@@ -28,6 +25,7 @@ import com.sqrtf.common.view.ProgressCoverView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 
 class DetailActivity : BaseActivity() {
@@ -106,11 +104,13 @@ class DetailActivity : BaseActivity() {
             val bgmId = data.getStringExtra(PlayerActivity.RESULT_KEY_ID_2)
             val duration = data.getLongExtra(PlayerActivity.RESULT_KEY_DURATION, 0)
             val position = data.getLongExtra(PlayerActivity.RESULT_KEY_POSITION, 0)
-            ApiClient.getInstance().uploadWatchHistory(id,
-                    HistoryChangeRequest(bgmId,
+            ApiClient.getInstance().uploadWatchHistory(
+                    HistoryChangeRequest(Collections.singletonList(HistoryChangeItem(bgmId,
+                            id,
+                            System.currentTimeMillis(),
                             position / 100,
                             position.toFloat() / duration,
-                            duration == position))
+                            duration == position))))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(

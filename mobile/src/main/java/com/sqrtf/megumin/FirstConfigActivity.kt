@@ -27,12 +27,16 @@ class FirstConfigActivity : BaseActivity() {
         findViewById(R.id.floatingActionButton).setOnClickListener {
             var url = textServer.text.toString()
 
-            if (HttpUrl.parse(url) == null) {
-                showToast("url not verified")
+            if (url.isEmpty()){
+                showToast("Please enter domain")
                 return@setOnClickListener
             }
 
-            showToast("请稍候...")
+            if (HttpUrl.parse(url) == null) {
+                showToast("Url not verified")
+                return@setOnClickListener
+            }
+
 
             ApiClient.init(this, url)
             ApiClient.getInstance().login(LoginRequest(textUser.text.toString(), textPw.text.toString(), true))

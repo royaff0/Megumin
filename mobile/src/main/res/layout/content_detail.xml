@@ -77,22 +77,26 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginBottom="20dp"
+                android:layout_height="32dp"
+                android:layout_marginBottom="24dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginTop="20dp">
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_red"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingRight="4dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_playlist_add_check_black_24dp"
-                    android:tint="@color/colorAccent" />
+                    android:tint="@color/textColorPrimary" />
 
                 <android.support.v7.widget.AppCompatSpinner
                     android:id="@+id/spinner"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@null"
                     android:clickable="true"
                     android:focusable="true"

@@ -9,13 +9,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="64dp"
         tools:context="com.sqrtf.megumin.FirstConfigActivity">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:text="@string/app_name"
+            android:textSize="24dp" />
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_margin="6dp">
+            android:layout_margin="6dp"
+            android:paddingTop="24dp">
 
             <EditText
                 android:id="@+id/server"
@@ -23,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:gravity="center_vertical"
-                android:hint="Host"
+                android:hint="Host (like https://xxx.xxx/)"
                 android:inputType="textUri"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
@@ -61,7 +68,7 @@
                     android:background="@null"
                     android:gravity="center_vertical"
                     android:hint="Password"
-                    android:inputType="textVisiblePassword"
+                    android:inputType="textPassword"
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp"
                     android:singleLine="true"

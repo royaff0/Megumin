@@ -1,6 +1,8 @@
 package com.sqrtf.common.activity
 
 
+import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import com.sqrtf.common.R
 import com.sqrtf.common.api.ApiClient
@@ -14,6 +16,17 @@ import retrofit2.HttpException
 
 
 open class BaseFragment : RxLifecycleFragment() {
+
+    var thisView: View? = null
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        this.thisView = view
+    }
+
+    protected fun findViewById(resId: Int): View {
+        return thisView!!.findViewById(resId)
+    }
 
     protected fun <T> withLifecycle(
             observable: Observable<T>,

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.format.DateUtils
@@ -31,6 +32,10 @@ import java.util.*
 
 class HomeFragment : BaseFragment() {
 
+    private val recyclerView by lazy { findViewById(R.id.recycler_view) as RecyclerView }
+    private val swipeRefresh by lazy { findViewById(R.id.swipe_refresh) as SwipeRefreshLayout }
+    private val homeDataAdapter by lazy { HomeDataAdapter(this) }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater!!.inflate(R.layout.fragment_home, container, false)
@@ -38,14 +43,24 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerView = view!!.findViewById(R.id.recycler_view) as RecyclerView
-        val homeDataAdapter = HomeDataAdapter(this)
+
+        swipeRefresh.setColorSchemeResources(R.color.meguminRed)
         homeDataAdapter.attachTo(recyclerView)
 
+        swipeRefresh.setOnRefreshListener {
+            loadData()
+        }
+
+        loadData()
+    }
+
+    private fun loadData() {
+        swipeRefresh.isRefreshing = true
         Observable.zip(withLifecycle(ApiClient.getInstance().getMyBangumi()),
                 withLifecycle(ApiClient.getInstance().getAllBangumi()),
                 BiFunction { t1: ListResponse<Bangumi>, t2: ListResponse<Bangumi> -> Pair(t1.getData(), t2.getData()) })
-                .subscribe(Consumer {
+                .subscribe({
+                    homeDataAdapter.list.clear()
                     val set = it.first.toHashSet()
 //                    set.addAll(it.second)
                     val todayUpdate = set.filter {
@@ -68,7 +83,11 @@ class HomeFragment : BaseFragment() {
 
                     homeDataAdapter.list.add(HomeDataAdapter.HomeData())
                     homeDataAdapter.notifyDataSetChanged()
-                }, toastErrors())
+                    swipeRefresh.isRefreshing = false
+                }, {
+                    swipeRefresh.isRefreshing = false
+                    toastErrors().accept(it)
+                })
     }
 
     private class HomeDataAdapter(val parent: Fragment) {

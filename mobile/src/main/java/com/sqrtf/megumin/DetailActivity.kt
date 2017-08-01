@@ -209,15 +209,11 @@ class DetailActivity : BaseActivity() {
                                 .load(ApiHelper.fixHttpUrl(d.thumbnail))
                                 .into(holder.image)
 
-                        if (d.status != 0) {
-                            holder.tv.alpha = 1f
-                            holder.view.setOnClickListener {
-                                playVideo(d)
-                            }
-                        } else {
-                            holder.tv.alpha = 0.3f
-                            holder.view.setOnClickListener(null)
+                        holder.tv.alpha = if (d.status != 0) 1f else 0.2f
+                        holder.view.setOnClickListener {
+                            if (d.status != 0) playVideo(d)
                         }
+
                     }
                 }
 

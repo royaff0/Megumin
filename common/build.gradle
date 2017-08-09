@@ -33,6 +33,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
     compile "com.android.support:recyclerview-v7:25.3.1"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
@@ -52,9 +53,9 @@ dependencies {
     compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
 
-//    compile 'com.google.android.exoplayer:exoplayer-core:r2.4.1'
+    compile 'com.google.android.exoplayer:exoplayer-core:r2.4.1'
 //    compile 'com.google.android.exoplayer:exoplayer-ui:r2.4.1'
-    compile 'com.google.android.exoplayer:exoplayer:r2.4.1'
+//    compile 'com.google.android.exoplayer:exoplayer:r2.4.1'
 }
 
 repositories {

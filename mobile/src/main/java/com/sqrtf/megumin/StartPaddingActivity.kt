@@ -15,6 +15,7 @@ class StartPaddingActivity : BaseActivity() {
         startActivity(Intent(this,
                 if (MeguminPreferences.configured()) HomeActivity::class.java
                 else FirstConfigActivity::class.java))
+//        startActivity(PlayerActivity.intent(this, "224","24ref","faf"))
         finish()
     }
 }

@@ -1,8 +1,10 @@
 package com.sqrtf.megumin
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -11,25 +13,23 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import com.google.android.exoplayer2.ExoPlayerFactory
-import com.google.android.exoplayer2.SimpleExoPlayer
+import android.widget.SeekBar
+import android.widget.TextView
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ExtractorMediaSource
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.TrackSelection
-import com.google.android.exoplayer2.trackselection.TrackSelector
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView
-import com.google.android.exoplayer2.upstream.BandwidthMeter
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.sqrtf.common.activity.BaseActivity
 import com.sqrtf.common.api.ApiHelper
+import com.sqrtf.common.player.MeguminExoPlayer
+import com.sqrtf.common.view.CheckableImageButton
+import com.sqrtf.common.view.FastForwardBar
 
 
 class PlayerActivity : BaseActivity() {
-    val playerView: SimpleExoPlayerView by lazy { findViewById(R.id.player_content) as SimpleExoPlayerView }
+    val playerController by lazy { findViewById(R.id.play_controller) }
+    val playerView by lazy { findViewById(R.id.player_content) as MeguminExoPlayer }
+    val root by lazy { findViewById(R.id.root) }
 
     val mHidePart2Runnable = Runnable {
         playerView.systemUiVisibility =
@@ -47,11 +47,6 @@ class PlayerActivity : BaseActivity() {
 
 
     val mHideHandler = Handler()
-    var bandwidthMeter: BandwidthMeter = DefaultBandwidthMeter()
-    var videoTrackSelectionFactory: TrackSelection.Factory = AdaptiveTrackSelection.Factory(bandwidthMeter)
-    var trackSelector: TrackSelector = DefaultTrackSelector(videoTrackSelectionFactory)
-    val player: SimpleExoPlayer by lazy { ExoPlayerFactory.newSimpleInstance(this, trackSelector) }
-
     var lastPlayWhenReady = false
     var controllerVisibility = View.VISIBLE
 
@@ -77,7 +72,11 @@ class PlayerActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        checkMultiWindowMode()
+//        playerView.postDelayed({
+//            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+//        }, 1000)
+//        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+//        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
 
         val url = intent.getStringExtra(INTENT_KEY_URL)
         if (TextUtils.isEmpty(url)) throw IllegalArgumentException("Required url")
@@ -85,28 +84,51 @@ class PlayerActivity : BaseActivity() {
         val fixedUrl = ApiHelper.fixHttpUrl(url)
         Log.i(this.localClassName, "playing:" + fixedUrl)
 
-        playerView.setControllerVisibilityListener {
-            controllerVisibility = it
-            if (it == View.VISIBLE) {
-                show()
-            } else {
-                hide()
+        checkMultiWindowMode()
+        findViewById(R.id.play_close).setOnClickListener { onBackPressed() }
+        (findViewById(R.id.fast_forward_bar) as FastForwardBar).callback = object : FastForwardBar.FastForwardEventCallback {
+            override fun onFastForward(range: Int) {
+                playerView.seekOffsetTo(range * 1000)
             }
+
+            override fun onClick(view: View) {
+                playerView.performClick()
+            }
+
         }
-        playerView.player = player
+
+        playerView.setControllerView(playerController,
+                MeguminExoPlayer.ControllerViews(
+                        findViewById(R.id.play_button) as CheckableImageButton,
+                        findViewById(R.id.play_screen) as CheckableImageButton?,
+                        findViewById(R.id.play_progress) as SeekBar,
+                        findViewById(R.id.play_position) as TextView,
+                        findViewById(R.id.play_duration) as TextView))
+
+        playerView.setControllerCallback(object : MeguminExoPlayer.ControllerCallback {
+            override fun onControllerVisibilityChange(visible: Boolean) {
+                if (visible) {
+                    show()
+                } else {
+                    hide()
+                }
+            }
+        })
+
 
         val dataSourceFactory = DefaultDataSourceFactory(this, Util.getUserAgent(this, BuildConfig.APPLICATION_ID))
         val extractorsFactory = DefaultExtractorsFactory()
         val videoSource = ExtractorMediaSource(Uri.parse(fixedUrl), dataSourceFactory, extractorsFactory, null, null)
-        player.prepare(videoSource)
 
-        player.playWhenReady = true
+        playerView.setSource(videoSource)
+
+        playerView.setPlayWhenReady(true)
         lastPlayWhenReady = true
     }
 
     private fun checkMultiWindowMode() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            playerView.fitsSystemWindows = isInMultiWindowMode
+            root.fitsSystemWindows = isInMultiWindowMode
         }
     }
 
@@ -124,7 +146,7 @@ class PlayerActivity : BaseActivity() {
                 || keyCode == KeyEvent.KEYCODE_ENTER
                 || keyCode == KeyEvent.KEYCODE_SPACE)
                 && controllerVisibility != View.VISIBLE) {
-            playerView.showController()
+//            playerView.showController()
         }
         return super.onKeyDown(keyCode, event)
     }
@@ -135,31 +157,31 @@ class PlayerActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        player.playWhenReady = lastPlayWhenReady
+        playerView.setPlayWhenReady(lastPlayWhenReady)
     }
 
     override fun onStop() {
         super.onStop()
-        lastPlayWhenReady = player.playWhenReady
-        player.playWhenReady = false
+        lastPlayWhenReady = playerView.getPlayWhenReady()
+        playerView.setPlayWhenReady(false)
     }
 
     override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean) {
         super.onMultiWindowModeChanged(isInMultiWindowMode)
-        playerView.fitsSystemWindows = isInMultiWindowMode
+        checkMultiWindowMode()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        player.playWhenReady = false
-        player.release()
+        playerView.setPlayWhenReady(false)
+        playerView.release()
     }
 
     override fun finish() {
-        val resultCode = if (player.currentPosition > 0) Activity.RESULT_OK else Activity.RESULT_CANCELED
+        val resultCode = if (playerView.player.currentPosition > 0) Activity.RESULT_OK else Activity.RESULT_CANCELED
         val i = intent
-        i.putExtra(RESULT_KEY_POSITION, player.currentPosition)
-        i.putExtra(RESULT_KEY_DURATION, player.duration)
+        i.putExtra(RESULT_KEY_POSITION, playerView.player.currentPosition)
+        i.putExtra(RESULT_KEY_DURATION, playerView.player.duration)
 
         setResult(resultCode, i)
         super.finish()
@@ -167,6 +189,7 @@ class PlayerActivity : BaseActivity() {
 
     private fun hide() {
         supportActionBar?.hide()
+        controllerVisibility = View.INVISIBLE
 
         mHideHandler.removeCallbacks(mShowPart2Runnable)
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY.toLong())
@@ -175,8 +198,10 @@ class PlayerActivity : BaseActivity() {
     private fun show() {
         playerView.systemUiVisibility =
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 
+        controllerVisibility = View.VISIBLE
         mHideHandler.removeCallbacks(mHidePart2Runnable)
         mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY.toLong())
     }

@@ -10,11 +10,21 @@ import java.util.*
 class StringUtil {
 
     companion object {
-        private var dayFormat = SimpleDateFormat("EE", Locale.getDefault())
-        private val threeDays = 86400000 * 3
+        private var dayFormatter = SimpleDateFormat("EE", Locale.getDefault())
+        private var msFormatter = SimpleDateFormat("mm:ss", Locale.getDefault())
+        private val oneDay = 86400000
+
+        init {
+            msFormatter.timeZone = TimeZone.getTimeZone("UTC")
+        }
+
 
         fun dayOfWeek(day: Int): String {
-            return dayFormat.format(day * 86400000 + threeDays)
+            return dayFormatter.format(day * oneDay + 3 * oneDay)
+        }
+
+        fun microsecondFormat(ms: Long): String {
+            return msFormatter.format(ms)
         }
     }
 }

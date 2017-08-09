@@ -14,7 +14,7 @@
     <application
         android:name="com.sqrtf.common.MeguminApplocation"
         android:allowBackup="true"
-        android:banner="@mipmap/ic_launcher"
+        android:banner="@mipmap/launcher_banner"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
@@ -44,12 +44,13 @@
             android:screenOrientation="sensorLandscape"
             android:supportsPictureInPicture="true"
             android:theme="@style/FullscreenTheme" />
+
         <activity android:name=".FavoriteActivity" />
         <activity android:name=".AllBangumiActivity" />
         <!--<activity-->
-            <!--android:name=".SettingsActivity"-->
-            <!--android:label="@string/title_activity_settings"-->
-            <!--android:theme="@style/AppThemeActionBar" />-->
+        <!--android:name=".SettingsActivity"-->
+        <!--android:label="@string/title_activity_settings"-->
+        <!--android:theme="@style/AppThemeActionBar" />-->
     </application>
 
 </manifest>

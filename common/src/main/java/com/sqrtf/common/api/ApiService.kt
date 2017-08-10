@@ -10,6 +10,11 @@ import retrofit2.http.*
 
 interface ApiService {
 
+    companion object {
+        val BANGUMI_TYPE_ANIME = 2
+        val BANGUMI_TYPE_TV = 6
+    }
+
     /**
      * Users
      */

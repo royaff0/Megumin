@@ -20,6 +20,12 @@
         <item>Abandoned</item>
     </string-array>
 
+    <string-array name="array_bangumi_type">
+        <item>All</item>
+        <item>Anime</item>
+        <item>TV</item>
+    </string-array>
+
     <string name="title_activity_player" translatable="false">PlayerActivity</string>
     <string name="title_activity_settings" translatable="false">Settings</string>
 

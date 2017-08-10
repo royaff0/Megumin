@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.support.v7.widget.AppCompatSpinner
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
@@ -12,12 +13,15 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.sqrtf.common.StringUtil
 import com.sqrtf.common.activity.BaseActivity
 import com.sqrtf.common.api.ApiClient
+import com.sqrtf.common.api.ApiService
 import com.sqrtf.common.model.Bangumi
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer
@@ -34,17 +38,43 @@ class AllBangumiActivity : BaseActivity() {
     var loaded = false
     var pageNow = 1
 
+    private val spinner by lazy { findViewById(R.id.spinner) as AppCompatSpinner }
     private val bangumiList = arrayListOf<Bangumi>()
     private val adapter = HomeAdapter()
 
+    private val filterAll: (Bangumi) -> Boolean = { true }
+    private val filterAnime: (Bangumi) -> Boolean = { it.type == ApiService.BANGUMI_TYPE_ANIME }
+    private val filterTv: (Bangumi) -> Boolean = { it.type == ApiService.BANGUMI_TYPE_TV }
+
+    private var filterNow = filterAll
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list)
+        setContentView(R.layout.activity_all_bangumi)
 
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setTitle(R.string.title_bangumi)
+
+        val sp = ArrayAdapter.createFromResource(this,
+                R.array.array_bangumi_type, R.layout.spinner_item)
+        sp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = sp
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                filterNow = when (position) {
+                    1 -> filterAnime
+                    2 -> filterTv
+                    else -> filterAll
+                }
+                reloadData()
+            }
+
+        }
 
         val recyclerView = findViewById(R.id.recycler_view) as RecyclerView
         val mLayoutManager = LinearLayoutManager(this)
@@ -67,6 +97,14 @@ class AllBangumiActivity : BaseActivity() {
         loadData()
     }
 
+    fun reloadData() {
+        loaded = false
+        pageNow = 1
+        bangumiList.clear()
+        adapter.notifyDataSetChanged()
+        loadData()
+    }
+
     fun loadData() {
         onLoadData()
                 .withLifecycle()
@@ -79,7 +117,7 @@ class AllBangumiActivity : BaseActivity() {
         if (!loaded) {
             loaded = true
             Log.i("AllBangumiActivity", "onLoadData:" + pageNow)
-            return ApiClient.getInstance().getSearchBangumi(pageNow, 20, "air_date", "desc", null)
+            return ApiClient.getInstance().getSearchBangumi(pageNow, 300, "air_date", "desc", null)
                     .onlyRunOneInstance(AllBangumiActivity.TASK_ID_LOAD, false)
                     .flatMap {
                         pageNow += 1
@@ -102,8 +140,8 @@ class AllBangumiActivity : BaseActivity() {
     }
 
     private fun addToList(list: List<Bangumi>) {
-//        bangumiList.clear()
-        bangumiList.addAll(list)
+        val fl = list.filter(filterNow)
+        bangumiList.addAll(fl)
         adapter.notifyDataSetChanged()
     }
 

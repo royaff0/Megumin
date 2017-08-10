@@ -10,7 +10,6 @@
     <string name="unwatched">%d 未看</string>
     <string name="more">更多</string>
 
-
     <string-array name="array_favorite">
         <item>添加收藏</item>
         <item>想看</item>
@@ -19,6 +18,13 @@
         <item>放置</item>
         <item>丢弃</item>
     </string-array>
+
+    <string-array name="array_bangumi_type">
+        <item>全部</item>
+        <item>动画</item>
+        <item>电视</item>
+    </string-array>
+
     <string name="others">其他</string>
     <string name="logout">退出登录</string>
 

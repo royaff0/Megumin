@@ -138,6 +138,7 @@ class HomeFragment : BaseFragment() {
             val title = view.findViewById(R.id.title) as TextView
             val subtitle = view.findViewById(R.id.subtitle) as TextView
             val info = view.findViewById(R.id.info) as TextView
+            val state = view.findViewById(R.id.state) as TextView
         }
 
         private class TitleHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -167,17 +168,30 @@ class HomeFragment : BaseFragment() {
                         }
                     }
                     is WideCardHolder -> {
-                        viewHolder.title.text = bangumi?.name_cn
-                        viewHolder.subtitle.text = bangumi?.name
+                        if (bangumi == null) {
+                            return
+                        }
+
+                        viewHolder.title.text = bangumi.name_cn
+                        viewHolder.subtitle.text = bangumi.name
                         viewHolder.info.text = viewHolder.info.resources.getString(R.string.update_info)
                                 ?.format(bangumi?.air_date, bangumi?.eps, bangumi?.air_weekday?.let { StringUtil.dayOfWeek(it) })
 
+                        if (bangumi.favorite_status > 0) {
+                            val array = viewHolder.state.resources.getStringArray(R.array.array_favorite)
+                            if (array.size > bangumi.favorite_status) {
+                                viewHolder.state.text = array[bangumi.favorite_status]
+                            }
+                        } else {
+                            viewHolder.state.text = ""
+                        }
+
                         Glide.with(parent)
-                                .load(bangumi?.image)
+                                .load(bangumi.image)
                                 .into(viewHolder.image)
 
                         viewHolder.itemView.setOnClickListener {
-                            parent.startActivity(bangumi?.let { it1 -> DetailActivity.intent(parent.context, it1) })
+                            parent.startActivity(bangumi.let { it1 -> DetailActivity.intent(parent.context, it1) })
                         }
                     }
                     is TitleHolder -> {

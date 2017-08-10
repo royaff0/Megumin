@@ -55,7 +55,7 @@ class FastForwardBar(context: Context?,
             }
             MotionEvent.ACTION_UP -> {
                 val range = calcRange(endPosition.first - startPosition.first)
-                if (range >= 1 || range <= -1) {
+                if (dragging && (range >= 1 || range <= -1)) {
                     callback?.onFastForward(range)
                 } else if (!dragging) {
                     callback?.onClick(this)

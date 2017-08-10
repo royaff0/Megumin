@@ -203,9 +203,7 @@ class MeguminExoPlayer : FrameLayout {
         mControllerCallback?.onControllerVisibilityChange(mControllerVisibility)
     }
 
-    private val dismissDelayed = {
-        dismissController()
-    }
+    private val dismissDelayed = Runnable { dismissController() }
 
     private fun dismissDelay() {
         cancelDismissDelay()

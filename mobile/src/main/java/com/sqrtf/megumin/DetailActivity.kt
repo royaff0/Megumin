@@ -3,6 +3,7 @@ package com.sqrtf.megumin
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
@@ -133,6 +134,8 @@ class DetailActivity : BaseActivity() {
         val spinner = findViewById(R.id.spinner) as Spinner
         val recyclerView = findViewById(R.id.recycler_view) as RecyclerView
         val summaryLayout = findViewById(R.id.summary_layout)
+        val btnBgmTv = findViewById(R.id.button_bgm_tv)
+
         recyclerView.isNestedScrollingEnabled = false
 
         iv?.let { Glide.with(this).load(detail.image).into(iv) }
@@ -142,6 +145,19 @@ class DetailActivity : BaseActivity() {
         subtitle.text = detail.name
         info.text = resources.getString(R.string.update_info)
                 ?.format(detail.air_date, detail.eps, StringUtil.dayOfWeek(detail.air_weekday))
+
+        btnBgmTv.visibility = if (detail.bgm_id > 0) View.VISIBLE else View.GONE
+
+        btnBgmTv.setOnClickListener {
+            if (detail.bgm_id <= 0) {
+                return@setOnClickListener
+            }
+
+            val url = "https://bgm.tv/subject/" + detail.bgm_id
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(url)
+            startActivity(i)
+        }
 
         if (!TextUtils.isEmpty(detail.summary)) {
             summary.text = detail.summary

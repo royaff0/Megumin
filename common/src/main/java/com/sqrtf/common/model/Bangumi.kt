@@ -17,7 +17,8 @@ open class Bangumi(val id: String,
                    val status: Int,
                    var favorite_status: Int,
                    val unwatched_count: Int,
-                   val update_time: Long) {
+                   val update_time: Long,
+                   val bgm_id: Long) {
     override fun hashCode(): Int {
         return id.hashCode()
     }

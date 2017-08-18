@@ -9,8 +9,8 @@ android {
         applicationId "com.sqrtf.megumin"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 7
-        versionName "0.6.1"
+        versionCode 8
+        versionName "0.6.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {

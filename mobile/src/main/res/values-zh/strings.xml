@@ -27,5 +27,6 @@
 
     <string name="others">其他</string>
     <string name="logout">退出登录</string>
+    <string name="releasing">放送中</string>
 
 </resources>

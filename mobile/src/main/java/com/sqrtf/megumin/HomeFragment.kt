@@ -60,24 +60,28 @@ class HomeFragment : BaseFragment() {
                 withLifecycle(ApiClient.getInstance().getAllBangumi()),
                 BiFunction { t1: ListResponse<Bangumi>, t2: ListResponse<Bangumi> -> Pair(t1.getData(), t2.getData()) })
                 .subscribe({
+                    val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
                     homeDataAdapter.list.clear()
                     val set = it.first.toHashSet()
 //                    set.addAll(it.second)
-                    val todayUpdate = set.filter {
-                        val todayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-                        val todayOfWeekCn = if (todayOfWeek == 1) 7 else todayOfWeek - 1
-                        val lastDayOfWkCn = if (todayOfWeekCn == 1) 7 else todayOfWeekCn - 1
-                        it.air_weekday == todayOfWeekCn || it.air_weekday == lastDayOfWkCn
-                    }
+                    val todayUpdate = set
+                            .filter {
+                                val week = (System.currentTimeMillis() - format.parse(it.air_date).time) / 604800000
+                                return@filter week <= it.eps + 1
+                            }
+                            .sortedBy { format.parse(it.air_date) }
+                            .reversed()
+
                     if (todayUpdate.isNotEmpty()) {
-                        homeDataAdapter.list.add(HomeDataAdapter.HomeData("Favorites update"))
+                        homeDataAdapter.list.add(HomeDataAdapter.HomeData(getString(R.string.releasing)))
                         homeDataAdapter.list.addAll(todayUpdate
                                 .filter { it.unwatched_count >= 1 }
                                 .map { HomeDataAdapter.HomeData(HomeDataAdapter.TYPE.MEDIUM, it) })
                     }
 
                     if (it.second.isNotEmpty()) {
-                        homeDataAdapter.list.add(HomeDataAdapter.HomeData("Bangumi"))
+                        homeDataAdapter.list.add(HomeDataAdapter.HomeData(getString(R.string.title_bangumi)))
                         homeDataAdapter.list.addAll(it.second.map { HomeDataAdapter.HomeData(HomeDataAdapter.TYPE.WIDE, it) })
                     }
 

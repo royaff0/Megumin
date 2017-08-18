@@ -34,5 +34,6 @@
     <string name="more">More</string>
     <string name="others">others</string>
     <string name="logout">Logout</string>
+    <string name="releasing">Releasing</string>
 
 </resources>

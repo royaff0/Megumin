@@ -214,7 +214,7 @@ class MeguminExoPlayer : FrameLayout {
         removeCallbacks(dismissDelayed)
     }
 
-    private fun showController() {
+    fun showController() {
         cancelDismissDelay()
         if (mControllerView != null) {
             mControllerVisibility = true
@@ -229,7 +229,7 @@ class MeguminExoPlayer : FrameLayout {
         }
     }
 
-    private fun dismissController() {
+    fun dismissController() {
         if (!tracking && mControllerView != null) {
             mControllerVisibility = false
             mControllerView!!.animate()

@@ -1,10 +1,8 @@
 package com.sqrtf.megumin
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -108,9 +106,9 @@ class PlayerActivity : BaseActivity() {
         playerView.setControllerCallback(object : MeguminExoPlayer.ControllerCallback {
             override fun onControllerVisibilityChange(visible: Boolean) {
                 if (visible) {
-                    show()
+                    showController()
                 } else {
-                    hide()
+                    hideController()
                 }
             }
         })
@@ -158,6 +156,7 @@ class PlayerActivity : BaseActivity() {
     override fun onStart() {
         super.onStart()
         playerView.setPlayWhenReady(lastPlayWhenReady)
+        playerView.showController()
     }
 
     override fun onStop() {
@@ -187,7 +186,7 @@ class PlayerActivity : BaseActivity() {
         super.finish()
     }
 
-    private fun hide() {
+    private fun hideController() {
         supportActionBar?.hide()
         controllerVisibility = View.INVISIBLE
 
@@ -195,7 +194,7 @@ class PlayerActivity : BaseActivity() {
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY.toLong())
     }
 
-    private fun show() {
+    private fun showController() {
         playerView.systemUiVisibility =
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
                         View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or

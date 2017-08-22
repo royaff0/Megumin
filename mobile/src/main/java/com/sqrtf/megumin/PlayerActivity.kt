@@ -79,7 +79,7 @@ class PlayerActivity : BaseActivity() {
         val url = intent.getStringExtra(INTENT_KEY_URL)
         if (TextUtils.isEmpty(url)) throw IllegalArgumentException("Required url")
 
-        val fixedUrl = ApiHelper.fixHttpUrl(url)
+        val fixedUrl = Uri.encode(ApiHelper.fixHttpUrl(url), "@#&=*+-_.,:!?()/~'%")
         Log.i(this.localClassName, "playing:" + fixedUrl)
 
         checkMultiWindowMode()

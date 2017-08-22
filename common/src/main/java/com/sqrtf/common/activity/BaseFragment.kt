@@ -49,7 +49,9 @@ open class BaseFragment : RxLifecycleFragment() {
 
             if (it is HttpException) {
                 val body = it.response().errorBody()
-                val message = ApiClient.converterErrorBody(body)
+                val message = body?.let { it1 ->
+                    ApiClient.converterErrorBody(it1)
+                }
 
                 if (message?.message() != null) {
                     errorMessage = message.message()

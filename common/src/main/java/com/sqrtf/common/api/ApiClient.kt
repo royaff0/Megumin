@@ -67,11 +67,11 @@ object ApiClient {
                     val request = it.request()
                     val response = it.proceed(request)
                     val body = response.body()
-                    val bodyString = body.string()
+                    val bodyString = body?.string()
                     Log.i("TAG", response.toString() + " Body:" + bodyString)
                     response.newBuilder()
                             .headers(response.headers())
-                            .body(ResponseBody.create(body.contentType(), bodyString))
+                            .body(ResponseBody.create(body?.contentType(), bodyString))
                             .build()
                 }
                 .build()

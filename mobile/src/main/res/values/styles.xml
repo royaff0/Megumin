@@ -54,4 +54,13 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+    <style name="BottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+
+    <style name="BottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@color/backgroundFore</item>
+    </style>
+
+
 </resources>

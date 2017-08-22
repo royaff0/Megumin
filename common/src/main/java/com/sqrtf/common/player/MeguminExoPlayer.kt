@@ -2,6 +2,7 @@ package com.sqrtf.common.player
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.SurfaceView
 import android.view.View
@@ -175,7 +176,7 @@ class MeguminExoPlayer : FrameLayout {
     }
 
     private val checkProgress = {
-        if (!tracking) {
+        if (!tracking && player.duration > 0) {
             this.progress?.max = (player.duration / 1000).toInt()
             this.progress?.secondaryProgress = (player.bufferedPosition / 1000).toInt()
             this.progress?.progress = (player.currentPosition / 1000).toInt()

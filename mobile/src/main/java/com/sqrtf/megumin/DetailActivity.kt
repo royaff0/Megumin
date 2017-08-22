@@ -1,10 +1,12 @@
 package com.sqrtf.megumin
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.design.widget.BottomSheetDialog
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
@@ -30,6 +32,20 @@ import java.util.*
 
 
 class DetailActivity : BaseActivity() {
+    val iv by lazy { findViewById(R.id.image) as ImageView? }
+    val ivCover by lazy { findViewById(R.id.image_cover) as ImageView }
+    val ctitle by lazy { findViewById(R.id.title) as TextView }
+    val subtitle by lazy { findViewById(R.id.subtitle) as TextView }
+    val info by lazy { findViewById(R.id.info) as TextView }
+    val summary by lazy { findViewById(R.id.summary) as TextView }
+    val summary2 by lazy { findViewById(R.id.summary2) as TextView }
+    val more by lazy { findViewById(R.id.button_more) }
+    val spinner by lazy { findViewById(R.id.spinner) as Spinner }
+    val recyclerView by lazy { findViewById(R.id.recycler_view) as RecyclerView }
+    val summaryLayout by lazy { findViewById(R.id.summary_layout) }
+    val btnBgmTv by lazy { findViewById(R.id.button_bgm_tv) }
+
+    val episodeAdapter by lazy { EpisodeAdapter() }
 
     companion object {
         fun intent(context: Context, bgm: Bangumi): Intent {
@@ -50,6 +66,9 @@ class DetailActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         title = ""
+
+        recyclerView.layoutManager = ScrollStartLayoutManager(this, ScrollStartLayoutManager.HORIZONTAL, false)
+        recyclerView.adapter = episodeAdapter
 
         val json = intent.getStringExtra(INTENT_KEY_BANGMUMI)
         checkNotNull(json)
@@ -97,6 +116,59 @@ class DetailActivity : BaseActivity() {
                 })
     }
 
+    private fun markWatched(episode: Episode) {
+        ApiClient.getInstance().uploadWatchHistory(
+                HistoryChangeRequest(Collections.singletonList(HistoryChangeItem(episode.bangumi_id,
+                        episode.id,
+                        System.currentTimeMillis(),
+                        0,
+                        1f,
+                        true))))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        Consumer {
+                            loadData(episode.bangumi_id)
+                        },
+                        ignoreErrors())
+    }
+
+    private fun openWith(episode: Episode) {
+        ApiClient.getInstance().getEpisodeDetail(episode.id)
+                .withLifecycle()
+                .subscribe({
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.setDataAndType(Uri.parse(it.video_files[0]?.url), "video/mp4")
+                    startActivity(intent)
+                }, {
+                    toastErrors()
+                })
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun openMenu(episode: Episode) {
+        val dialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
+        val view = LayoutInflater.from(this).inflate(R.layout.dialog_episode_menu, null, false)
+
+        (view.findViewById(R.id.title) as TextView).text = "${episode.episode_no}. ${if (TextUtils.isEmpty(episode.name_cn)) episode.name else episode.name_cn}"
+
+        view.findViewById(R.id.button_mark_watched).setOnClickListener {
+            markWatched(episode)
+            dialog.dismiss()
+        }
+//        view.findViewById(R.id.button_mark_all_watched).setOnClickListener {
+//            markAllBefore(episode)
+//            dialog.dismiss()
+//        }
+        view.findViewById(R.id.button_open_external).setOnClickListener {
+            openWith(episode)
+            dialog.dismiss()
+        }
+
+        dialog.setContentView(view)
+        dialog.show()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == DetailActivity.REQUEST_CODE
                 && resultCode == Activity.RESULT_OK
@@ -123,19 +195,6 @@ class DetailActivity : BaseActivity() {
     }
 
     private fun setData(detail: Bangumi) {
-        val iv = findViewById(R.id.image) as ImageView?
-        val ivCover = findViewById(R.id.image_cover) as ImageView
-        val ctitle = findViewById(R.id.title) as TextView
-        val subtitle = findViewById(R.id.subtitle) as TextView
-        val info = findViewById(R.id.info) as TextView
-        val summary = findViewById(R.id.summary) as TextView
-        val summary2 = findViewById(R.id.summary2) as TextView
-        val more = findViewById(R.id.button_more)
-        val spinner = findViewById(R.id.spinner) as Spinner
-        val recyclerView = findViewById(R.id.recycler_view) as RecyclerView
-        val summaryLayout = findViewById(R.id.summary_layout)
-        val btnBgmTv = findViewById(R.id.button_bgm_tv)
-
         recyclerView.isNestedScrollingEnabled = false
 
         iv?.let { Glide.with(this).load(detail.image).into(iv) }
@@ -201,48 +260,7 @@ class DetailActivity : BaseActivity() {
         }
 
         if (detail is BangumiDetail && detail.episodes != null && detail.episodes.isNotEmpty()) {
-            recyclerView.layoutManager = ScrollStartLayoutManager(this, ScrollStartLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-                inner class VH(v: View) : RecyclerView.ViewHolder(v) {
-                    val view = v
-                    val tv = v.findViewById(R.id.tv) as TextView
-                    val image = v.findViewById(R.id.image) as ImageView
-                    val progress = v.findViewById(R.id.progress) as ProgressCoverView
-                }
-
-                override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, p1: Int) {
-                    if (holder is VH) {
-                        val d = detail.episodes[p1]
-
-                        holder.tv.text = (p1 + 1).toString() + ". " + d.name_cn
-                        if (d.watch_progress?.percentage != null
-                                && d.watch_progress?.percentage!! < 0.15f) {
-                            d.watch_progress?.percentage = 0.15f
-                        }
-                        holder.progress.setProgress(d.watch_progress?.percentage ?: 0f)
-
-                        Glide.with(this@DetailActivity)
-                                .load(ApiHelper.fixHttpUrl(d.thumbnail))
-                                .into(holder.image)
-
-                        holder.tv.alpha = if (d.status != 0) 1f else 0.2f
-                        holder.view.setOnClickListener {
-                            if (d.status != 0) playVideo(d)
-                        }
-
-                    }
-                }
-
-                override fun onCreateViewHolder(p0: ViewGroup?, p1: Int): RecyclerView.ViewHolder {
-                    return VH(LayoutInflater.from(p0!!.context).inflate(R.layout.rv_item_episode, p0, false))
-                }
-
-                override fun getItemCount(): Int {
-                    return detail.episodes.size
-                }
-
-            }
-
+            episodeAdapter.setEpisodes(detail.episodes)
             detail.episodes
                     .map { it?.watch_progress?.last_watch_time }
                     .withIndex()
@@ -254,6 +272,65 @@ class DetailActivity : BaseActivity() {
                             recyclerView.smoothScrollToPosition(it.index)
                         }
                     }
+        }
+
+    }
+
+    inner class EpisodeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+        private var episodes: List<Episode> = java.util.ArrayList()
+
+        fun setEpisodes(ep: List<Episode>) {
+            episodes = ep
+            notifyDataSetChanged()
+        }
+
+        fun getEpisodes(): List<Episode> {
+            return episodes
+        }
+
+        inner class VH(v: View) : RecyclerView.ViewHolder(v) {
+            val view = v
+            val tv = v.findViewById(R.id.tv) as TextView
+            val image = v.findViewById(R.id.image) as ImageView
+            val progress = v.findViewById(R.id.progress) as ProgressCoverView
+        }
+
+        @SuppressLint("SetTextI18n")
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, p1: Int) {
+            if (holder is VH) {
+                val d = episodes[p1]
+
+                holder.tv.text = "${d.episode_no}. ${if (TextUtils.isEmpty(d.name_cn)) d.name else d.name_cn}"
+                if (d.watch_progress?.percentage != null
+                        && d.watch_progress?.percentage!! < 0.15f) {
+                    d.watch_progress?.percentage = 0.15f
+                }
+                holder.progress.setProgress(d.watch_progress?.percentage ?: 0f)
+
+                Glide.with(this@DetailActivity)
+                        .load(ApiHelper.fixHttpUrl(d.thumbnail))
+                        .into(holder.image)
+
+                holder.tv.alpha = if (d.status != 0) 1f else 0.2f
+                holder.view.setOnClickListener {
+                    if (d.status != 0) playVideo(d)
+                }
+
+                holder.view.setOnLongClickListener {
+                    if (d.status != 0) openMenu(d)
+                    true
+                }
+
+            }
+        }
+
+        override fun onCreateViewHolder(p0: ViewGroup?, p1: Int): RecyclerView.ViewHolder {
+            return VH(LayoutInflater.from(p0!!.context).inflate(R.layout.rv_item_episode, p0, false))
+        }
+
+        override fun getItemCount(): Int {
+            return episodes.size
         }
 
     }

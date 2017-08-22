@@ -28,5 +28,8 @@
     <string name="others">其他</string>
     <string name="logout">退出登录</string>
     <string name="releasing">放送中</string>
+    <string name="mark_as_watched">标记为已看</string>
+    <string name="mark_all_before_as_watched">标记之前的为已看</string>
+    <string name="open_with_external_player">外部播放器中打开</string>
 
 </resources>

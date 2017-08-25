@@ -80,7 +80,7 @@
             <com.sqrtf.common.view.CheckableImageButton
                 android:id="@+id/play_button"
                 android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -92,7 +92,7 @@
             <com.sqrtf.common.view.CheckableImageButton
                 android:id="@+id/play_screen"
                 android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_height="36dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -109,6 +109,6 @@
         android:id="@+id/fast_forward_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="120dp" />
+        android:layout_marginBottom="98dp" />
 
 </android.support.design.widget.CoordinatorLayout>

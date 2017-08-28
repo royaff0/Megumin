@@ -1,5 +1,6 @@
 package com.sqrtf.common.api
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
@@ -12,6 +13,10 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.IllegalStateException
+import okhttp3.ConnectionSpec
+import okhttp3.TlsVersion
+import android.os.Build
+import javax.net.ssl.SSLContext
 
 
 /**
@@ -58,10 +63,40 @@ object ApiClient {
 
     }
 
+    @SuppressLint("ObsoleteSdkInt")
+    private fun OkHttpClient.Builder.enableTls12OnPreLollipop(): OkHttpClient.Builder {
+        if (Build.VERSION.SDK_INT in 16..21) {
+            try {
+                val sc = SSLContext.getInstance("TLSv1.2")
+                sc.init(null, null, null)
+                this.sslSocketFactory(Tls12SocketFactory(sc.socketFactory))
+
+                val cs = ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                        .tlsVersions(TlsVersion.TLS_1_2)
+                        .build()
+
+                val specs = ArrayList<ConnectionSpec>()
+                specs.add(cs)
+                specs.add(ConnectionSpec.COMPATIBLE_TLS)
+                specs.add(ConnectionSpec.CLEARTEXT)
+
+                this.connectionSpecs(specs)
+            } catch (exc: Exception) {
+                Log.e("OkHttpTLSCompat", "Error while setting TLS 1.2", exc)
+            }
+
+        }
+
+        return this
+    }
+
     private fun create(context: Context, server: String): ApiService {
         cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
 
         val okHttp = OkHttpClient.Builder()
+                .followRedirects(true)
+                .followSslRedirects(true)
+                .retryOnConnectionFailure(true)
                 .cookieJar(cookieJar)
                 .addInterceptor {
                     val request = it.request()
@@ -74,6 +109,7 @@ object ApiClient {
                             .body(ResponseBody.create(body?.contentType(), bodyString))
                             .build()
                 }
+                .enableTls12OnPreLollipop()
                 .build()
 
         retrofit = Retrofit.Builder()

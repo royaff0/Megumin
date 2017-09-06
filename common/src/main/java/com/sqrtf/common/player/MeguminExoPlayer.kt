@@ -44,9 +44,8 @@ class MeguminExoPlayer : FrameLayout {
     var tracking = false
 
     private var mControllerCallback: ControllerCallback? = null
-    private var mControllerView: View? = null
-    private var mControllerVisibility by Delegates.observable(false, {
-        prop, old, new ->
+    private var mControllerView: ControllerViews? = null
+    private var mControllerVisibility by Delegates.observable(false, { prop, old, new ->
         mControllerCallback?.onControllerVisibilityChange(new)
     })
 
@@ -100,9 +99,9 @@ class MeguminExoPlayer : FrameLayout {
         player.release()
     }
 
-    fun setControllerView(view: View?, views: ControllerViews?) {
-        this.mControllerView = view
-        if (view == null) {
+    fun setControllerView(views: ControllerViews?) {
+        this.mControllerView = views
+        if (views?.root == null) {
             mControllerVisibility = false
             setOnClickListener(null)
             return
@@ -116,25 +115,23 @@ class MeguminExoPlayer : FrameLayout {
             }
         }
 
-        views?.play?.setOnCheckedChangeListener {
-            _, isChecked ->
+        views.play?.setOnCheckedChangeListener { _, isChecked ->
             setPlayWhenReady(!isChecked)
         }
 
 
-        views?.screen?.setOnCheckedChangeListener {
-            _, isChecked ->
+        views.screen?.setOnCheckedChangeListener { _, isChecked ->
             setResizeMode(if (isChecked) AspectRatioFrameLayout.RESIZE_MODE_ZOOM else AspectRatioFrameLayout.RESIZE_MODE_FIT)
         }
 
 
-        this.progress = views?.progressbar
+        this.progress = views.progressbar
         this.progress?.max = -1
-        this.position = views?.timePosition
-        this.duration = views?.timeDuration
+        this.position = views.timePosition
+        this.duration = views.timeDuration
 
         nextCheckProgress()
-        views?.progressbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        views.progressbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
 
             }
@@ -217,13 +214,16 @@ class MeguminExoPlayer : FrameLayout {
 
     fun showController() {
         cancelDismissDelay()
-        if (mControllerView != null) {
+        if (mControllerView?.root != null) {
             mControllerVisibility = true
-            mControllerView!!.animate()
+            mControllerView?.root!!.animate()
                     .alpha(1f)
                     .setDuration(200)
                     .withStartAction {
-                        mControllerView?.visibility = View.VISIBLE
+                        mControllerView?.root?.visibility = View.VISIBLE
+                    }
+                    .withEndAction {
+                        mControllerView?.play?.requestFocus()
                     }
                     .start()
             dismissDelay()
@@ -233,17 +233,19 @@ class MeguminExoPlayer : FrameLayout {
     fun dismissController() {
         if (!tracking && mControllerView != null) {
             mControllerVisibility = false
-            mControllerView!!.animate()
+            mControllerView?.root!!.animate()
                     .alpha(0f)
                     .setDuration(200)
                     .withEndAction {
-                        mControllerView?.visibility = View.INVISIBLE
+                        mControllerView?.root?.visibility = View.INVISIBLE
+                        requestFocus()
                     }
                     .start()
         }
     }
 
-    data class ControllerViews(val play: CheckableImageButton?,
+    data class ControllerViews(val root: View,
+                               val play: CheckableImageButton?,
                                val screen: CheckableImageButton?,
                                val progressbar: SeekBar?,
                                val timePosition: TextView?,

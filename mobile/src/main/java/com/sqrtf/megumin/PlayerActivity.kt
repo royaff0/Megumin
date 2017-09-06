@@ -83,7 +83,7 @@ class PlayerActivity : BaseActivity() {
         Log.i(this.localClassName, "playing:" + fixedUrl)
 
         checkMultiWindowMode()
-        findViewById(R.id.play_close).setOnClickListener { onBackPressed() }
+        findViewById(R.id.play_close).setOnClickListener { finish() }
         (findViewById(R.id.fast_forward_bar) as FastForwardBar).callback = object : FastForwardBar.FastForwardEventCallback {
             override fun onFastForward(range: Int) {
                 playerView.seekOffsetTo(range * 1000)
@@ -95,8 +95,9 @@ class PlayerActivity : BaseActivity() {
 
         }
 
-        playerView.setControllerView(playerController,
+        playerView.setControllerView(
                 MeguminExoPlayer.ControllerViews(
+                        playerController,
                         findViewById(R.id.play_button) as CheckableImageButton,
                         findViewById(R.id.play_screen) as CheckableImageButton?,
                         findViewById(R.id.play_progress) as SeekBar,
@@ -131,22 +132,12 @@ class PlayerActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-//        if (controllerVisibility == View.VISIBLE) {
-//            playerView.hideController()
-//        } else {
-//            super.onBackPressed()
-//        }
-        finish()
-    }
-
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if ((keyCode == KeyEvent.KEYCODE_DPAD_CENTER
-                || keyCode == KeyEvent.KEYCODE_ENTER
-                || keyCode == KeyEvent.KEYCODE_SPACE)
-                && controllerVisibility != View.VISIBLE) {
-//            playerView.showController()
+        if (controllerVisibility == View.VISIBLE) {
+            playerView.dismissController()
+        } else {
+            super.onBackPressed()
         }
-        return super.onKeyDown(keyCode, event)
+//        finish()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -203,5 +194,53 @@ class PlayerActivity : BaseActivity() {
         controllerVisibility = View.VISIBLE
         mHideHandler.removeCallbacks(mHidePart2Runnable)
         mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY.toLong())
+    }
+
+    private var pressTimes = 0
+    private var keyPressingCode = Int.MIN_VALUE
+    private val keyPressingRunnable = Runnable {
+        if (keyPressingCode < 0) {
+            return@Runnable
+        }
+        pressTimes += 1
+        onKeyboardSeekUpdate(pressTimes)
+        checkNext()
+    }
+
+    private fun checkNext() {
+        mHideHandler.postDelayed(keyPressingRunnable, 400)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (controllerVisibility != View.INVISIBLE) return false
+        if (keyPressingCode == keyCode) return true
+
+        when (keyCode) {
+            KeyEvent.KEYCODE_DPAD_RIGHT, KeyEvent.KEYCODE_DPAD_LEFT -> {
+                if (keyPressingCode != keyCode) {
+                    pressTimes = 1
+                    keyPressingCode = keyCode
+                    onKeyboardSeekUpdate(pressTimes)
+                    mHideHandler.removeCallbacks(keyPressingRunnable)
+                    checkNext()
+                }
+                return true
+            }
+        }
+
+        return super.onKeyDown(keyCode, event)
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyPressingCode > 0) {
+            keyPressingCode = Int.MIN_VALUE
+            onKeyboardSeekUpdate(pressTimes, true)
+            return true
+        }
+        return super.onKeyUp(keyCode, event)
+    }
+
+    private fun onKeyboardSeekUpdate(times: Int, isFinish: Boolean = false) {
+
     }
 }

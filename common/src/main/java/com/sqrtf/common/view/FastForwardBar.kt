@@ -76,7 +76,7 @@ class FastForwardBar(context: Context?,
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        if (!isValid()) {
+        if (!isValid() || isInEditMode) {
             return
         }
 

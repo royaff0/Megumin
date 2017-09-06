@@ -13,6 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <com.sqrtf.common.view.FastForwardBar
+        android:id="@+id/fast_forward_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <FrameLayout
         android:id="@+id/play_controller"
         android:layout_width="match_parent"
@@ -24,7 +29,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@drawable/controls_toolbar" />
+            android:background="@drawable/controls_toolbar"
+            android:clickable="true" />
 
         <ImageButton
             android:id="@+id/play_close"
@@ -40,6 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="@drawable/controls_background"
+            android:clickable="true"
             android:paddingBottom="8dp"
             android:paddingTop="8dp">
 
@@ -108,13 +115,5 @@
 
         </android.support.constraint.ConstraintLayout>
     </FrameLayout>
-
-
-    <com.sqrtf.common.view.FastForwardBar
-        android:id="@+id/fast_forward_bar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="98dp"
-        android:layout_marginTop="?actionBarSize" />
 
 </android.support.design.widget.CoordinatorLayout>

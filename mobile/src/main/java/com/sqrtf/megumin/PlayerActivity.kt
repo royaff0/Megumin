@@ -13,6 +13,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
@@ -42,7 +43,6 @@ class PlayerActivity : BaseActivity() {
     val mShowPart2Runnable = Runnable {
         supportActionBar?.show()
     }
-
 
     val mHideHandler = Handler()
     var lastPlayWhenReady = false
@@ -132,7 +132,8 @@ class PlayerActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        if (controllerVisibility == View.VISIBLE) {
+        if (!packageManager.hasSystemFeature("android.hardware.touchscreen")
+                && controllerVisibility == View.VISIBLE) {
             playerView.dismissController()
         } else {
             super.onBackPressed()
@@ -212,7 +213,7 @@ class PlayerActivity : BaseActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (controllerVisibility != View.INVISIBLE) return false
+        if (controllerVisibility != View.INVISIBLE) return super.onKeyDown(keyCode, event)
         if (keyPressingCode == keyCode) return true
 
         when (keyCode) {
@@ -232,15 +233,26 @@ class PlayerActivity : BaseActivity() {
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyPressingCode > 0) {
-            keyPressingCode = Int.MIN_VALUE
+        if (keyPressingCode > 0 && keyCode == keyPressingCode) {
             onKeyboardSeekUpdate(pressTimes, true)
+            keyPressingCode = Int.MIN_VALUE
             return true
         }
         return super.onKeyUp(keyCode, event)
     }
 
-    private fun onKeyboardSeekUpdate(times: Int, isFinish: Boolean = false) {
+    val mToast by lazy { Toast.makeText(this, "", Toast.LENGTH_SHORT) }
 
+    private fun onKeyboardSeekUpdate(times: Int, isFinish: Boolean = false) {
+        val isForward = keyPressingCode == KeyEvent.KEYCODE_DPAD_RIGHT
+        val s = times * 5
+
+        mToast.setText(getString(if (isForward) R.string.toast_forward else R.string.toast_backward).format(s))
+        mToast.show()
+
+        if (isFinish) {
+            playerView.seekOffsetTo(s * 1000)
+            mToast.cancel()
+        }
     }
 }

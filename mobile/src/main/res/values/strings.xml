@@ -39,4 +39,7 @@
     <string name="mark_all_before_as_watched">Mark all before as watched</string>
     <string name="open_with_external_player">Open with external player</string>
 
+    <string name="toast_forward" translatable="false">+%ds</string>
+    <string name="toast_backward" translatable="false">-%ds</string>
+
 </resources>

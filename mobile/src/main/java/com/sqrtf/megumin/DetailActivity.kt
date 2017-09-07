@@ -138,7 +138,8 @@ class DetailActivity : BaseActivity() {
                 .withLifecycle()
                 .subscribe({
                     val intent = Intent(Intent.ACTION_VIEW)
-                    intent.setDataAndType(Uri.parse(it.video_files[0]?.url), "video/mp4")
+                    val url = Uri.encode(ApiHelper.fixHttpUrl(it.video_files[0]!!.url), "@#&=*+-_.,:!?()/~'%")
+                    intent.setDataAndType(Uri.parse(url), "video/mp4")
                     startActivity(intent)
                 }, {
                     toastErrors()

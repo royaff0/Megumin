@@ -238,6 +238,12 @@ class PlayerActivity : BaseActivity() {
             keyPressingCode = Int.MIN_VALUE
             return true
         }
+
+        if (controllerVisibility == View.INVISIBLE
+                && keyCode == KeyEvent.KEYCODE_DPAD_CENTER){
+            playerView.showController()
+        }
+
         return super.onKeyUp(keyCode, event)
     }
 

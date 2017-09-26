@@ -25,7 +25,7 @@
         <item>ドラマ</item>
     </string-array>
 
-    <string name="others">他</string>
+    <string name="others">その他</string>
     <string name="logout">ログアウト</string>
     <string name="releasing">放送中</string>
     <string name="mark_as_watched">「鑑賞完了」にする</string>

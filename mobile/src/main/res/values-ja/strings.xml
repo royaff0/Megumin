@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">めぐみん</string>
+    <string name="navigation_drawer_open">ナビゲーションドロワーを開ける</string>
+    <string name="navigation_drawer_close">ナビゲーションドロワーを閉める</string>
+    <string name="action_settings">設定</string>
+    <string name="title_favorite">お気に入り</string>
+    <string name="title_bangumi">番組表</string>
+    <string name="update_info">%s, %d話, %s</string>
+    <string name="unwatched">%d 未見</string>
+    <string name="more">もっと</string>
+
+    <string-array name="array_favorite">
+        <item>お気に入り登録</item>
+        <item>鑑賞準備</item>
+        <item>鑑賞完了</item>
+        <item>鑑賞中</item>
+        <item>放置</item>
+        <item>放棄</item>
+    </string-array>
+
+    <string-array name="array_bangumi_type">
+        <item>全部</item>
+        <item>アニメ</item>
+        <item>ドラマ</item>
+    </string-array>
+
+    <string name="others">その他</string>
+    <string name="logout">ログアウト</string>
+    <string name="releasing">放送中</string>
+    <string name="mark_as_watched">「鑑賞完了」にする</string>
+    <string name="mark_all_before_as_watched">今まで「鑑賞完了」にする</string>
+    <string name="open_with_external_player">外部プレーヤーで再生</string>
+
+</resources>

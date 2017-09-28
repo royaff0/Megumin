@@ -151,7 +151,14 @@ class DetailActivity : BaseActivity() {
         val dialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
         val view = LayoutInflater.from(this).inflate(R.layout.dialog_episode_menu, null, false)
 
-        (view.findViewById(R.id.title) as TextView).text = "${episode.episode_no}. ${if (TextUtils.isEmpty(episode.name_cn)) episode.name else episode.name_cn}"
+        val name = if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
+            if (TextUtils.isEmpty(episode.name_cn)) episode.name else episode.name_cn
+        } else {
+            if (TextUtils.isEmpty(episode.name)) episode.name_cn else episode.name
+        }
+
+        (view.findViewById(R.id.title) as TextView).text =
+                "${episode.episode_no}. $name"
 
         view.findViewById(R.id.button_mark_watched).setOnClickListener {
             markWatched(episode)
@@ -201,8 +208,8 @@ class DetailActivity : BaseActivity() {
         iv?.let { Glide.with(this).load(detail.image).into(iv) }
         Glide.with(this).load(detail.image).into(ivCover)
 
-        ctitle.text = detail.name_cn
-        subtitle.text = detail.name
+        ctitle.text = StringUtil.mainTitle(detail)
+        subtitle.text = StringUtil.subTitle(detail)
         info.text = resources.getString(R.string.update_info)
                 ?.format(detail.air_date, detail.eps, StringUtil.dayOfWeek(detail.air_weekday))
 
@@ -302,7 +309,13 @@ class DetailActivity : BaseActivity() {
             if (holder is VH) {
                 val d = episodes[p1]
 
-                holder.tv.text = "${d.episode_no}. ${if (TextUtils.isEmpty(d.name_cn)) d.name else d.name_cn}"
+                val name = if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
+                    if (TextUtils.isEmpty(d.name_cn)) d.name else d.name_cn
+                } else {
+                    if (TextUtils.isEmpty(d.name)) d.name_cn else d.name
+                }
+
+                holder.tv.text = "${d.episode_no}. $name"
                 if (d.watch_progress?.percentage != null
                         && d.watch_progress?.percentage!! < 0.15f) {
                     d.watch_progress?.percentage = 0.15f

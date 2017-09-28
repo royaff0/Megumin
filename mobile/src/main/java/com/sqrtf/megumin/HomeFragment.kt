@@ -100,7 +100,7 @@ class HomeFragment : BaseFragment() {
         val adapter = HomeAdapter()
         val lm = HomeLayoutManager(parent.context)
 
-        enum class TYPE(val value: Int) {TITLE(0), MEDIUM(1), WIDE(2), TAIL(3) }
+        enum class TYPE(val value: Int) { TITLE(0), MEDIUM(1), WIDE(2), TAIL(3) }
 
         class HomeData private constructor(
                 val type: TYPE,
@@ -159,27 +159,28 @@ class HomeFragment : BaseFragment() {
             override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder?, position: Int) {
 
                 val bangumi = list[position].bangumi
+                if (bangumi == null) {
+                    return
+                }
+
                 when (viewHolder) {
                     is MediumCardHolder -> {
-                        viewHolder.title.text = bangumi?.name_cn
-                        viewHolder.subtitle.text = viewHolder.subtitle.resources.getString(R.string.unwatched).format(bangumi?.unwatched_count)
+                        viewHolder.title.text = StringUtil.mainTitle(bangumi)
+                        viewHolder.subtitle.text = viewHolder.subtitle.resources.getString(R.string.unwatched).format(bangumi.unwatched_count)
                         Glide.with(parent)
-                                .load(bangumi?.image)
+                                .load(bangumi.image)
                                 .into(viewHolder.image)
 
                         viewHolder.itemView.setOnClickListener {
-                            parent.startActivity(bangumi?.let { it1 -> DetailActivity.intent(parent.context, it1) })
+                            parent.startActivity(bangumi.let { it1 -> DetailActivity.intent(parent.context, it1) })
                         }
                     }
                     is WideCardHolder -> {
-                        if (bangumi == null) {
-                            return
-                        }
 
-                        viewHolder.title.text = bangumi.name_cn
-                        viewHolder.subtitle.text = bangumi.name
+                        viewHolder.title.text = StringUtil.mainTitle(bangumi)
+                        viewHolder.subtitle.text = StringUtil.subTitle(bangumi)
                         viewHolder.info.text = viewHolder.info.resources.getString(R.string.update_info)
-                                ?.format(bangumi?.air_date, bangumi?.eps, bangumi?.air_weekday?.let { StringUtil.dayOfWeek(it) })
+                                ?.format(bangumi.air_date, bangumi.eps, bangumi.air_weekday.let { StringUtil.dayOfWeek(it) })
 
                         if (bangumi.favorite_status > 0) {
                             val array = viewHolder.state.resources.getStringArray(R.array.array_favorite)

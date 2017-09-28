@@ -38,6 +38,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:maxLines="2"
             android:text="bkbuhnnlnl"
             android:textColor="@color/textColorPrimary"
             android:textSize="15sp"

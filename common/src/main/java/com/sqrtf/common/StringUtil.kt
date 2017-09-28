@@ -1,5 +1,7 @@
 package com.sqrtf.common
 
+import android.text.TextUtils
+import com.sqrtf.common.model.Bangumi
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -29,5 +31,38 @@ class StringUtil {
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(ms))))
 
         }
+
+        fun mainTitle(bangumi: Bangumi): String {
+            return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
+                if (!TextUtils.isEmpty(bangumi.name_cn)) {
+                    bangumi.name_cn
+                } else {
+                    bangumi.name
+                }
+            } else {
+                if (!TextUtils.isEmpty(bangumi.name)) {
+                    bangumi.name
+                } else {
+                    bangumi.name_cn
+                }
+            }
+        }
+
+        fun subTitle(bangumi: Bangumi): String {
+            return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
+                if (!TextUtils.isEmpty(bangumi.name)) {
+                    bangumi.name
+                } else {
+                    bangumi.name_cn
+                }
+            } else {
+                if (!TextUtils.isEmpty(bangumi.name_cn)) {
+                    bangumi.name_cn
+                } else {
+                    bangumi.name
+                }
+            }
+        }
+
     }
 }

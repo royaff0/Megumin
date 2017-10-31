@@ -31,5 +31,7 @@
     <string name="mark_as_watched">标记为已看</string>
     <string name="mark_all_before_as_watched">标记之前的为已看</string>
     <string name="open_with_external_player">外部播放器中打开</string>
+    <string name="action_search">搜索</string>
+    <string name="empty">无内容</string>
 
 </resources>

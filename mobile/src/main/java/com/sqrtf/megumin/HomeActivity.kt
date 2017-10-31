@@ -17,7 +17,6 @@ import io.reactivex.functions.Consumer
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    val mHideHandler = Handler()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -29,6 +28,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer.addDrawerListener(toggle)
         toggle.syncState()
+
+        findViewById(R.id.fab_search).setOnClickListener { search() }
 
         val navigationView = findViewById(R.id.nav_view) as NavigationView
         val navHeaderT1 = navigationView.getHeaderView(0).findViewById(R.id.textView1) as TextView
@@ -45,6 +46,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                     navHeaderT1.text = it.getData().name
                     navHeaderT2.text = it.getData().email
                 }, toastErrors())
+    }
+
+    private fun search() {
+        startActivity(SearchActivity.intent(this))
     }
 
     override fun onBackPressed() {

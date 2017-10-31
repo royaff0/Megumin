@@ -30,8 +30,8 @@ open class BaseActivity : RxLifecycleActivity() {
         super.onCreate(savedInstanceState)
     }
 
-    protected fun showToast(s: String) {
-        Toast.makeText(this, s, Toast.LENGTH_LONG).show()
+    protected fun showToast(s: String, t: Int = Toast.LENGTH_LONG) {
+        Toast.makeText(this, s, t).show()
     }
 
     protected fun <T> Observable<T>.withLifecycle(

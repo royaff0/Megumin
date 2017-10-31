@@ -51,3 +51,4 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.android.support:support-v4:25.3.1'
 }
+apply plugin: 'kotlin-android-extensions'

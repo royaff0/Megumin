@@ -43,8 +43,8 @@ interface ApiService {
     fun getSearchBangumi(
             @Query("page") page: Int,
             @Query("count") count: Int,
-            @Query("sort_field") sortField: String,
-            @Query("sort_order") sortOrder: String,
+            @Query("sort_field") sortField: String?,
+            @Query("sort_order") sortOrder: String?,
             @Query("name") name: String?
     ): Observable<ListResponse<Bangumi>>
 

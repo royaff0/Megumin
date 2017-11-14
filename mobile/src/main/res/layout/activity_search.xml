@@ -33,6 +33,7 @@
                 android:focusableInTouchMode="true"
                 android:gravity="center_vertical"
                 android:hint="@string/action_search"
+                android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:maxLines="1"
                 android:paddingLeft="12dp"

@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo.IME_ACTION_DONE
+import android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -47,7 +47,7 @@ class SearchActivity : BaseActivity() {
         recyclerView.adapter = adapter
 
         edit.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == IME_ACTION_DONE && edit.text.isNotEmpty()) {
+            if (actionId == IME_ACTION_SEARCH && edit.text.isNotEmpty()) {
                 hideKeyboard()
                 search(edit.text.toString())
             }

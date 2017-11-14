@@ -159,12 +159,12 @@ class HomeFragment : BaseFragment() {
             override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder?, position: Int) {
 
                 val bangumi = list[position].bangumi
-                if (bangumi == null) {
-                    return
-                }
-
                 when (viewHolder) {
                     is MediumCardHolder -> {
+                        if (bangumi == null) {
+                            return
+                        }
+
                         viewHolder.title.text = StringUtil.mainTitle(bangumi)
                         viewHolder.subtitle.text = viewHolder.subtitle.resources.getString(R.string.unwatched).format(bangumi.unwatched_count)
                         Glide.with(parent)
@@ -176,6 +176,9 @@ class HomeFragment : BaseFragment() {
                         }
                     }
                     is WideCardHolder -> {
+                        if (bangumi == null) {
+                            return
+                        }
 
                         viewHolder.title.text = StringUtil.mainTitle(bangumi)
                         viewHolder.subtitle.text = StringUtil.subTitle(bangumi)

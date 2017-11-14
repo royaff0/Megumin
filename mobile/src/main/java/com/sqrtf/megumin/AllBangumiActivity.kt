@@ -171,8 +171,8 @@ class AllBangumiActivity : BaseActivity() {
 
         override fun onBindViewHolder(viewHolder: WideCardHolder, p1: Int) {
             val bangumi = bangumiList[p1]
-            viewHolder.title.text = bangumi.name_cn
-            viewHolder.subtitle.text = bangumi.name
+            viewHolder.title.text = StringUtil.mainTitle(bangumi)
+            viewHolder.subtitle.text = StringUtil.subTitle(bangumi)
             viewHolder.info.text = viewHolder.info.resources.getString(R.string.update_info)
                     ?.format(bangumi.air_date, bangumi.eps, bangumi.air_weekday.let { StringUtil.dayOfWeek(it) })
 

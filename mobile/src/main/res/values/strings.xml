@@ -29,6 +29,11 @@
         <item>TV</item>
     </string-array>
 
+    <string-array name="array_link_type" translatable="false">
+        <item>http://</item>
+        <item>https://</item>
+    </string-array>
+
     <string name="title_activity_player" translatable="false">PlayerActivity</string>
     <string name="title_activity_settings" translatable="false">Settings</string>
 

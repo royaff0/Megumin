@@ -257,7 +257,7 @@ class PlayerActivity : BaseActivity() {
         mToast.show()
 
         if (isFinish) {
-            playerView.seekOffsetTo(s * 1000)
+            playerView.seekOffsetTo(s * (if (isForward) 1000 else -1000))
             mToast.cancel()
         }
     }

@@ -23,7 +23,7 @@
             android:fitsSystemWindows="true"
             app:contentScrim="@color/detailContentBackground"
             app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
-            app:titleEnabled="false"
+            app:titleEnabled="true"
             app:toolbarId="@+id/toolbar">
 
             <ImageView
@@ -31,6 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
+                android:foreground="#50000000"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax" />
 

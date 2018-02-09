@@ -33,8 +33,8 @@ import java.util.*
 
 class DetailActivity : BaseActivity() {
     val iv by lazy { findViewById(R.id.image) as ImageView? }
-    val ivCover by lazy { findViewById(R.id.image_cover) as ImageView }
-    val ctitle by lazy { findViewById(R.id.title) as TextView }
+//    val ivCover by lazy { findViewById(R.id.image_cover) as ImageView }
+//    val ctitle by lazy { findViewById(R.id.title) as TextView }
     val subtitle by lazy { findViewById(R.id.subtitle) as TextView }
     val info by lazy { findViewById(R.id.info) as TextView }
     val summary by lazy { findViewById(R.id.summary) as TextView }
@@ -77,6 +77,7 @@ class DetailActivity : BaseActivity() {
 
         setData(bgm!!)
         loadData(bgm.id)
+        title = StringUtil.mainTitle(bgm)
     }
 
     private fun loadData(bgmId: String) {
@@ -206,9 +207,9 @@ class DetailActivity : BaseActivity() {
         recyclerView.isNestedScrollingEnabled = false
 
         iv?.let { Glide.with(this).load(detail.image).into(iv) }
-        Glide.with(this).load(detail.image).into(ivCover)
+//        Glide.with(this).load(detail.image).into(ivCover)
 
-        ctitle.text = StringUtil.mainTitle(detail)
+//        ctitle.text = StringUtil.mainTitle(detail)
         subtitle.text = StringUtil.subTitle(detail)
         info.text = resources.getString(R.string.update_info)
                 ?.format(detail.air_date, detail.eps, StringUtil.dayOfWeek(detail.air_weekday))

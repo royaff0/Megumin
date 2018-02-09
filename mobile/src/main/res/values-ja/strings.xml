@@ -33,5 +33,7 @@
     <string name="open_with_external_player">外部プレーヤーで再生</string>
     <string name="action_search">検索</string>
     <string name="empty">No content</string>
+    <string name="connecting">接続する…</string>
+    <string name="network_error">Network Error</string>
 
 </resources>

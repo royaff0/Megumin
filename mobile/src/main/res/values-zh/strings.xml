@@ -33,5 +33,7 @@
     <string name="open_with_external_player">外部播放器中打开</string>
     <string name="action_search">搜索</string>
     <string name="empty">无内容</string>
+    <string name="connecting">连接中...</string>
+    <string name="network_error">网络错误</string>
 
 </resources>

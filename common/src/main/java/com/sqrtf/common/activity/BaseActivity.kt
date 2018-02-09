@@ -93,7 +93,7 @@ open class BaseActivity : RxLifecycleActivity() {
                 }
             }
 
-            Toast.makeText(this.applicationContext, errorMessage, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
         }
     }
 

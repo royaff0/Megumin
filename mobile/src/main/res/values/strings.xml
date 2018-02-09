@@ -50,4 +50,7 @@
     <string name="toast_forward" translatable="false">+%ds</string>
     <string name="toast_backward" translatable="false">-%ds</string>
 
+    <string name="connecting">Connecting…</string>
+    <string name="network_error">Network Error</string>
+
 </resources>

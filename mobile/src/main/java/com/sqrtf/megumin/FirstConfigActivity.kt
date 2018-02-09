@@ -7,12 +7,14 @@ import android.text.TextUtils
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import com.sqrtf.common.activity.BaseActivity
 import com.sqrtf.common.api.ApiClient
 import com.sqrtf.common.api.LoginRequest
 import com.sqrtf.common.cache.MeguminPreferences
 import io.reactivex.functions.Consumer
 import okhttp3.HttpUrl
+import retrofit2.HttpException
 
 class FirstConfigActivity : BaseActivity() {
 
@@ -33,6 +35,8 @@ class FirstConfigActivity : BaseActivity() {
 
         textServer.setText(MeguminPreferences.getServer(), TextView.BufferType.EDITABLE)
 
+        val toast = Toast.makeText(this, getString(R.string.connecting), Toast.LENGTH_LONG)
+
         findViewById(R.id.floatingActionButton).setOnClickListener {
             val host = StringBuilder()
             val domain = textServer.text.toString()
@@ -49,17 +53,35 @@ class FirstConfigActivity : BaseActivity() {
             if (!domain.endsWith("/"))
                 host.append("/")
 
-            showToast("connecting...")
+            toast.setText(getString(R.string.connecting))
+            toast.show()
 
             ApiClient.init(this, host.toString())
             ApiClient.getInstance().login(LoginRequest(textUser.text.toString(), textPw.text.toString(), true))
                     .withLifecycle()
-                    .subscribe(Consumer {
+                    .subscribe({
                         MeguminPreferences.setServer(host.toString())
                         MeguminPreferences.setUsername(textUser.text.toString())
                         startActivity(Intent(this, HomeActivity::class.java))
+                        toast.cancel()
                         finish()
-                    }, toastErrors())
+                    }, {
+                        var errorMessage = getString(R.string.network_error)
+
+                        if (it is HttpException) {
+                            val body = it.response().errorBody()
+                            val message = body?.let { it1 ->
+                                ApiClient.converterErrorBody(it1)
+                            }
+
+                            if (message?.message() != null) {
+                                errorMessage = message.message()
+                            }
+                        }
+
+                        toast.setText(errorMessage)
+                        toast.show()
+                    })
         }
     }
 }

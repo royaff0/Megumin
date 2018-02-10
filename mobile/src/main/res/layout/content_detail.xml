@@ -29,7 +29,7 @@
                 android:layout_marginLeft="28dp"
                 android:layout_marginTop="24dp"
                 android:textColor="@color/textColorTitle2"
-                android:textSize="20sp"
+                android:textSize="21sp"
                 app:layout_collapseMode="parallax"
                 tools:text="Subtitle" />
 
@@ -40,7 +40,7 @@
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="28dp"
                 android:textColor="@color/textColorSecondary"
-                android:textSize="16sp"
+                android:textSize="17sp"
                 app:layout_collapseMode="parallax"
                 tools:text="2018-01-02, 12 episodes, Mon" />
 

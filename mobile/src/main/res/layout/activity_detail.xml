@@ -24,6 +24,7 @@
             app:contentScrim="@color/detailContentBackground"
             app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
             app:titleEnabled="true"
+            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline"
             app:toolbarId="@+id/toolbar">
 
             <ImageView

@@ -14,6 +14,7 @@ import com.sqrtf.common.MeguminApplocation
 import com.sqrtf.common.activity.BaseActivity
 import com.sqrtf.common.api.ApiClient
 import io.reactivex.functions.Consumer
+import retrofit2.HttpException
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -42,10 +43,16 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         ApiClient.getInstance().getUserInfo()
                 .withLifecycle()
-                .subscribe(Consumer {
+                .subscribe({
                     navHeaderT1.text = it.getData().name
                     navHeaderT2.text = it.getData().email
-                }, toastErrors())
+                }, {
+                    toastErrors().accept(it)
+
+                    if (it is HttpException && it.code() == 401) {
+                        logout()
+                    }
+                })
     }
 
     private fun search() {
@@ -85,14 +92,18 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 //                startActivity(Intent(this, SettingsActivity::class.java))
 //            }
             R.id.nav_logout -> {
-                MeguminApplocation.logout(this)
-                finishAffinity()
+                logout()
             }
         }
 
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
         drawer.closeDrawer(GravityCompat.START)
         return false
+    }
+
+    private fun logout() {
+        MeguminApplocation.logout(this)
+        finishAffinity()
     }
 
 }

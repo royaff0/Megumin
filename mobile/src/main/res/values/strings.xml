@@ -40,6 +40,7 @@
     <string name="update_info">%s, %d episodes, %s</string>
     <string name="unwatched">%d new</string>
     <string name="more">More</string>
+    <string name="less">Less</string>
     <string name="others">others</string>
     <string name="logout">Logout</string>
     <string name="releasing">Releasing</string>

@@ -33,13 +33,13 @@ import java.util.*
 
 class DetailActivity : BaseActivity() {
     val iv by lazy { findViewById(R.id.image) as ImageView? }
-//    val ivCover by lazy { findViewById(R.id.image_cover) as ImageView }
+    //    val ivCover by lazy { findViewById(R.id.image_cover) as ImageView }
 //    val ctitle by lazy { findViewById(R.id.title) as TextView }
     val subtitle by lazy { findViewById(R.id.subtitle) as TextView }
     val info by lazy { findViewById(R.id.info) as TextView }
     val summary by lazy { findViewById(R.id.summary) as TextView }
     val summary2 by lazy { findViewById(R.id.summary2) as TextView }
-    val more by lazy { findViewById(R.id.button_more) }
+    val more by lazy { findViewById(R.id.button_more) as TextView }
     val spinner by lazy { findViewById(R.id.spinner) as Spinner }
     val recyclerView by lazy { findViewById(R.id.recycler_view) as RecyclerView }
     val summaryLayout by lazy { findViewById(R.id.summary_layout) }
@@ -227,19 +227,40 @@ class DetailActivity : BaseActivity() {
             startActivity(i)
         }
 
-        if (!TextUtils.isEmpty(detail.summary)) {
-            summary.text = detail.summary
-            summary2.post {
-                summary2.text = summary.text.toString().substring(summary.layout.getLineEnd(2))
-            }
-            summaryLayout.setOnClickListener {
-                summary2.setSingleLine(false)
-                more.visibility = View.GONE
-            }
-        } else {
+        if (TextUtils.isEmpty(detail.summary)) {
             summary.visibility = View.GONE
             summary2.visibility = View.GONE
             more.visibility = View.GONE
+        } else {
+            fun less() {
+                summary.text = detail.summary.replace("\n", "\t")
+                summary.maxLines = 1
+                summary.post {
+                    summary2.text = summary.text.toString().substring(summary.layout.getLineEnd(0))
+                }
+                more.setText(R.string.more)
+                more.tag = 1
+            }
+
+            fun more() {
+                summary.text = detail.summary
+                summary2.text = ""
+                summary.maxLines = 20
+                more.setText(R.string.less)
+                more.tag = 0
+            }
+
+            summaryLayout.setOnClickListener {
+                if (more.tag == 0) {
+                    less()
+                } else {
+                    more()
+                }
+            }
+
+            if (more.tag == null) {
+                less()
+            }
         }
 
         val adapter = ArrayAdapter.createFromResource(this,

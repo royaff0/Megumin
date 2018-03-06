@@ -240,7 +240,7 @@ class PlayerActivity : BaseActivity() {
         }
 
         if (controllerVisibility == View.INVISIBLE
-                && keyCode == KeyEvent.KEYCODE_DPAD_CENTER){
+                && (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_ENTER)){
             playerView.showController()
         }
 

@@ -43,6 +43,7 @@
     <string name="less">Less</string>
     <string name="others">others</string>
     <string name="logout">Logout</string>
+    <string name="recommended">Recommended</string>
     <string name="releasing">Releasing</string>
     <string name="mark_as_watched">Mark as watched</string>
     <string name="mark_all_before_as_watched">Mark all before as watched</string>

@@ -18,11 +18,13 @@ import com.sqrtf.common.StringUtil
 import com.sqrtf.common.activity.BaseFragment
 import com.sqrtf.common.api.ApiClient
 import com.sqrtf.common.api.ListResponse
+import com.sqrtf.common.model.Announce
 import com.sqrtf.common.model.Bangumi
 import com.sqrtf.megumin.homefragment.HomeData
 import com.sqrtf.megumin.homefragment.HomeLineAdapter
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -53,14 +55,23 @@ class HomeFragment : BaseFragment() {
 
     private fun loadData() {
         swipeRefresh.isRefreshing = true
-        Observable.zip(withLifecycle(ApiClient.getInstance().getMyBangumi()),
+        Observable.zip(
+                withLifecycle(ApiClient.getInstance().getAnnounceBangumi()),
+                withLifecycle(ApiClient.getInstance().getMyBangumi()),
                 withLifecycle(ApiClient.getInstance().getAllBangumi()),
-                BiFunction { t1: ListResponse<Bangumi>, t2: ListResponse<Bangumi> -> Pair(t1.getData(), t2.getData()) })
+                Function3({ t1: ListResponse<Announce>, t2: ListResponse<Bangumi>, t3: ListResponse<Bangumi> ->
+                    arrayOf(t1.getData().map { it.bangumi }, t2.getData(), t3.getData())
+                }))
                 .subscribe({
                     val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-
                     homeDataAdapter.list.clear()
-                    val set = it.first.toHashSet()
+
+                    if (it[0].isNotEmpty()) {
+                        homeDataAdapter.list.add(HomeData(getString(R.string.recommended)))
+                        homeDataAdapter.list.add(HomeData(it[0]))
+                    }
+
+                    val set = it[1].toHashSet()
 //                    set.addAll(it.second)
                     val todayUpdate = set
                             .filter {
@@ -76,9 +87,9 @@ class HomeFragment : BaseFragment() {
                                 .filter { it.unwatched_count >= 1 }))
                     }
 
-                    if (it.second.isNotEmpty()) {
+                    if (it[2].isNotEmpty()) {
                         homeDataAdapter.list.add(HomeData(getString(R.string.title_bangumi)))
-                        homeDataAdapter.list.addAll(it.second.map { HomeData(it) })
+                        homeDataAdapter.list.addAll(it[2].map { HomeData(it) })
                     }
 
                     homeDataAdapter.list.add(HomeData())

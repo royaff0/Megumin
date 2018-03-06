@@ -22,9 +22,15 @@ class HomeLineAdapter(ndatas: HomeData, callback: OnClickListener?) : RecyclerVi
     }
 
     override fun onBindViewHolder(holder: MediumCardHolder, position: Int) {
-        val bangumi = datas.datas!![position]
+        val bangumi = datas.datas?.get(position) ?: return
+
         holder.title.text = StringUtil.mainTitle(bangumi)
-        holder.subtitle.text = holder.subtitle.resources.getString(R.string.unwatched).format(bangumi.unwatched_count)
+
+        holder.subtitle.text =
+                if (bangumi.status == 1)
+                    holder.subtitle.resources.getString(R.string.unwatched).format(bangumi.unwatched_count)
+                else bangumi.air_date
+
         Glide.with(holder.image.context)
                 .load(bangumi.image)
                 .into(holder.image)

@@ -36,6 +36,9 @@ interface ApiService {
     @GET("/api/home/my_bangumi")
     fun getMyBangumi(@Query("status") status: Int = 3): Observable<ListResponse<Bangumi>>
 
+    @GET("/api/home/announce")
+    fun getAnnounceBangumi(): Observable<ListResponse<Announce>>
+
     @GET("/api/home/on_air")
     fun getAllBangumi(): Observable<ListResponse<Bangumi>>
 

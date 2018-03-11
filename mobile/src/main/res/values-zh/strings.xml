@@ -6,7 +6,7 @@
     <string name="action_settings">设置</string>
     <string name="title_favorite">我的收藏</string>
     <string name="title_bangumi">番剧</string>
-    <string name="update_info">%s, %d集, %s</string>
+    <string name="update_info">%d集  ·  %s  ·  %s</string>
     <string name="unwatched">%d 未看</string>
     <string name="more">更多</string>
 
@@ -35,5 +35,8 @@
     <string name="empty">无内容</string>
     <string name="connecting">连接中...</string>
     <string name="network_error">网络错误</string>
+    <string name="less">△</string>
+    <string name="recommended">推荐</string>
+    <string name="eps_all">%d 集</string>
 
 </resources>

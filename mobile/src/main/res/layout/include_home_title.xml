@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="0dp"
-    android:paddingLeft="12dp"
-    android:paddingRight="12dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     android:paddingTop="8dp"
     android:textColor="@color/textColorLowLight"
     android:textSize="14sp">

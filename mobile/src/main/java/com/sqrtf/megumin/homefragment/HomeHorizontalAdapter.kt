@@ -8,14 +8,8 @@ import com.sqrtf.common.StringUtil
 import com.sqrtf.common.model.Bangumi
 import com.sqrtf.megumin.R
 
-class HomeLineAdapter(ndatas: HomeData, callback: OnClickListener?) : RecyclerView.Adapter<MediumCardHolder>() {
-
-    interface OnClickListener {
-        fun onClick(b: Bangumi)
-    }
-
-    private var datas: HomeData = ndatas
-    private var callback: OnClickListener? = callback
+open class HomeHorizontalAdapter(private var datas: HomeData,
+                                 private var callback: (Bangumi) -> Unit) : RecyclerView.Adapter<MediumCardHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediumCardHolder? {
         return MediumCardHolder(LayoutInflater.from(parent.context).inflate(R.layout.include_bangumi_medium, parent, false))
@@ -25,17 +19,16 @@ class HomeLineAdapter(ndatas: HomeData, callback: OnClickListener?) : RecyclerVi
         val bangumi = datas.datas?.get(position) ?: return
 
         holder.title.text = StringUtil.mainTitle(bangumi)
-
-        holder.subtitle.text =
-                if (bangumi.status == 1)
-                    holder.subtitle.resources.getString(R.string.unwatched).format(bangumi.unwatched_count)
-                else bangumi.air_date
+        holder.subtitle?.text = StringUtil.subTitle(bangumi)
+        holder.time?.text = bangumi.air_date
+        holder.new?.text = holder.itemView.resources.getString(R.string.unwatched).format(bangumi.unwatched_count)
+        holder.eps?.text = holder.itemView.resources.getString(R.string.eps_all).format(bangumi.eps)
 
         Glide.with(holder.image.context)
                 .load(bangumi.image)
                 .into(holder.image)
 
-        holder.itemView.setOnClickListener { callback?.onClick(bangumi) }
+        holder.itemView.setOnClickListener { callback.invoke(bangumi) }
     }
 
     override fun getItemCount(): Int {

@@ -6,7 +6,7 @@
     <string name="action_settings">設定</string>
     <string name="title_favorite">お気に入り</string>
     <string name="title_bangumi">番組表</string>
-    <string name="update_info">%s, %d話, %s</string>
+    <string name="update_info">%d話  ·  %s  ·  %s</string>
     <string name="unwatched">%d 未見</string>
     <string name="more">もっと</string>
 
@@ -35,5 +35,8 @@
     <string name="empty">No content</string>
     <string name="connecting">接続する…</string>
     <string name="network_error">Network Error</string>
+    <string name="less">△</string>
+    <string name="recommended">おすすめ</string>
+    <string name="eps_all">%d eps</string>
 
 </resources>

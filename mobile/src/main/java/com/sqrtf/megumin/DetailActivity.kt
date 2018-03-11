@@ -212,7 +212,7 @@ class DetailActivity : BaseActivity() {
 //        ctitle.text = StringUtil.mainTitle(detail)
         subtitle.text = StringUtil.subTitle(detail)
         info.text = resources.getString(R.string.update_info)
-                ?.format(detail.air_date, detail.eps, StringUtil.dayOfWeek(detail.air_weekday))
+                ?.format(detail.eps, StringUtil.dayOfWeek(detail.air_weekday), detail.air_date)
 
         btnBgmTv.visibility = if (detail.bgm_id > 0) View.VISIBLE else View.GONE
 

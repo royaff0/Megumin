@@ -1,19 +1,19 @@
 package com.sqrtf.megumin
 
 
+import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.sqrtf.common.StringUtil
 import com.sqrtf.common.activity.BaseFragment
 import com.sqrtf.common.api.ApiClient
@@ -21,10 +21,11 @@ import com.sqrtf.common.api.ListResponse
 import com.sqrtf.common.model.Announce
 import com.sqrtf.common.model.Bangumi
 import com.sqrtf.megumin.homefragment.HomeData
-import com.sqrtf.megumin.homefragment.HomeLineAdapter
+import com.sqrtf.megumin.homefragment.HomeHorizontalAdapter
+import com.sqrtf.megumin.homefragment.HomeLargeAdapter
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function3
+import kotlinx.android.synthetic.main.include_bangumi_wide.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -67,19 +68,16 @@ class HomeFragment : BaseFragment() {
                     homeDataAdapter.list.clear()
 
                     if (it[0].isNotEmpty()) {
-                        homeDataAdapter.list.add(HomeData(getString(R.string.recommended)))
-                        homeDataAdapter.list.add(HomeData(it[0]))
+                        homeDataAdapter.list.add(HomeData(HomeData.TYPE.LARGE, null, null, it[0]))
                     }
 
-                    val set = it[1].toHashSet()
-//                    set.addAll(it.second)
-                    val todayUpdate = set
+                    val todayUpdate = it[1]
+                            .toHashSet()
                             .filter {
                                 val week = (System.currentTimeMillis() - format.parse(it.air_date).time) / 604800000
                                 return@filter week <= it.eps + 1
                             }
-                            .sortedBy { format.parse(it.air_date) }
-                            .reversed()
+                            .sortedBy { it.unwatched_count }
 
                     if (todayUpdate.isNotEmpty()) {
                         homeDataAdapter.list.add(HomeData(getString(R.string.releasing)))
@@ -120,12 +118,17 @@ class HomeFragment : BaseFragment() {
             var recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView) as RecyclerView
         }
 
+        class HomeLargeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            var recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView) as RecyclerView
+        }
+
         private class WideCardHolder(view: View) : RecyclerView.ViewHolder(view) {
             val image = view.findViewById(R.id.imageView) as ImageView
             val title = view.findViewById(R.id.title) as TextView
             val subtitle = view.findViewById(R.id.subtitle) as TextView
             val info = view.findViewById(R.id.info) as TextView
             val state = view.findViewById(R.id.state) as TextView
+            val info2 = view.findViewById(R.id.info2) as TextView
         }
 
         private class TitleHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -138,21 +141,46 @@ class HomeFragment : BaseFragment() {
             }
         }
 
+        private class PaddingItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
+            val dp = context.resources.getDimensionPixelSize(R.dimen.dp_8)
+
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                val position = parent.getChildAdapterPosition(view)
+                val childCount = state.itemCount
+                if (position == 0) {
+                    outRect.left = outRect.left.plus(dp)
+                } else if (position + 1 == childCount) {
+                    outRect.right = outRect.right.plus(dp)
+                }
+            }
+        }
+
         private inner class HomeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder?, position: Int) {
 
                 val bangumi = list[position].bangumi
                 when (viewHolder) {
                     is HomeLineHolder -> {
-                        viewHolder.recyclerView.layoutManager = LinearLayoutManager(viewHolder
-                                .recyclerView.context, LinearLayoutManager.HORIZONTAL, false)
-                        GravitySnapHelper(Gravity.START).attachToRecyclerView(viewHolder.recyclerView)
-                        viewHolder.recyclerView.adapter = HomeLineAdapter(list[position], object : HomeLineAdapter.OnClickListener {
-                            override fun onClick(b: Bangumi) {
-                                parent.startActivity(DetailActivity.intent(parent.context, b))
-                            }
+                        if (viewHolder.recyclerView.layoutManager == null) {
+                            viewHolder.recyclerView.layoutManager = LinearLayoutManager(viewHolder
+                                    .recyclerView.context, LinearLayoutManager.HORIZONTAL, false)
+                            viewHolder.recyclerView.addItemDecoration(PaddingItemDecoration(viewHolder.recyclerView.context))
+                        }
 
-                        })
+                        viewHolder.recyclerView.adapter =
+                                HomeHorizontalAdapter(
+                                        list[position], { parent.startActivity(DetailActivity.intent(parent.context, it)) })
+                    }
+                    is HomeLargeHolder -> {
+                        if (viewHolder.recyclerView.layoutManager == null) {
+                            viewHolder.recyclerView.layoutManager = LinearLayoutManager(viewHolder
+                                    .recyclerView.context, LinearLayoutManager.HORIZONTAL, false)
+                            viewHolder.recyclerView.addItemDecoration(PaddingItemDecoration(viewHolder.recyclerView.context))
+                        }
+
+                        viewHolder.recyclerView.adapter =
+                                HomeLargeAdapter(
+                                        list[position], { parent.startActivity(DetailActivity.intent(parent.context, it)) })
                     }
                     is WideCardHolder -> {
                         if (bangumi == null) {
@@ -162,7 +190,7 @@ class HomeFragment : BaseFragment() {
                         viewHolder.title.text = StringUtil.mainTitle(bangumi)
                         viewHolder.subtitle.text = StringUtil.subTitle(bangumi)
                         viewHolder.info.text = viewHolder.info.resources.getString(R.string.update_info)
-                                ?.format(bangumi.air_date, bangumi.eps, bangumi.air_weekday.let { StringUtil.dayOfWeek(it) })
+                                ?.format(bangumi.eps, bangumi.air_weekday.let { StringUtil.dayOfWeek(it) }, bangumi.air_date)
 
                         if (bangumi.favorite_status > 0) {
                             val array = viewHolder.state.resources.getStringArray(R.array.array_favorite)
@@ -172,6 +200,8 @@ class HomeFragment : BaseFragment() {
                         } else {
                             viewHolder.state.text = ""
                         }
+
+                        viewHolder.info2.text = bangumi.summary.replace("\n", "")
 
                         Glide.with(parent)
                                 .load(bangumi.image)
@@ -191,6 +221,7 @@ class HomeFragment : BaseFragment() {
                 return when (p1) {
                     HomeData.TYPE.TITLE.value -> TitleHolder(LayoutInflater.from(p0!!.context).inflate(R.layout.include_home_title, p0, false))
                     HomeData.TYPE.WIDE.value -> WideCardHolder(LayoutInflater.from(p0!!.context).inflate(R.layout.include_bangumi_wide, p0, false))
+                    HomeData.TYPE.LARGE.value -> HomeLargeHolder(LayoutInflater.from(p0!!.context).inflate(R.layout.include_home_line_container, p0, false))
                     HomeData.TYPE.CONTAINER.value -> HomeLineHolder(LayoutInflater.from(p0!!.context).inflate(R.layout.include_home_line_container, p0, false))
                     HomeData.TYPE.TAIL.value -> TailHolder(LayoutInflater.from(p0!!.context).inflate(R.layout.include_home_tail, p0, false))
                     else -> throw RuntimeException("unknown type")

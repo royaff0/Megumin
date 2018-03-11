@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit
 class StringUtil {
 
     companion object {
-        private var dayFormatter = SimpleDateFormat("EE", Locale.getDefault())
-        private val oneDay = 86400000
+        private var dayFormatter = SimpleDateFormat("EEEE", Locale.getDefault())
+        private const val oneDay = 86400000
 
         fun dayOfWeek(day: Int): String {
             return dayFormatter.format(day * oneDay + 3 * oneDay)

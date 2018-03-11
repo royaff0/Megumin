@@ -87,18 +87,18 @@ class SearchActivity : BaseActivity() {
         val subtitle = view.findViewById(R.id.subtitle) as TextView
         val info = view.findViewById(R.id.info) as TextView
         val state = view.findViewById(R.id.state) as TextView
+        val info2 = view.findViewById(R.id.info2) as TextView
     }
 
-    inner private class HomeAdapter : RecyclerView.Adapter<WideCardHolder>() {
-        override fun onCreateViewHolder(p0: ViewGroup?, p1: Int): WideCardHolder
-                = WideCardHolder(LayoutInflater.from(this@SearchActivity).inflate(R.layout.include_bangumi_wide, p0, false))
+    private inner class HomeAdapter : RecyclerView.Adapter<WideCardHolder>() {
+        override fun onCreateViewHolder(p0: ViewGroup?, p1: Int): WideCardHolder = WideCardHolder(LayoutInflater.from(this@SearchActivity).inflate(R.layout.include_bangumi_wide, p0, false))
 
         override fun onBindViewHolder(viewHolder: WideCardHolder, p1: Int) {
             val bangumi = bangumiList[p1]
             viewHolder.title.text = bangumi.name_cn
             viewHolder.subtitle.text = bangumi.name
             viewHolder.info.text = viewHolder.info.resources.getString(R.string.update_info)
-                    ?.format(bangumi.air_date, bangumi.eps, bangumi.air_weekday.let { StringUtil.dayOfWeek(it) })
+                    ?.format(bangumi.eps, bangumi.air_weekday.let { StringUtil.dayOfWeek(it) }, bangumi.air_date)
 
             if (bangumi.favorite_status > 0) {
                 val array = resources.getStringArray(R.array.array_favorite)
@@ -108,6 +108,8 @@ class SearchActivity : BaseActivity() {
             } else {
                 viewHolder.state.text = ""
             }
+
+            viewHolder.info2.text = bangumi.summary.replace("\n", "")
 
             Glide.with(this@SearchActivity)
                     .load(bangumi.image)

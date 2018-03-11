@@ -37,8 +37,9 @@
     <string name="title_activity_player" translatable="false">PlayerActivity</string>
     <string name="title_activity_settings" translatable="false">Settings</string>
 
-    <string name="update_info">%s, %d episodes, %s</string>
+    <string name="update_info">%d eps  ·  %s  ·  %s</string>
     <string name="unwatched">%d new</string>
+    <string name="eps_all">%d eps</string>
     <string name="more">More</string>
     <string name="less">Less</string>
     <string name="others">others</string>

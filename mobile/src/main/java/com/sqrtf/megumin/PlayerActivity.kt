@@ -251,7 +251,7 @@ class PlayerActivity : BaseActivity() {
 
     private fun onKeyboardSeekUpdate(times: Int, isFinish: Boolean = false) {
         val isForward = keyPressingCode == KeyEvent.KEYCODE_DPAD_RIGHT
-        val s = times * 5
+        val s = times * 10
 
         mToast.setText(getString(if (isForward) R.string.toast_forward else R.string.toast_backward).format(s))
         mToast.show()

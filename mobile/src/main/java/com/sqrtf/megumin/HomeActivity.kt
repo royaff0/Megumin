@@ -1,7 +1,6 @@
 package com.sqrtf.megumin
 
 import android.os.Bundle
-import android.os.Handler
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
@@ -13,7 +12,6 @@ import android.widget.TextView
 import com.sqrtf.common.MeguminApplocation
 import com.sqrtf.common.activity.BaseActivity
 import com.sqrtf.common.api.ApiClient
-import io.reactivex.functions.Consumer
 import retrofit2.HttpException
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {

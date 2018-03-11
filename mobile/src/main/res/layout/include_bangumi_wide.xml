@@ -24,12 +24,40 @@
             android:layout_width="91dp"
             android:layout_height="130dp"
             android:layout_marginBottom="12dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
+            android:background="@color/backgroundPrimary"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:ellipsize="none"
+            android:fadingEdgeLength="40dp"
+            android:requiresFadingEdge="horizontal"
+            android:singleLine="true"
+            android:textColor="@color/textColorLowLight"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="12 eps  ·  Friday" />
+
+        <TextView
+            android:id="@+id/state"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textColor="@color/meguminRed"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/info"
+            app:layout_constraintStart_toEndOf="@+id/info"
+            tools:text="state" />
 
         <TextView
             android:id="@+id/title"
@@ -37,16 +65,16 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
-            android:maxLines="2"
-            android:text="bkbuhnnlnl"
+            android:layout_marginTop="8dp"
+            android:maxLines="1"
             android:textColor="@color/textColorPrimary"
             android:textSize="15sp"
             app:layout_anchor="@+id/imageView"
             app:layout_anchorGravity="right|center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/info"
+            tools:text="bkbuhnnlnl" />
 
         <TextView
             android:id="@+id/subtitle"
@@ -54,42 +82,31 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="2dp"
-            android:maxLines="2"
-            android:text="subtitle"
+            android:maxLines="1"
             android:textColor="@color/textColorSecondary"
-            android:textSize="13sp"
+            android:textSize="12sp"
             app:layout_anchor="@+id/imageView"
             app:layout_anchorGravity="bottom|center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/title" />
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            tools:text="subtitle" />
 
         <TextView
-            android:id="@+id/info"
+            android:id="@+id/info2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="14sp"
+            android:layout_marginTop="20dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/textColorSecondary"
+            android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/subtitle" />
-
-        <TextView
-            android:id="@+id/state"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/meguminRed"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/info" />
+            app:layout_constraintTop_toBottomOf="@+id/subtitle"
+            tools:text="info\nsdsdkehfkuhwkef" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

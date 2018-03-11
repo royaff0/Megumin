@@ -2,7 +2,8 @@
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="100dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="94dp"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
     android:clickable="true"
@@ -26,6 +27,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/backgroundPrimary"
                 android:scaleType="centerCrop" />
 
 
@@ -35,7 +37,6 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:layout_marginTop="6dp"
@@ -43,20 +44,20 @@
             android:fadingEdgeLength="40dp"
             android:requiresFadingEdge="horizontal"
             android:singleLine="true"
-            android:text="title"
-            android:textColor="@color/textColorPrimary" />
+            android:textColor="@color/textColorPrimary"
+            tools:text="title" />
 
         <TextView
-            android:id="@+id/subtitle"
+            android:id="@+id/new_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:maxLines="1"
-            android:text="subtitle"
             android:textColor="@color/textColorSecondary"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            tools:text="new" />
 
     </LinearLayout>
 </android.support.v7.widget.CardView>

@@ -57,8 +57,8 @@ class SearchActivity : BaseActivity() {
 
     private fun search(s: String) {
         ApiClient.getInstance().getSearchBangumi(1, 300, "air_date", "desc", s)
-                .onlyRunOneInstance(SearchActivity.TASK_ID_LOAD, true)
                 .withLifecycle()
+                .onlyRunOneInstance(SearchActivity.TASK_ID_LOAD, true)
                 .subscribe(Consumer {
                     display(it.getData())
                 }, toastErrors())

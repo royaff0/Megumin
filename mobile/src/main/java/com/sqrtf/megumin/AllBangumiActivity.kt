@@ -118,6 +118,7 @@ class AllBangumiActivity : BaseActivity() {
             loaded = true
             Log.i("AllBangumiActivity", "onLoadData:" + pageNow)
             return ApiClient.getInstance().getSearchBangumi(pageNow, 300, "air_date", "desc", null)
+                    .withLifecycle()
                     .onlyRunOneInstance(AllBangumiActivity.TASK_ID_LOAD, false)
                     .flatMap {
                         pageNow += 1

@@ -206,7 +206,7 @@ class DetailActivity : BaseActivity() {
     private fun setData(detail: Bangumi) {
         recyclerView.isNestedScrollingEnabled = false
 
-        iv?.let { Glide.with(this).load(detail.image).into(iv) }
+        iv?.let { Glide.with(this).load(detail.cover).into(iv) }
 //        Glide.with(this).load(detail.image).into(ivCover)
 
 //        ctitle.text = StringUtil.mainTitle(detail)

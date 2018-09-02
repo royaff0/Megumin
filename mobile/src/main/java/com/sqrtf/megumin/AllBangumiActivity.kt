@@ -189,7 +189,7 @@ class AllBangumiActivity : BaseActivity() {
             viewHolder.info2.text = bangumi.summary.replace("\n", "")
 
             Glide.with(this@AllBangumiActivity)
-                    .load(bangumi.image)
+                    .load(bangumi.cover)
                     .into(viewHolder.image)
 
             viewHolder.itemView.setOnClickListener {

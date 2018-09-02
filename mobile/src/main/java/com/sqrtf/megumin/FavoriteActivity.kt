@@ -154,7 +154,7 @@ class FavoriteActivity : BaseActivity() {
             viewHolder.info2.text = bangumi.summary.replace("\n", "")
 
             Glide.with(this@FavoriteActivity)
-                    .load(bangumi.image)
+                    .load(bangumi.cover)
                     .into(viewHolder.image)
 
             viewHolder.itemView.setOnClickListener {

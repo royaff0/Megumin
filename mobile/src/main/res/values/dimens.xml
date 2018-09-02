@@ -11,4 +11,5 @@
     <dimen name="spacing_list">12dp</dimen>
     <dimen name="spacing_list_bottom">48dp</dimen>
     <dimen name="dp_8">8dp</dimen>
+    <dimen name="top_appbar_elevation">4dp</dimen>
 </resources>

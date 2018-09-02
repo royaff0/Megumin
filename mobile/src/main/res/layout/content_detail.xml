@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/detailBackground"
+    android:background="?attr/detailBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.sqrtf.megumin.DetailActivity"
     tools:showIn="@layout/activity_detail">
@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#101010"
+            android:background="?attr/detailContentBackground"
             android:orientation="vertical">
 
             <TextView
@@ -28,7 +28,7 @@
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="32dp"
                 android:layout_marginTop="24dp"
-                android:textColor="@color/textColorTitle2"
+                android:textColor="?attr/textColorTitle2"
                 android:textSize="21sp"
                 app:layout_collapseMode="parallax"
                 tools:text="Subtitle" />
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="33dp"
-                android:textColor="@color/textColorSecondary"
+                android:textColor="?attr/textColorSecondary"
                 android:textSize="16sp"
                 app:layout_collapseMode="parallax"
                 tools:text="2018-01-02, 12 episodes, Mon" />
@@ -53,9 +53,9 @@
                 android:layout_marginLeft="33dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="22dp"
+                android:animateLayoutChanges="true"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"
                 android:orientation="vertical">
 
                 <TextView
@@ -65,7 +65,7 @@
                     android:autoLink="web"
                     android:lineSpacingExtra="5dp"
                     android:maxLines="1"
-                    android:textColor="@color/textColorTitle2" />
+                    android:textColor="?attr/textColorTitle2" />
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -82,7 +82,7 @@
                         android:fadingEdgeLength="30dp"
                         android:requiresFadingEdge="horizontal"
                         android:singleLine="true"
-                        android:textColor="@color/textColorTitle2"
+                        android:textColor="?attr/textColorTitle2"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/button_more"
                         app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +110,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#101010"
+            android:background="?attr/detailContentBackground"
             android:orientation="vertical">
 
             <LinearLayout

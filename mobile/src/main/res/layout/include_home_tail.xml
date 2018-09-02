@@ -8,9 +8,10 @@
     android:clickable="true"
     android:focusable="true"
     android:fontFamily="sans-serif-medium"
-    android:gravity="center_vertical|end"
+    android:gravity="center_vertical"
     android:orientation="vertical"
-    android:paddingRight="14dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
     android:text="@string/more"
     android:textColor="@color/colorAccent"
     android:textSize="18dp">

@@ -21,7 +21,7 @@ import com.sqrtf.common.model.Bangumi
 import io.reactivex.functions.Consumer
 
 
-class SearchActivity : BaseActivity() {
+class SearchActivity : BaseThemeActivity() {
 
     companion object {
         fun intent(context: Context): Intent {

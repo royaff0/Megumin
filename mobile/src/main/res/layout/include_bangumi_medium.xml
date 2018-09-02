@@ -9,7 +9,7 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="@color/contentBackground"
+    app:cardBackgroundColor="?attr/contentBackground"
     app:cardCornerRadius="1dp"
     app:cardElevation="3dp">
 
@@ -44,7 +44,7 @@
             android:fadingEdgeLength="40dp"
             android:requiresFadingEdge="horizontal"
             android:singleLine="true"
-            android:textColor="@color/textColorPrimary"
+            android:textColor="?attr/textColorPrimary"
             tools:text="title" />
 
         <TextView
@@ -55,7 +55,7 @@
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:maxLines="1"
-            android:textColor="@color/textColorSecondary"
+            android:textColor="?attr/textColorSecondary"
             android:textSize="13sp"
             tools:text="new" />
 

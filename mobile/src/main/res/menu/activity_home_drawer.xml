@@ -18,7 +18,7 @@
         <menu>
             <item
                 android:id="@+id/nav_setting"
-                android:title="@string/action_settings" />
+                android:title="@string/swtich_theme" />
             <item
                 android:id="@+id/nav_logout"
                 android:title="@string/logout" />

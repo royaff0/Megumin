@@ -31,7 +31,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 
-class DetailActivity : BaseActivity() {
+class DetailActivity : BaseThemeActivity() {
     val iv by lazy { findViewById(R.id.image) as ImageView? }
     //    val ivCover by lazy { findViewById(R.id.image_cover) as ImageView }
 //    val ctitle by lazy { findViewById(R.id.title) as TextView }
@@ -46,6 +46,15 @@ class DetailActivity : BaseActivity() {
     val btnBgmTv by lazy { findViewById(R.id.button_bgm_tv) }
 
     val episodeAdapter by lazy { EpisodeAdapter() }
+
+
+    override fun themeWhite(): Int {
+        return R.style.AppThemeWhite_NoStateBar
+    }
+
+    override fun themeStand(): Int {
+        return R.style.AppTheme_NoStateBar
+    }
 
     companion object {
         fun intent(context: Context, bgm: Bangumi): Intent {
@@ -233,13 +242,22 @@ class DetailActivity : BaseActivity() {
             more.visibility = View.GONE
         } else {
             fun less() {
-                summary.text = detail.summary.replace("\n", "\t")
-                summary.maxLines = 1
                 summary.post {
                     summary2.text = summary.text.toString().substring(summary.layout.getLineEnd(0))
                 }
                 more.setText(R.string.more)
                 more.tag = 1
+
+                val sp = summary.parent as ViewGroup
+                sp.removeView(summary)
+
+                summary.text = detail.summary.replace("\n", "\t")
+                summary.maxLines = 1
+
+                sp.addView(summary, 0)
+
+                recyclerView.alpha = 0.2f
+                recyclerView.animate().setDuration(400).alpha(1f).start()
             }
 
             fun more() {
@@ -248,6 +266,13 @@ class DetailActivity : BaseActivity() {
                 summary.maxLines = 20
                 more.setText(R.string.less)
                 more.tag = 0
+
+                val sp = summary.parent as ViewGroup
+                sp.removeView(summary)
+                sp.addView(summary, 0)
+
+                recyclerView.alpha = 0.2f
+                recyclerView.animate().setDuration(400).alpha(1f).start()
             }
 
             summaryLayout.setOnClickListener {

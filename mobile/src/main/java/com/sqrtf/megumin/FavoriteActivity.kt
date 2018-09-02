@@ -21,7 +21,7 @@ import com.sqrtf.common.model.Bangumi
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer
 
-class FavoriteActivity : BaseActivity() {
+class FavoriteActivity : BaseThemeActivity() {
 
     private val bangumiList = arrayListOf<Bangumi>()
     private val adapter = HomeAdapter()
@@ -154,7 +154,7 @@ class FavoriteActivity : BaseActivity() {
             viewHolder.info2.text = bangumi.summary.replace("\n", "")
 
             Glide.with(this@FavoriteActivity)
-                    .load(bangumi.cover)
+                    .load(bangumi.image)
                     .into(viewHolder.image)
 
             viewHolder.itemView.setOnClickListener {

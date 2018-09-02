@@ -26,7 +26,7 @@ import com.sqrtf.common.model.Bangumi
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer
 
-class AllBangumiActivity : BaseActivity() {
+class AllBangumiActivity : BaseThemeActivity() {
     companion object {
         fun intent(context: Context): Intent {
             return Intent(context, AllBangumiActivity::class.java)

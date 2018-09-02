@@ -25,7 +25,6 @@ import com.sqrtf.megumin.homefragment.HomeHorizontalAdapter
 import com.sqrtf.megumin.homefragment.HomeLargeAdapter
 import io.reactivex.Observable
 import io.reactivex.functions.Function3
-import kotlinx.android.synthetic.main.include_bangumi_wide.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -60,9 +59,9 @@ class HomeFragment : BaseFragment() {
                 withLifecycle(ApiClient.getInstance().getAnnounceBangumi()),
                 withLifecycle(ApiClient.getInstance().getMyBangumi()),
                 withLifecycle(ApiClient.getInstance().getAllBangumi()),
-                Function3({ t1: ListResponse<Announce>, t2: ListResponse<Bangumi>, t3: ListResponse<Bangumi> ->
+                Function3 { t1: ListResponse<Announce>, t2: ListResponse<Bangumi>, t3: ListResponse<Bangumi> ->
                     arrayOf(t1.getData().map { it.bangumi }, t2.getData(), t3.getData())
-                }))
+                })
                 .subscribe({
                     val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                     homeDataAdapter.list.clear()

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary2">#f0f0f0</color>
+    <color name="colorPrimaryDark2">#e0e0e0</color>
+    <color name="colorAccent2">#d43b3e</color>
+    <color name="fullscreenPrimaryDark2">#a0a0a0</color>
+
+    <color name="contentBackground2">#e0e0e0</color>
+    <color name="detailBackground2">#e0e0e0</color>
+    <color name="detailContentBackground2">#f0f0f0</color>
+
+    <color name="colorControlNormal2">#707070</color>
+    <color name="textColorPrimary2">#2e2e2e</color>
+    <color name="textColorTitle22">#2e2e2e</color>
+    <color name="textColorSecondary2">#444444</color>
+    <color name="textColorLowLight2">#808080</color>
+
+    <color name="backgroundPrimary2">#f0f0f0</color>
+    <color name="backgroundSecondary2">#eeeeee</color>
+    <color name="backgroundFore2">#eeeeee</color>
+
+    <color name="black_overlay2">#66000000</color>
+</resources>

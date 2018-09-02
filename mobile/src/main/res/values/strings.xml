@@ -43,6 +43,7 @@
     <string name="more">More</string>
     <string name="less">Less</string>
     <string name="others">others</string>
+    <string name="swtich_theme">Switch theme</string>
     <string name="logout">Logout</string>
     <string name="recommended">Recommended</string>
     <string name="releasing">Releasing</string>

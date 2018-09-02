@@ -1,24 +1,47 @@
 package com.sqrtf.megumin
 
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
+import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import com.sqrtf.common.MeguminApplocation
 import com.sqrtf.common.activity.BaseActivity
 import com.sqrtf.common.api.ApiClient
+import com.sqrtf.common.cache.MeguminPreferences
+import com.sqrtf.common.cache.PreferencesUtil
 import retrofit2.HttpException
 
-class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
+class HomeActivity : BaseThemeActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    override fun themeWhite(): Int {
+        return R.style.AppThemeWhite_NoStateBar
+    }
+
+    override fun themeStand(): Int {
+        return R.style.AppTheme_NoStateBar
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (isWhiteTheme) {
+            val v = findViewById(android.R.id.content)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                v.systemUiVisibility = v.systemUiVisibility.or(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+            }
+        }
+
         setContentView(R.layout.activity_home)
+
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
@@ -86,9 +109,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.nav_bangmuni -> {
                 startActivity(AllBangumiActivity.intent(this))
             }
-//            R.id.nav_setting -> {
-//                startActivity(Intent(this, SettingsActivity::class.java))
-//            }
+            R.id.nav_setting -> {
+                themeChanged()
+            }
             R.id.nav_logout -> {
                 logout()
             }

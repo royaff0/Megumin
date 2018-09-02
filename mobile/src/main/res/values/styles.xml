@@ -9,6 +9,37 @@
 
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
+
+        <item name="contentBackground">@color/contentBackground</item>
+        <item name="textColorPrimary">@color/textColorPrimary</item>
+        <item name="textColorSecondary">@color/textColorSecondary</item>
+        <item name="textColorLowLight">@color/textColorLowLight</item>
+        <item name="backgroundFore">@color/backgroundFore</item>
+        <item name="detailContentBackground">@color/detailContentBackground</item>
+        <item name="textColorTitle2">@color/textColorTitle2</item>
+        <item name="detailBackground">@color/detailBackground</item>
+
+    </style>
+
+    <style name="AppThemeActionBarWhite" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/colorPrimary2</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark2</item>
+        <item name="colorAccent">@color/colorAccent2</item>
+
+        <item name="android:windowBackground">@color/backgroundSecondary2</item>
+
+        <item name="android:textColorPrimary">@color/textColorPrimary2</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary2</item>
+
+        <item name="contentBackground">@color/contentBackground2</item>
+        <item name="textColorPrimary">@color/textColorPrimary2</item>
+        <item name="textColorSecondary">@color/textColorSecondary2</item>
+        <item name="textColorLowLight">@color/textColorLowLight2</item>
+        <item name="backgroundFore">@color/backgroundFore2</item>
+        <item name="detailContentBackground">@color/detailContentBackground2</item>
+        <item name="textColorTitle2">@color/textColorTitle22</item>
+        <item name="detailBackground">@color/detailBackground2</item>
+
     </style>
 
     <style name="AppTheme" parent="AppThemeActionBar">
@@ -16,7 +47,17 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="AppThemeWhite" parent="AppThemeActionBarWhite">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NoStateBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppThemeWhite.NoStateBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

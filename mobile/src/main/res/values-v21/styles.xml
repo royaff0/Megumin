@@ -3,12 +3,14 @@
     <style name="AppTheme.NoStateBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="AppThemeWhite.NoStateBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 

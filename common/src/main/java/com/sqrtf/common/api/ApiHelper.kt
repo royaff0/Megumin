@@ -7,7 +7,11 @@ import com.sqrtf.common.cache.MeguminPreferences
  */
 
 object ApiHelper {
-    fun fixHttpUrl(url: String): String {
+    fun fixHttpUrl(url: String?): String {
+        if (url == null) {
+            return ""
+        }
+
         if (url.startsWith("http")) {
             return url
         }

@@ -4,7 +4,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.sqrtf.common.StringUtil
+import com.sqrtf.common.api.ApiHelper
 import com.sqrtf.common.model.Bangumi
 import com.sqrtf.megumin.R
 
@@ -25,7 +27,8 @@ open class HomeHorizontalAdapter(private var datas: HomeData,
         holder.eps?.text = holder.itemView.resources.getString(R.string.eps_all).format(bangumi.eps)
 
         Glide.with(holder.image.context)
-                .load(bangumi.image)
+                .load(bangumi.cover_image.fixedUrl())
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(holder.image)
 
         holder.itemView.setOnClickListener { callback.invoke(bangumi) }

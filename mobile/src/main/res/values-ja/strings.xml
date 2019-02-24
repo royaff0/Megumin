@@ -26,6 +26,7 @@
     </string-array>
 
     <string name="others">その他</string>
+    <string name="swtich_theme">Switch theme</string>
     <string name="logout">ログアウト</string>
     <string name="releasing">放送中</string>
     <string name="mark_as_watched">「鑑賞完了」にする</string>

@@ -1,7 +1,9 @@
 package com.sqrtf.megumin
 
 
+import android.app.ActivityOptions
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -14,9 +16,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.sqrtf.common.StringUtil
 import com.sqrtf.common.activity.BaseFragment
 import com.sqrtf.common.api.ApiClient
+import com.sqrtf.common.api.ApiHelper
 import com.sqrtf.common.api.ListResponse
 import com.sqrtf.common.model.Announce
 import com.sqrtf.common.model.Bangumi
@@ -124,7 +128,7 @@ class HomeFragment : BaseFragment() {
         private class WideCardHolder(view: View) : RecyclerView.ViewHolder(view) {
             val image = view.findViewById(R.id.imageView) as ImageView
             val title = view.findViewById(R.id.title) as TextView
-            val subtitle = view.findViewById(R.id.subtitle) as TextView
+            //            val subtitle = view.findViewById(R.id.subtitle) as TextView
             val info = view.findViewById(R.id.info) as TextView
             val state = view.findViewById(R.id.state) as TextView
             val info2 = view.findViewById(R.id.info2) as TextView
@@ -187,7 +191,7 @@ class HomeFragment : BaseFragment() {
                         }
 
                         viewHolder.title.text = StringUtil.mainTitle(bangumi)
-                        viewHolder.subtitle.text = StringUtil.subTitle(bangumi)
+//                        viewHolder.subtitle.text = StringUtil.subTitle(bangumi)
                         viewHolder.info.text = viewHolder.info.resources.getString(R.string.update_info)
                                 ?.format(bangumi.eps, bangumi.air_weekday.let { StringUtil.dayOfWeek(it) }, bangumi.air_date)
 
@@ -202,12 +206,17 @@ class HomeFragment : BaseFragment() {
 
                         viewHolder.info2.text = bangumi.summary.replace("\n", "")
 
+                        viewHolder.image.setBackgroundColor(bangumi.cover_image.fixedColor())
                         Glide.with(parent)
-                                .load(bangumi.cover)
+                                .load(bangumi.cover_image.fixedUrl())
+                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into(viewHolder.image)
 
                         viewHolder.itemView.setOnClickListener {
-                            parent.startActivity(bangumi.let { it1 -> DetailActivity.intent(parent.context, it1) })
+
+                            parent.startActivity(bangumi.let { it1 ->
+                                DetailActivity.intent(parent.context, it1)
+                            })
                         }
                     }
                     is TitleHolder -> {

@@ -4,9 +4,12 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialog
+import android.support.v7.graphics.Palette
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
@@ -16,6 +19,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.GlideDrawable
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.sqrtf.common.StringUtil
 import com.sqrtf.common.activity.BaseActivity
 import com.sqrtf.common.api.*
@@ -84,7 +91,8 @@ class DetailActivity : BaseThemeActivity() {
         val bgm = JsonUtil.fromJson(json, Bangumi::class.java)
         checkNotNull(bgm)
 
-        setData(bgm!!)
+        preSetImage(Color.parseColor(bgm!!.cover_image.dominant_color), bgm.cover_image.url)
+        setData(bgm)
         loadData(bgm.id)
         title = StringUtil.mainTitle(bgm)
     }
@@ -212,10 +220,21 @@ class DetailActivity : BaseThemeActivity() {
         }
     }
 
+    private fun preSetImage(color: Int, image: String?) {
+        iv?.let {
+            iv?.setBackgroundColor(color)
+
+            Glide.with(this).load(ApiHelper.fixHttpUrl(image))
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+//                    .override(213,390)
+//                    .centerCrop()
+                    .into(iv)
+        }
+    }
+
     private fun setData(detail: Bangumi) {
         recyclerView.isNestedScrollingEnabled = false
 
-        iv?.let { Glide.with(this).load(detail.cover).into(iv) }
 //        Glide.with(this).load(detail.image).into(ivCover)
 
 //        ctitle.text = StringUtil.mainTitle(detail)

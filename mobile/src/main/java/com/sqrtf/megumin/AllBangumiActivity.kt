@@ -18,9 +18,11 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.sqrtf.common.StringUtil
 import com.sqrtf.common.activity.BaseActivity
 import com.sqrtf.common.api.ApiClient
+import com.sqrtf.common.api.ApiHelper
 import com.sqrtf.common.api.ApiService
 import com.sqrtf.common.model.Bangumi
 import io.reactivex.Observable
@@ -149,7 +151,7 @@ class AllBangumiActivity : BaseThemeActivity() {
     private class WideCardHolder(view: View) : RecyclerView.ViewHolder(view) {
         val image = view.findViewById(R.id.imageView) as ImageView
         val title = view.findViewById(R.id.title) as TextView
-        val subtitle = view.findViewById(R.id.subtitle) as TextView
+//        val subtitle = view.findViewById(R.id.subtitle) as TextView
         val info = view.findViewById(R.id.info) as TextView
         val state = view.findViewById(R.id.state) as TextView
         val info2 = view.findViewById(R.id.info2) as TextView
@@ -173,7 +175,7 @@ class AllBangumiActivity : BaseThemeActivity() {
         override fun onBindViewHolder(viewHolder: WideCardHolder, p1: Int) {
             val bangumi = bangumiList[p1]
             viewHolder.title.text = StringUtil.mainTitle(bangumi)
-            viewHolder.subtitle.text = StringUtil.subTitle(bangumi)
+//            viewHolder.subtitle.text = StringUtil.subTitle(bangumi)
             viewHolder.info.text = viewHolder.info.resources.getString(R.string.update_info)
                     ?.format(bangumi.eps, bangumi.air_weekday.let { StringUtil.dayOfWeek(it) }, bangumi.air_date)
 
@@ -189,7 +191,8 @@ class AllBangumiActivity : BaseThemeActivity() {
             viewHolder.info2.text = bangumi.summary.replace("\n", "")
 
             Glide.with(this@AllBangumiActivity)
-                    .load(bangumi.cover)
+                    .load(bangumi.cover_image.fixedUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(viewHolder.image)
 
             viewHolder.itemView.setOnClickListener {

@@ -34,8 +34,8 @@ class FadingBehavior : AppBarLayout.Behavior {
         }
     }
 
-    override fun onNestedScroll(coordinatorLayout: CoordinatorLayout?, child: AppBarLayout, target: View?, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int) {
-        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed)
+    override fun onNestedScroll(coordinatorLayout: CoordinatorLayout, child: AppBarLayout, target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, type: Int) {
+        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type)
         overlapped = dyUnconsumed >= 0
         if (!overlapped) {
             setElevation(child, 0f)

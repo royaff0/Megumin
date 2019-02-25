@@ -34,15 +34,15 @@ class SearchActivity : BaseThemeActivity() {
         private val TASK_ID_LOAD = 0x01
     }
 
-    private val recyclerView by lazy { findViewById(R.id.recycler_view) as RecyclerView }
-    private val edit by lazy { findViewById(R.id.edit) as EditText }
+    private val recyclerView by lazy { findViewById<RecyclerView>(R.id.recycler_view) }
+    private val edit by lazy { findViewById<EditText>(R.id.edit) }
     private val bangumiList = arrayListOf<Bangumi>()
     private val adapter = HomeAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        findViewById(R.id.back).setOnClickListener { super.onBackPressed() }
+        findViewById<View>(R.id.back).setOnClickListener { super.onBackPressed() }
 
         val mLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = mLayoutManager
@@ -84,12 +84,12 @@ class SearchActivity : BaseThemeActivity() {
     }
 
     private class WideCardHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val image = view.findViewById(R.id.imageView) as ImageView
-        val title = view.findViewById(R.id.title) as TextView
-//        val subtitle = view.findViewById(R.id.subtitle) as TextView
-        val info = view.findViewById(R.id.info) as TextView
-        val state = view.findViewById(R.id.state) as TextView
-        val info2 = view.findViewById(R.id.info2) as TextView
+        val image = view.findViewById<ImageView>(R.id.imageView)
+        val title = view.findViewById<TextView>(R.id.title)
+//        val subtitle = view.findViewById<TextView>(R.id.subtitle)
+        val info = view.findViewById<TextView>(R.id.info)
+        val state = view.findViewById<TextView>(R.id.state)
+        val info2 = view.findViewById<TextView>(R.id.info2)
     }
 
     private inner class HomeAdapter : RecyclerView.Adapter<WideCardHolder>() {

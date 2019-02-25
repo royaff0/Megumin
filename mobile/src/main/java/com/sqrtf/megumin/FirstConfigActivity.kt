@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.AppCompatSpinner
 import android.text.TextUtils
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
@@ -18,7 +19,7 @@ import retrofit2.HttpException
 
 class FirstConfigActivity : BaseActivity() {
 
-    private val spinner by lazy { findViewById(R.id.spinner) as AppCompatSpinner }
+    private val spinner by lazy { findViewById<AppCompatSpinner>(R.id.spinner) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,15 +30,15 @@ class FirstConfigActivity : BaseActivity() {
         sp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = sp
 
-        val textServer = findViewById(R.id.server) as EditText
-        val textUser = findViewById(R.id.user) as EditText
-        val textPw = findViewById(R.id.pw) as EditText
+        val textServer = findViewById<EditText>(R.id.server)
+        val textUser = findViewById<EditText>(R.id.user)
+        val textPw = findViewById<EditText>(R.id.pw)
 
         textServer.setText(MeguminPreferences.getServer(), TextView.BufferType.EDITABLE)
 
         val toast = Toast.makeText(this, getString(R.string.connecting), Toast.LENGTH_LONG)
 
-        findViewById(R.id.floatingActionButton).setOnClickListener {
+        findViewById<View>(R.id.floatingActionButton).setOnClickListener {
             val host = StringBuilder()
             val domain = textServer.text.toString()
 

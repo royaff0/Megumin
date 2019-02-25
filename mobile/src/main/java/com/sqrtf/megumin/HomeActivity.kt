@@ -34,7 +34,7 @@ class HomeActivity : BaseThemeActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
 
         if (isWhiteTheme) {
-            val v = findViewById(android.R.id.content)
+            val v = findViewById<View>(android.R.id.content)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 v.systemUiVisibility = v.systemUiVisibility.or(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
             }
@@ -42,20 +42,20 @@ class HomeActivity : BaseThemeActivity(), NavigationView.OnNavigationItemSelecte
 
         setContentView(R.layout.activity_home)
 
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         val toggle = ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer.addDrawerListener(toggle)
         toggle.syncState()
 
-        findViewById(R.id.fab_search).setOnClickListener { search() }
+        findViewById<View>(R.id.fab_search).setOnClickListener { search() }
 
-        val navigationView = findViewById(R.id.nav_view) as NavigationView
-        val navHeaderT1 = navigationView.getHeaderView(0).findViewById(R.id.textView1) as TextView
-        val navHeaderT2 = navigationView.getHeaderView(0).findViewById(R.id.textView2) as TextView
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        val navHeaderT1 = navigationView.getHeaderView(0).findViewById<TextView>(R.id.textView1)
+        val navHeaderT2 = navigationView.getHeaderView(0).findViewById<TextView>(R.id.textView2)
         navigationView.setNavigationItemSelectedListener(this)
 
         supportFragmentManager.beginTransaction()
@@ -81,7 +81,7 @@ class HomeActivity : BaseThemeActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
         } else {
@@ -117,7 +117,7 @@ class HomeActivity : BaseThemeActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-        val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         drawer.closeDrawer(GravityCompat.START)
         return false
     }

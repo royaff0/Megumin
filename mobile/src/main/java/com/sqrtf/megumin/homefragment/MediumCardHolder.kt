@@ -8,10 +8,10 @@ import android.widget.TextView
 import com.sqrtf.megumin.R
 
 class MediumCardHolder(view: View) : ViewHolder(view) {
-    val image = view.findViewById(R.id.imageView) as ImageView
-    val title = view.findViewById(R.id.title) as TextView
-    val subtitle = view.findViewById(R.id.subtitle) as TextView?
-    val time = view.findViewById(R.id.time) as TextView?
-    val new = view.findViewById(R.id.new_count) as TextView?
-    val eps = view.findViewById(R.id.eps) as TextView?
+    val image = view.findViewById<ImageView>(R.id.imageView)
+    val title = view.findViewById<TextView>(R.id.title)
+    val subtitle = view.findViewById<TextView?>(R.id.subtitle)
+    val time = view.findViewById<TextView?>(R.id.time)
+    val new = view.findViewById<TextView?>(R.id.new_count)
+    val eps = view.findViewById<TextView?>(R.id.eps)
 }

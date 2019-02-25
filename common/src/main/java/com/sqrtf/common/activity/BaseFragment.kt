@@ -24,8 +24,8 @@ open class BaseFragment : RxLifecycleFragment() {
         this.thisView = view
     }
 
-    protected fun findViewById(resId: Int): View {
-        return thisView!!.findViewById(resId)
+    protected fun <T : View?> findViewById(resId: Int): T {
+        return thisView!!.findViewById<T>(resId)
     }
 
     protected fun <T> withLifecycle(

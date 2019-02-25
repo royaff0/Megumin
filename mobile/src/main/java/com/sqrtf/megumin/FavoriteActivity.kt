@@ -37,12 +37,12 @@ class FavoriteActivity : BaseThemeActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setTitle(R.string.title_favorite)
 
-        val recyclerView = findViewById(R.id.recycler_view) as RecyclerView
+        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         val mLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = mLayoutManager
         recyclerView.adapter = adapter
@@ -111,12 +111,12 @@ class FavoriteActivity : BaseThemeActivity() {
     }
 
     private class WideCardHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val image = view.findViewById(R.id.imageView) as ImageView
-        val title = view.findViewById(R.id.title) as TextView
-//        val subtitle = view.findViewById(R.id.subtitle) as TextView
-        val info = view.findViewById(R.id.info) as TextView
-        val state = view.findViewById(R.id.state) as TextView
-        val info2 = view.findViewById(R.id.info2) as TextView
+        val image = view.findViewById<ImageView>(R.id.imageView)
+        val title = view.findViewById<TextView>(R.id.title)
+//        val subtitle = view.findViewById<TextView>(R.id.subtitle)
+        val info = view.findViewById<TextView>(R.id.info)
+        val state = view.findViewById<TextView>(R.id.state)
+        val info2 = view.findViewById<TextView>(R.id.info2)
     }
 
     private class PaddingItemDecoration : RecyclerView.ItemDecoration() {

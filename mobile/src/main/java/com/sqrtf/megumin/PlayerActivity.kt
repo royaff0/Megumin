@@ -26,9 +26,9 @@ import com.sqrtf.common.view.FastForwardBar
 
 
 class PlayerActivity : BaseActivity() {
-    val playerController by lazy { findViewById(R.id.play_controller) }
-    val playerView by lazy { findViewById(R.id.player_content) as MeguminExoPlayer }
-    val root by lazy { findViewById(R.id.root) }
+    val playerController by lazy { findViewById<View>(R.id.play_controller) }
+    val playerView by lazy { findViewById<MeguminExoPlayer>(R.id.player_content) }
+    val root by lazy { findViewById<View>(R.id.root) }
 
     val mHidePart2Runnable = Runnable {
         playerView.systemUiVisibility =
@@ -83,8 +83,8 @@ class PlayerActivity : BaseActivity() {
         Log.i(this.localClassName, "playing:" + fixedUrl)
 
         checkMultiWindowMode()
-        findViewById(R.id.play_close).setOnClickListener { finish() }
-        (findViewById(R.id.fast_forward_bar) as FastForwardBar).callback = object : FastForwardBar.FastForwardEventCallback {
+        findViewById<View>(R.id.play_close).setOnClickListener { finish() }
+        (findViewById<FastForwardBar>(R.id.fast_forward_bar)).callback = object : FastForwardBar.FastForwardEventCallback {
             override fun onFastForward(range: Int) {
                 playerView.seekOffsetTo(range * 1000)
             }
@@ -98,11 +98,11 @@ class PlayerActivity : BaseActivity() {
         playerView.setControllerView(
                 MeguminExoPlayer.ControllerViews(
                         playerController,
-                        findViewById(R.id.play_button) as CheckableImageButton,
-                        findViewById(R.id.play_screen) as CheckableImageButton?,
-                        findViewById(R.id.play_progress) as SeekBar,
-                        findViewById(R.id.play_position) as TextView,
-                        findViewById(R.id.play_duration) as TextView))
+                        findViewById<CheckableImageButton>(R.id.play_button),
+                        findViewById<CheckableImageButton?>(R.id.play_screen),
+                        findViewById<SeekBar>(R.id.play_progress),
+                        findViewById<TextView>(R.id.play_position),
+                        findViewById<TextView>(R.id.play_duration)))
 
         playerView.setControllerCallback(object : MeguminExoPlayer.ControllerCallback {
             override fun onControllerVisibilityChange(visible: Boolean) {

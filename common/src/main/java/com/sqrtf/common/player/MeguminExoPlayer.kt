@@ -30,8 +30,8 @@ import kotlin.properties.Delegates
 
 class MeguminExoPlayer : FrameLayout {
 
-    val contentFrame by lazy { findViewById(R.id.arfl) as AspectRatioFrameLayout }
-    val surfaceView by lazy { findViewById(R.id.surface_view) as SurfaceView }
+    val contentFrame by lazy { findViewById<AspectRatioFrameLayout>(R.id.arfl) }
+    val surfaceView by lazy { findViewById<SurfaceView>(R.id.surface_view) }
 
     val bandwidthMeter: BandwidthMeter = DefaultBandwidthMeter()
     val videoTrackSelectionFactory: TrackSelection.Factory = AdaptiveTrackSelection.Factory(bandwidthMeter)

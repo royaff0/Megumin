@@ -39,18 +39,18 @@ import java.util.*
 
 
 class DetailActivity : BaseThemeActivity() {
-    val iv by lazy { findViewById(R.id.image) as ImageView? }
-    //    val ivCover by lazy { findViewById(R.id.image_cover) as ImageView }
-//    val ctitle by lazy { findViewById(R.id.title) as TextView }
-    val subtitle by lazy { findViewById(R.id.subtitle) as TextView }
-    val info by lazy { findViewById(R.id.info) as TextView }
-    val summary by lazy { findViewById(R.id.summary) as TextView }
-    val summary2 by lazy { findViewById(R.id.summary2) as TextView }
-    val more by lazy { findViewById(R.id.button_more) as TextView }
-    val spinner by lazy { findViewById(R.id.spinner) as Spinner }
-    val recyclerView by lazy { findViewById(R.id.recycler_view) as RecyclerView }
-    val summaryLayout by lazy { findViewById(R.id.summary_layout) }
-    val btnBgmTv by lazy { findViewById(R.id.button_bgm_tv) }
+    val iv by lazy { findViewById<ImageView?>(R.id.image)}
+    //    val ivCover by lazy { findViewById<ImageView>(R.id.image_cover)}
+//    val ctitle by lazy { findViewById<TextView>(R.id.title)}
+    val subtitle by lazy { findViewById<TextView>(R.id.subtitle) }
+    val info by lazy { findViewById<TextView>(R.id.info) }
+    val summary by lazy { findViewById<TextView>(R.id.summary) }
+    val summary2 by lazy { findViewById<TextView>(R.id.summary2) }
+    val more by lazy { findViewById<TextView>(R.id.button_more) }
+    val spinner by lazy { findViewById<Spinner>(R.id.spinner) }
+    val recyclerView by lazy { findViewById<RecyclerView>(R.id.recycler_view) }
+    val summaryLayout by lazy { findViewById<View>(R.id.summary_layout) }
+    val btnBgmTv by lazy { findViewById<View>(R.id.button_bgm_tv) }
 
     val episodeAdapter by lazy { EpisodeAdapter() }
 
@@ -78,7 +78,7 @@ class DetailActivity : BaseThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         title = ""
@@ -175,18 +175,18 @@ class DetailActivity : BaseThemeActivity() {
             if (TextUtils.isEmpty(episode.name)) episode.name_cn else episode.name
         }
 
-        (view.findViewById(R.id.title) as TextView).text =
+        (view.findViewById<TextView>(R.id.title)).text =
                 "${episode.episode_no}. $name"
 
-        view.findViewById(R.id.button_mark_watched).setOnClickListener {
+        view.findViewById<View>(R.id.button_mark_watched).setOnClickListener {
             markWatched(episode)
             dialog.dismiss()
         }
-//        view.findViewById(R.id.button_mark_all_watched).setOnClickListener {
+//        view.findViewById<View>(R.id.button_mark_all_watched).setOnClickListener {
 //            markAllBefore(episode)
 //            dialog.dismiss()
 //        }
-        view.findViewById(R.id.button_open_external).setOnClickListener {
+        view.findViewById<View>(R.id.button_open_external).setOnClickListener {
             openWith(episode)
             dialog.dismiss()
         }
@@ -365,9 +365,9 @@ class DetailActivity : BaseThemeActivity() {
 
         inner class VH(v: View) : RecyclerView.ViewHolder(v) {
             val view = v
-            val tv = v.findViewById(R.id.tv) as TextView
-            val image = v.findViewById(R.id.image) as ImageView
-            val progress = v.findViewById(R.id.progress) as ProgressCoverView
+            val tv = v.findViewById<TextView>(R.id.tv)
+            val image = v.findViewById<ImageView>(R.id.image)
+            val progress = v.findViewById<ProgressCoverView>(R.id.progress)
         }
 
         @SuppressLint("SetTextI18n")

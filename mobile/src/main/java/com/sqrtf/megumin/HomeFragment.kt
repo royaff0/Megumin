@@ -35,8 +35,8 @@ import java.util.*
 
 class HomeFragment : BaseFragment() {
 
-    private val recyclerView by lazy { findViewById(R.id.recycler_view) as RecyclerView }
-    private val swipeRefresh by lazy { findViewById(R.id.swipe_refresh) as SwipeRefreshLayout }
+    private val recyclerView by lazy { findViewById<RecyclerView>(R.id.recycler_view) }
+    private val swipeRefresh by lazy { findViewById<SwipeRefreshLayout>(R.id.swipe_refresh) }
     private val homeDataAdapter by lazy { HomeDataAdapter(this) }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -118,24 +118,24 @@ class HomeFragment : BaseFragment() {
         }
 
         class HomeLineHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            var recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView) as RecyclerView
+            var recyclerView: RecyclerView = itemView.findViewById<RecyclerView>(R.id.recyclerView)
         }
 
         class HomeLargeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            var recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView) as RecyclerView
+            var recyclerView: RecyclerView = itemView.findViewById<RecyclerView>(R.id.recyclerView)
         }
 
         private class WideCardHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val image = view.findViewById(R.id.imageView) as ImageView
-            val title = view.findViewById(R.id.title) as TextView
-            //            val subtitle = view.findViewById(R.id.subtitle) as TextView
-            val info = view.findViewById(R.id.info) as TextView
-            val state = view.findViewById(R.id.state) as TextView
-            val info2 = view.findViewById(R.id.info2) as TextView
+            val image = view.findViewById<ImageView>(R.id.imageView)
+            val title = view.findViewById<TextView>(R.id.title)
+            //            val subtitle = view.findViewById<TextView>(R.id.subtitle)
+            val info = view.findViewById<TextView>(R.id.info)
+            val state = view.findViewById<TextView>(R.id.state)
+            val info2 = view.findViewById<TextView>(R.id.info2)
         }
 
         private class TitleHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val text = view.findViewById(R.id.textView) as TextView
+            val text = view.findViewById<TextView>(R.id.textView)
         }
 
         private class TailHolder(view: View) : RecyclerView.ViewHolder(view) {

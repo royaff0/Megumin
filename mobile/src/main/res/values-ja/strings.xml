@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">めぐみん</string>
+    <string name="app_name">Megumin</string>
     <string name="navigation_drawer_open">ナビゲーションドロワーを開ける</string>
     <string name="navigation_drawer_close">ナビゲーションドロワーを閉める</string>
     <string name="action_settings">設定</string>
@@ -38,6 +38,7 @@
     <string name="network_error">Network Error</string>
     <string name="less">△</string>
     <string name="recommended">おすすめ</string>
-    <string name="eps_all">%d eps</string>
+    <string name="eps_all">%d EPS</string>
+    <string name="login">ログイン</string>
 
 </resources>

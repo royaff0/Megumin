@@ -20,18 +20,20 @@ class FadingBehavior : AppBarLayout.Behavior {
 
     private var lastElevationPx = -1f
 
-    override fun onMeasureChild(parent: CoordinatorLayout?, child: AppBarLayout?, parentWidthMeasureSpec: Int, widthUsed: Int, parentHeightMeasureSpec: Int, heightUsed: Int): Boolean {
-        child?.removeOnOffsetChangedListener(onOffsetChangedListener)
-        child?.addOnOffsetChangedListener(onOffsetChangedListener)
-        return super.onMeasureChild(parent, child, parentWidthMeasureSpec, widthUsed, parentHeightMeasureSpec, heightUsed)
-    }
+    private val onOffsetChangedListener : AppBarLayout.OnOffsetChangedListener = AppBarLayout.OnOffsetChangedListener {
+        appBarLayout: AppBarLayout, offset: Int ->
 
-    private val onOffsetChangedListener: (AppBarLayout, Int) -> Unit = { appBarLayout: AppBarLayout, offset: Int ->
         if ((appBarLayout.totalScrollRange + offset) != 0 && overlapped) {
             setElevation(appBarLayout, elevationPx)
         } else if ((appBarLayout.totalScrollRange + offset) == 0) {
             setElevation(appBarLayout, 0f)
         }
+    }
+
+    override fun onMeasureChild(parent: CoordinatorLayout, child: AppBarLayout, parentWidthMeasureSpec: Int, widthUsed: Int, parentHeightMeasureSpec: Int, heightUsed: Int): Boolean {
+        child.removeOnOffsetChangedListener(onOffsetChangedListener)
+        child.addOnOffsetChangedListener(onOffsetChangedListener)
+        return super.onMeasureChild(parent, child, parentWidthMeasureSpec, widthUsed, parentHeightMeasureSpec, heightUsed)
     }
 
     override fun onNestedScroll(coordinatorLayout: CoordinatorLayout, child: AppBarLayout, target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, type: Int) {

@@ -2,8 +2,10 @@ package com.sqrtf.megumin
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.UiModeManager
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
@@ -39,7 +41,7 @@ import java.util.*
 
 
 class DetailActivity : BaseThemeActivity() {
-    val iv by lazy { findViewById<ImageView?>(R.id.image)}
+    val iv by lazy { findViewById<ImageView?>(R.id.image) }
     //    val ivCover by lazy { findViewById<ImageView>(R.id.image_cover)}
 //    val ctitle by lazy { findViewById<TextView>(R.id.title)}
     val subtitle by lazy { findViewById<TextView>(R.id.subtitle) }
@@ -54,6 +56,7 @@ class DetailActivity : BaseThemeActivity() {
 
     val episodeAdapter by lazy { EpisodeAdapter() }
 
+    val isTv by lazy { (getSystemService(UI_MODE_SERVICE) as UiModeManager).currentModeType == Configuration.UI_MODE_TYPE_TELEVISION }
 
     override fun themeWhite(): Int {
         return R.style.AppThemeWhite_NoStateBar
@@ -83,7 +86,9 @@ class DetailActivity : BaseThemeActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         title = ""
 
-        recyclerView.layoutManager = ScrollStartLayoutManager(this, ScrollStartLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = ScrollStartLayoutManager(this,
+                if (isTv) ScrollStartLayoutManager.HORIZONTAL else ScrollStartLayoutManager.VERTICAL,
+                false)
         recyclerView.adapter = episodeAdapter
 
         val json = intent.getStringExtra(INTENT_KEY_BANGMUMI)
@@ -94,7 +99,7 @@ class DetailActivity : BaseThemeActivity() {
         preSetImage(Color.parseColor(bgm!!.cover_image.dominant_color), bgm.cover_image.url)
         setData(bgm)
         loadData(bgm.id)
-        title = StringUtil.mainTitle(bgm)
+//        title = StringUtil.mainTitle(bgm)
     }
 
     private fun loadData(bgmId: String) {
@@ -238,7 +243,7 @@ class DetailActivity : BaseThemeActivity() {
 //        Glide.with(this).load(detail.image).into(ivCover)
 
 //        ctitle.text = StringUtil.mainTitle(detail)
-        subtitle.text = StringUtil.subTitle(detail)
+        subtitle.text = StringUtil.mainTitle(detail)
         info.text = resources.getString(R.string.update_info)
                 ?.format(detail.eps, StringUtil.dayOfWeek(detail.air_weekday), detail.air_date)
 
@@ -371,7 +376,7 @@ class DetailActivity : BaseThemeActivity() {
         }
 
         @SuppressLint("SetTextI18n")
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, p1: Int) {
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, p1: Int) {
             if (holder is VH) {
                 val d = episodes[p1]
 
@@ -381,7 +386,7 @@ class DetailActivity : BaseThemeActivity() {
                     if (TextUtils.isEmpty(d.name)) d.name_cn else d.name
                 }
 
-                holder.tv.text = "${d.episode_no}. $name"
+                holder.tv.text = "▶ EP.${d.episode_no}   $name"
                 if (d.watch_progress?.percentage != null
                         && d.watch_progress?.percentage!! < 0.15f) {
                     d.watch_progress?.percentage = 0.15f
@@ -405,12 +410,12 @@ class DetailActivity : BaseThemeActivity() {
             }
         }
 
-        override fun onCreateViewHolder(p0: ViewGroup?, p1: Int): RecyclerView.ViewHolder {
-            return VH(LayoutInflater.from(p0!!.context).inflate(R.layout.rv_item_episode, p0, false))
+        override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
+            return VH(LayoutInflater.from(p0!!.context).inflate(if (isTv) R.layout.rv_item_episode else R.layout.rv_item_episode_vertical, p0, false))
         }
 
         override fun getItemCount(): Int {
-            return episodes.size
+            return episodes.filter { it.status != 0 }.size
         }
 
     }

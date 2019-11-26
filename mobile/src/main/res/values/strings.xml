@@ -37,14 +37,15 @@
     <string name="title_activity_player" translatable="false">PlayerActivity</string>
     <string name="title_activity_settings" translatable="false">Settings</string>
 
-    <string name="update_info">%d eps  ·  %s  ·  %s</string>
-    <string name="unwatched">%d new</string>
-    <string name="eps_all">%d eps</string>
+    <string name="update_info">%d EPS  ·  %s  ·  %s</string>
+    <string name="unwatched">%d NEW</string>
+    <string name="eps_all">%d EPS</string>
     <string name="more">More</string>
     <string name="less">Less</string>
     <string name="others">others</string>
     <string name="swtich_theme">Switch theme</string>
     <string name="logout">Logout</string>
+    <string name="login">Login</string>
     <string name="recommended">Recommended</string>
     <string name="releasing">Releasing</string>
     <string name="mark_as_watched">Mark as watched</string>

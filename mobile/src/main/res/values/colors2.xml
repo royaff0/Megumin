@@ -8,6 +8,7 @@
     <color name="contentBackground2">#e0e0e0</color>
     <color name="detailBackground2">#e0e0e0</color>
     <color name="detailContentBackground2">#f0f0f0</color>
+    <color name="detailContentImageForeground2">#e0e0e0</color>
 
     <color name="colorControlNormal2">#707070</color>
     <color name="textColorPrimary2">#2e2e2e</color>

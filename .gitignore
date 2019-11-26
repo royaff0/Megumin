@@ -1,3 +1,6 @@
+# MacOS
+.DS_Store
+
 # Built application files
 *.apk
 *.ap_
@@ -41,6 +44,7 @@ captures/
 .idea/dictionaries
 .idea/libraries
 .idea/caches
+.idea/markdown-navigator.xml
 
 # Keystore files
 # Uncomment the following line if you do not want to check your keystore files in.

@@ -39,5 +39,6 @@
     <string name="less">△</string>
     <string name="recommended">推荐</string>
     <string name="eps_all">%d 集</string>
+    <string name="login">登录</string>
 
 </resources>

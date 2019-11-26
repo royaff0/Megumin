@@ -85,7 +85,7 @@ class AllBangumiActivity : BaseThemeActivity() {
         recyclerView.addItemDecoration(PaddingItemDecoration())
 
         val mScrollListener = object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val visibleItemCount = mLayoutManager.childCount
                 val totalItemCount = mLayoutManager.itemCount
                 val pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition()
@@ -158,7 +158,7 @@ class AllBangumiActivity : BaseThemeActivity() {
     }
 
     private class PaddingItemDecoration : RecyclerView.ItemDecoration() {
-        override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
             val position = parent!!.getChildAdapterPosition(view)
             val childCount = state!!.itemCount
             if (position == 0) {
@@ -170,7 +170,7 @@ class AllBangumiActivity : BaseThemeActivity() {
     }
 
     private inner class HomeAdapter : RecyclerView.Adapter<WideCardHolder>() {
-        override fun onCreateViewHolder(p0: ViewGroup?, p1: Int): WideCardHolder = WideCardHolder(LayoutInflater.from(this@AllBangumiActivity).inflate(R.layout.include_bangumi_wide, p0, false))
+        override fun onCreateViewHolder(p0: ViewGroup, p1: Int): WideCardHolder = WideCardHolder(LayoutInflater.from(this@AllBangumiActivity).inflate(R.layout.include_bangumi_wide, p0, false))
 
         override fun onBindViewHolder(viewHolder: WideCardHolder, p1: Int) {
             val bangumi = bangumiList[p1]

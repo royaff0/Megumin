@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/button"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:background="?attr/detailContentBackground"
+    app:cardBackgroundColor="?attr/detailContentBackground">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="90dp"
+        android:layout_height="match_parent"
+        android:alpha="1"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="90dp"
+        android:ellipsize="none"
+        android:padding="12dp"
+        android:fadingEdgeLength="30dp"
+        android:requiresFadingEdge="horizontal"
+        android:shadowColor="@android:color/black"
+        android:singleLine="true"
+        android:textColor="?attr/textColorTitle2" />
+
+    <com.sqrtf.common.view.ProgressCoverView
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_gravity="bottom"
+        app:color="#a0d43b3e" />
+
+</FrameLayout>

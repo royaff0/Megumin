@@ -79,7 +79,7 @@ class SearchActivity : BaseThemeActivity() {
     private fun hideKeyboard() {
         if (currentFocus == null) return
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(this.currentFocus.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        inputManager.hideSoftInputFromWindow(this.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
         edit.clearFocus()
     }
 
@@ -93,7 +93,7 @@ class SearchActivity : BaseThemeActivity() {
     }
 
     private inner class HomeAdapter : RecyclerView.Adapter<WideCardHolder>() {
-        override fun onCreateViewHolder(p0: ViewGroup?, p1: Int): WideCardHolder = WideCardHolder(LayoutInflater.from(this@SearchActivity).inflate(R.layout.include_bangumi_wide, p0, false))
+        override fun onCreateViewHolder(p0: ViewGroup, p1: Int): WideCardHolder = WideCardHolder(LayoutInflater.from(this@SearchActivity).inflate(R.layout.include_bangumi_wide, p0, false))
 
         override fun onBindViewHolder(viewHolder: WideCardHolder, p1: Int) {
             val bangumi = bangumiList[p1]

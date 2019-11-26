@@ -13,7 +13,7 @@ import com.sqrtf.megumin.R
 open class HomeHorizontalAdapter(private var datas: HomeData,
                                  private var callback: (Bangumi) -> Unit) : RecyclerView.Adapter<MediumCardHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediumCardHolder? {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediumCardHolder {
         return MediumCardHolder(LayoutInflater.from(parent.context).inflate(R.layout.include_bangumi_medium, parent, false))
     }
 

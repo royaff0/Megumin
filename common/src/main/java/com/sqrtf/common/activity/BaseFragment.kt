@@ -19,7 +19,7 @@ open class BaseFragment : RxLifecycleFragment() {
 
     var thisView: View? = null
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         this.thisView = view
     }
@@ -54,7 +54,7 @@ open class BaseFragment : RxLifecycleFragment() {
                 }
 
                 if (message?.message() != null) {
-                    errorMessage = message.message()
+                    errorMessage = message.message()!!
                 }
             }
 

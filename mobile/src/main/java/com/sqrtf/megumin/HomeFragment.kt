@@ -39,12 +39,11 @@ class HomeFragment : BaseFragment() {
     private val swipeRefresh by lazy { findViewById<SwipeRefreshLayout>(R.id.swipe_refresh) }
     private val homeDataAdapter by lazy { HomeDataAdapter(this) }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_home, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         swipeRefresh.setColorSchemeResources(R.color.meguminRed)
@@ -159,7 +158,7 @@ class HomeFragment : BaseFragment() {
         }
 
         private inner class HomeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-            override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder?, position: Int) {
+            override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
 
                 val bangumi = list[position].bangumi
                 when (viewHolder) {
@@ -172,7 +171,7 @@ class HomeFragment : BaseFragment() {
 
                         viewHolder.recyclerView.adapter =
                                 HomeHorizontalAdapter(
-                                        list[position], { parent.startActivity(DetailActivity.intent(parent.context, it)) })
+                                        list[position], { parent.startActivity(parent.context?.let { it1 -> DetailActivity.intent(it1, it) }) })
                     }
                     is HomeLargeHolder -> {
                         if (viewHolder.recyclerView.layoutManager == null) {
@@ -183,7 +182,7 @@ class HomeFragment : BaseFragment() {
 
                         viewHolder.recyclerView.adapter =
                                 HomeLargeAdapter(
-                                        list[position], { parent.startActivity(DetailActivity.intent(parent.context, it)) })
+                                        list[position], { parent.startActivity(parent.context?.let { it1 -> DetailActivity.intent(it1, it) }) })
                     }
                     is WideCardHolder -> {
                         if (bangumi == null) {
@@ -215,7 +214,7 @@ class HomeFragment : BaseFragment() {
                         viewHolder.itemView.setOnClickListener {
 
                             parent.startActivity(bangumi.let { it1 ->
-                                DetailActivity.intent(parent.context, it1)
+                                parent.context?.let { it2 -> DetailActivity.intent(it2, it1) }
                             })
                         }
                     }
@@ -225,7 +224,7 @@ class HomeFragment : BaseFragment() {
                 }
             }
 
-            override fun onCreateViewHolder(p0: ViewGroup?, p1: Int): RecyclerView.ViewHolder {
+            override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
                 return when (p1) {
                     HomeData.TYPE.TITLE.value -> TitleHolder(LayoutInflater.from(p0!!.context).inflate(R.layout.include_home_title, p0, false))
                     HomeData.TYPE.WIDE.value -> WideCardHolder(LayoutInflater.from(p0!!.context).inflate(R.layout.include_bangumi_wide, p0, false))

@@ -29,6 +29,7 @@ class FirstConfigActivity : BaseActivity() {
                 R.array.array_link_type, R.layout.spinner_item)
         sp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = sp
+        spinner.setSelection(1)
 
         val textServer = findViewById<EditText>(R.id.server)
         val textUser = findViewById<EditText>(R.id.user)
@@ -38,7 +39,7 @@ class FirstConfigActivity : BaseActivity() {
 
         val toast = Toast.makeText(this, getString(R.string.connecting), Toast.LENGTH_LONG)
 
-        findViewById<View>(R.id.floatingActionButton).setOnClickListener {
+        findViewById<View>(R.id.loginButton).setOnClickListener {
             val host = StringBuilder()
             val domain = textServer.text.toString()
 

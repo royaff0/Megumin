@@ -15,6 +15,7 @@
     <attr name="textColorLowLight" format="color"/>
     <attr name="backgroundFore" format="color"/>
     <attr name="detailContentBackground" format="color"/>
+    <attr name="detailContentImageForeground" format="color"/>
     <attr name="detailBackground" format="color"/>
     <attr name="textColorTitle2" format="color"/>
 

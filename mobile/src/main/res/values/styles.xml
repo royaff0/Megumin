@@ -16,6 +16,7 @@
         <item name="textColorLowLight">@color/textColorLowLight</item>
         <item name="backgroundFore">@color/backgroundFore</item>
         <item name="detailContentBackground">@color/detailContentBackground</item>
+        <item name="detailContentImageForeground">@color/detailContentImageForeground</item>
         <item name="textColorTitle2">@color/textColorTitle2</item>
         <item name="detailBackground">@color/detailBackground</item>
 
@@ -37,6 +38,7 @@
         <item name="textColorLowLight">@color/textColorLowLight2</item>
         <item name="backgroundFore">@color/backgroundFore2</item>
         <item name="detailContentBackground">@color/detailContentBackground2</item>
+        <item name="detailContentImageForeground">@color/detailContentImageForeground2</item>
         <item name="textColorTitle2">@color/textColorTitle22</item>
         <item name="detailBackground">@color/detailBackground2</item>
 

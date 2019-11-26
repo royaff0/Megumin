@@ -39,7 +39,7 @@ class FastForwardBar(context: Context?,
     }
 
     private fun isValid(): Boolean {
-        return Math.abs(startPosition.first - endPosition.first) > DisplayUtil.dp2px(resources, 4)
+        return Math.abs(startPosition.first!! - endPosition.first!!) > DisplayUtil.dp2px(resources, 4)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -55,7 +55,7 @@ class FastForwardBar(context: Context?,
                 invalidate()
             }
             MotionEvent.ACTION_UP -> {
-                val range = calcRange(endPosition.first - startPosition.first)
+                val range = calcRange(endPosition.first!! - startPosition.first!!)
                 if (dragging && (range >= 1 || range <= -1)) {
                     callback?.onFastForward(range)
                 } else if (!dragging) {
@@ -81,7 +81,7 @@ class FastForwardBar(context: Context?,
             return
         }
 
-        val distance = endPosition.first - startPosition.first
+        val distance = endPosition.first!! - startPosition.first!!
 
         fun toRangeDisplay(): String {
             val range = calcRange(distance)
@@ -93,16 +93,16 @@ class FastForwardBar(context: Context?,
         }
 
         canvas.drawRect(
-                if (distance > 0) startPosition.first else endPosition.first,
-                startPosition.second - DisplayUtil.dp2px(resources, 2),
-                if (distance > 0) endPosition.first else startPosition.first,
-                startPosition.second + DisplayUtil.dp2px(resources, 2),
+                (if (distance > 0) startPosition.first else endPosition.first)!!,
+                startPosition.second!! - DisplayUtil.dp2px(resources, 2),
+                (if (distance > 0) endPosition.first else startPosition.first)!!,
+                startPosition.second!! + DisplayUtil.dp2px(resources, 2),
                 paint)
 
         canvas.drawText(
                 toRangeDisplay(),
-                (startPosition.first + endPosition.first) / 2 - DisplayUtil.dp2px(resources, 8),
-                startPosition.second - DisplayUtil.dp2px(resources, 6),
+                (startPosition.first!! + endPosition.first!!) / 2 - DisplayUtil.dp2px(resources, 8),
+                startPosition.second!! - DisplayUtil.dp2px(resources, 6),
                 paint)
     }
 

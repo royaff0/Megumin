@@ -12,6 +12,7 @@
     <color name="contentBackground">#212121</color>
     <color name="detailBackground">#000000</color>
     <color name="detailContentBackground">#131313</color>
+    <color name="detailContentImageForeground">#222222</color>
 
     <color name="colorControlNormal">#707070</color>
     <color name="textColorPrimary">#ffffff</color>

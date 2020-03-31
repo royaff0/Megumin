@@ -6,8 +6,8 @@
     android:layout_height="90dp"
     android:layout_margin="4dp"
     android:focusable="true"
-    android:foreground="?attr/selectableItemBackground"
     android:orientation="vertical"
+    android:elevation="3dp"
     app:cardBackgroundColor="#333333">
 
     <ImageView
@@ -35,5 +35,17 @@
         android:requiresFadingEdge="horizontal"
         android:shadowColor="@android:color/black"
         android:singleLine="true"
+        android:textColor="#ffffff" />
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:ellipsize="none"
+        android:alpha="0.3"
+        android:fadingEdgeLength="30dp"
+        android:requiresFadingEdge="horizontal"
+        android:shadowColor="@android:color/black"
         android:textColor="#ffffff" />
 </android.support.v7.widget.CardView>

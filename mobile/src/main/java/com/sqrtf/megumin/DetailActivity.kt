@@ -401,11 +401,23 @@ class DetailActivity : BaseThemeActivity() {
                             .into(holder.image)
 
                     holder.tv.alpha = 1f
+
+                    if (isTv) {
+                        holder.view.setOnFocusChangeListener { view, b ->
+                            view.animate()
+                                    .scaleX(if (b) 1.1f else 1f)
+                                    .scaleY(if (b) 1.1f else 1f)
+                                    .z(if (b) 1.1f else 1f)
+                                    .setDuration(150)
+                                    .start()
+                        }
+                    }
                 } else {
                     holder.tv.text = ""
                     holder.tv2.text = "EP.${d.episode_no}   $name"
                     holder.image.setImageBitmap(null)
                     holder.progress.setProgress(0f)
+                    holder.view.onFocusChangeListener = null
                 }
 
                 holder.view.setOnClickListener {

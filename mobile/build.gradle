@@ -7,7 +7,7 @@ android {
 //    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.sqrtf.megumin"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 18
         versionName "1.0.2"

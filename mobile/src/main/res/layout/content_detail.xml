@@ -27,8 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
                 android:layout_marginTop="24dp"
+                android:layout_marginRight="24dp"
                 android:textColor="?attr/textColorTitle2"
                 android:textSize="21sp"
                 app:layout_collapseMode="parallax"
@@ -51,10 +51,10 @@
                 android:id="@+id/summary_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="22dp"
                 android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
                 android:layout_marginTop="22dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginBottom="22dp"
                 android:animateLayoutChanges="true"
                 android:clickable="true"
                 android:focusable="true"
@@ -77,8 +77,8 @@
                         android:id="@+id/summary2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="0dp"
                         android:layout_marginTop="0dp"
+                        android:layout_marginBottom="0dp"
                         android:autoLink="web"
                         android:ellipsize="none"
                         android:fadingEdgeLength="30dp"
@@ -118,10 +118,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 android:layout_marginLeft="22dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginRight="22dp"
-                android:layout_marginTop="16dp">
+                android:layout_marginBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -144,9 +144,9 @@
                         android:layout_height="match_parent"
                         android:background="@null"
                         android:clickable="true"
-                        android:textColor="#ffffff"
                         android:focusable="true"
-                        android:foreground="?android:attr/selectableItemBackground" />
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:textColor="#ffffff" />
 
                 </LinearLayout>
 
@@ -155,8 +155,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="36dp"
                     android:background="@drawable/button_red"
-                    android:textColor="#ffffff"
-                    android:text="bgm.tv" />
+                    android:text="bgm.tv"
+                    android:textColor="#ffffff" />
 
             </LinearLayout>
 
@@ -166,9 +166,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
-            android:paddingBottom="8dp"
             android:paddingLeft="24dp"
             android:paddingTop="16dp"
+            android:paddingBottom="8dp"
             android:text="Episodes"
             android:textColor="@color/textColorLowLight"
             android:textSize="16sp" />

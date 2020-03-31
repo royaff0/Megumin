@@ -89,7 +89,7 @@ open class BaseActivity : RxLifecycleActivity() {
                 }
 
                 if (message?.message() != null) {
-                    errorMessage = message.message()
+                    errorMessage = message.message()!!
                 }
             }
 

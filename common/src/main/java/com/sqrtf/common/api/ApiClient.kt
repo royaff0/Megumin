@@ -73,6 +73,7 @@ object ApiClient {
 
                 val cs = ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
                         .tlsVersions(TlsVersion.TLS_1_2)
+                        .supportsTlsExtensions(true)
                         .build()
 
                 val specs = ArrayList<ConnectionSpec>()

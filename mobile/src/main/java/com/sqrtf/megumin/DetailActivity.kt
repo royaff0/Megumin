@@ -371,6 +371,7 @@ class DetailActivity : BaseThemeActivity() {
         inner class VH(v: View) : RecyclerView.ViewHolder(v) {
             val view = v
             val tv = v.findViewById<TextView>(R.id.tv)
+            val tv2 = v.findViewById<TextView>(R.id.tv2)
             val image = v.findViewById<ImageView>(R.id.image)
             val progress = v.findViewById<ProgressCoverView>(R.id.progress)
         }
@@ -386,18 +387,27 @@ class DetailActivity : BaseThemeActivity() {
                     if (TextUtils.isEmpty(d.name)) d.name_cn else d.name
                 }
 
-                holder.tv.text = "▶ EP.${d.episode_no}   $name"
-                if (d.watch_progress?.percentage != null
-                        && d.watch_progress?.percentage!! < 0.15f) {
-                    d.watch_progress?.percentage = 0.15f
+                if (d.status != 0) {
+                    holder.tv2.text = ""
+                    holder.tv.text = "▶ EP.${d.episode_no}   $name"
+                    if (d.watch_progress?.percentage != null
+                            && d.watch_progress?.percentage!! < 0.15f) {
+                        d.watch_progress?.percentage = 0.15f
+                    }
+                    holder.progress.setProgress(d.watch_progress?.percentage ?: 0f)
+
+                    Glide.with(this@DetailActivity)
+                            .load(ApiHelper.fixHttpUrl(d.thumbnail))
+                            .into(holder.image)
+
+                    holder.tv.alpha = 1f
+                } else {
+                    holder.tv.text = ""
+                    holder.tv2.text = "EP.${d.episode_no}   $name"
+                    holder.image.setImageBitmap(null)
+                    holder.progress.setProgress(0f)
                 }
-                holder.progress.setProgress(d.watch_progress?.percentage ?: 0f)
 
-                Glide.with(this@DetailActivity)
-                        .load(ApiHelper.fixHttpUrl(d.thumbnail))
-                        .into(holder.image)
-
-                holder.tv.alpha = if (d.status != 0) 1f else 0.2f
                 holder.view.setOnClickListener {
                     if (d.status != 0) playVideo(d)
                 }
@@ -415,7 +425,8 @@ class DetailActivity : BaseThemeActivity() {
         }
 
         override fun getItemCount(): Int {
-            return episodes.filter { it.status != 0 }.size
+//            return episodes.filter { it.status != 0 }.size
+            return episodes.size
         }
 
     }

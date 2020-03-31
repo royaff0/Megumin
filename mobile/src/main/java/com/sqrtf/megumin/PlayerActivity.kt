@@ -23,6 +23,7 @@ import com.sqrtf.common.api.ApiHelper
 import com.sqrtf.common.player.MeguminExoPlayer
 import com.sqrtf.common.view.CheckableImageButton
 import com.sqrtf.common.view.FastForwardBar
+import kotlin.math.min
 
 
 class PlayerActivity : BaseActivity() {
@@ -251,7 +252,8 @@ class PlayerActivity : BaseActivity() {
 
     private fun onKeyboardSeekUpdate(times: Int, isFinish: Boolean = false) {
         val isForward = keyPressingCode == KeyEvent.KEYCODE_DPAD_RIGHT
-        val s = times * 10
+
+        val s = if (times <= 3) times * 5 else 3 * 5 + (times - 3) * 15
 
         mToast.setText(getString(if (isForward) R.string.toast_forward else R.string.toast_backward).format(s))
         mToast.show()

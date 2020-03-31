@@ -23,6 +23,20 @@
         android:scaleType="centerCrop" />
 
     <TextView
+        android:id="@+id/tv2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:ellipsize="none"
+        android:padding="12dp"
+        android:fadingEdgeLength="30dp"
+        android:requiresFadingEdge="horizontal"
+        android:shadowColor="@android:color/black"
+        android:singleLine="true"
+        android:alpha="0.3"
+        android:textColor="?attr/textColorTitle2" />
+
+    <TextView
         android:id="@+id/tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.AppCompatSpinner
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
@@ -68,6 +69,8 @@ class FirstConfigActivity : BaseActivity() {
                         toast.cancel()
                         finish()
                     }, {
+                        Log.w("toastErrors", it)
+
                         var errorMessage = getString(R.string.network_error)
 
                         if (it is HttpException) {
@@ -77,7 +80,7 @@ class FirstConfigActivity : BaseActivity() {
                             }
 
                             if (message?.message() != null) {
-                                errorMessage = message.message()
+                                errorMessage = message.message()!!
                             }
                         }
 

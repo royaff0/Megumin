@@ -67,6 +67,8 @@
                     android:autoLink="web"
                     android:lineSpacingExtra="5dp"
                     android:maxLines="1"
+                    android:linksClickable="false"
+                    android:focusable="false"
                     android:textColor="?attr/textColorTitle2" />
 
                 <android.support.constraint.ConstraintLayout
@@ -76,10 +78,12 @@
                     <TextView
                         android:id="@+id/summary2"
                         android:layout_width="0dp"
+                        android:linksClickable="false"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"
                         android:layout_marginBottom="0dp"
                         android:autoLink="web"
+                        android:focusable="false"
                         android:ellipsize="none"
                         android:fadingEdgeLength="30dp"
                         android:requiresFadingEdge="horizontal"
@@ -151,6 +155,7 @@
                 </LinearLayout>
 
                 <Button
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:id="@+id/button_bgm_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="36dp"

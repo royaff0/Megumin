@@ -349,6 +349,7 @@ class DetailActivity : BaseThemeActivity() {
                     ?.let {
                         recyclerView.post {
                             recyclerView.smoothScrollToPosition(it.index)
+                            recyclerView.requestFocus()
                         }
                     }
         }
